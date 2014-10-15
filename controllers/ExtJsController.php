@@ -10,7 +10,7 @@ class ExtJsController extends Controller
 
     public function actionIndex()
     {
-        return __METHOD__;
+        return $this->renderPartial('index');
     }
 
     public function actionApplicationJs()

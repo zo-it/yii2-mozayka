@@ -14,6 +14,7 @@ class Module extends BaseModule implements BootstrapInterface
     {
         if ($app instanceof WebApplication) {
             $app->getUrlManager()->addRules([
+                $this->id . '/ext-js' => $this->id . '/ext-js/index',
                 $this->id . '/Application.js' => $this->id . '/ext-js/application-js'
             ], false);
         }
