@@ -2,16 +2,20 @@
 
 namespace yii\mozayka;
 
-use yii\base\Module as ModuleBase,
+use yii\base\Module as BaseModule,
     yii\base\BootstrapInterface,
-    yii\base\Application;
+    yii\web\Application as WebApplication;
 
 
-class Module extends ModuleBase implements BootstrapInterface
+class Module extends BaseModule implements BootstrapInterface
 {
 
-    public function bootstrap(Application $app)
+    public function bootstrap($app)
     {
-        // nothing to do here
+        if ($app instanceof WebApplication) {
+            $app->getUrlManager()->addRules([
+                $this->id . '/Application.js' => $this->id . '/ext-js/application-js'
+            ], false);
+        }
     }
 }
