@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\gii;
+namespace yii\mozayka;
 
 use yii\base\Module as ModuleBase,
     yii\base\BootstrapInterface,
