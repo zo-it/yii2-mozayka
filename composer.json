@@ -1,0 +1,24 @@
+{
+    "name": "ivan-chkv/yii2-mozayka",
+    "description": "The CRUD implementation for Yii 2.",
+    "keywords": ["yii2", "mozayka"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Chistyakov",
+            "email": "ivan.chkv@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "*",
+        "ivan-chkv/yii2-kladovka": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "yii\\mozayka\\": ""
+        }
+    }
+}
