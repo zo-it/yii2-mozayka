@@ -9,11 +9,11 @@ class ActiveController extends Controller
     public function actions()
     {
         return [
-            'create' => ['class' => CreateAction::className()],
-            'read' => ['class' => ReadAction::className()],
-            'update' => ['class' => UpdateAction::className()],
-            'delete' => ['class' => DeleteAction::className()],
-            'list' => ['class' => ListAction::className()]
+            'create' => CreateAction::className(),
+            'read' => ReadAction::className(),
+            'update' => UpdateAction::className(),
+            'delete' => DeleteAction::className(),
+            'list' => ListAction::className()
         ];
     }
 }
