@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\controllers;
 
-use yii\web\Controller;
+use yii\mozayka\web\Controller;
 
 
 class ExtJsController extends Controller
