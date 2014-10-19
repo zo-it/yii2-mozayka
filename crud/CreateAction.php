@@ -1,8 +1,8 @@
 <?php
 
-namespace yii\mozayka\web;
+namespace yii\mozayka\crud;
 
-use yii\base\Action;
+//use yii\base\Action;
 
 
 class CreateAction extends Action

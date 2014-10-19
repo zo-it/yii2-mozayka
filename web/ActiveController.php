@@ -9,11 +9,12 @@ class ActiveController extends Controller
     public function actions()
     {
         return [
-            'create' => CreateAction::className(),
-            'read' => ReadAction::className(),
-            'update' => UpdateAction::className(),
-            'delete' => DeleteAction::className(),
-            'list' => ListAction::className()
+            'list' => 'yii\mozayka\crud\ListAction',
+            'create' => 'yii\mozayka\crud\CreateAction',
+            'read' => 'yii\mozayka\crud\ReadAction',
+            'update' => 'yii\mozayka\crud\UpdateAction',
+            'updatePosition' => 'yii\mozayka\crud\UpdatePositionAction',
+            'delete' => 'yii\mozayka\crud\DeleteAction'
         ];
     }
 }
