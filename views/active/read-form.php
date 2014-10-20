@@ -1,3 +1,10 @@
 <?php
+/**
+ * @var string $formClass
+ * @var array $formConfig
+ * @var string $view
+ */
 
-echo __FILE__;
+$form = $formClass::begin($formConfig);
+
+$formClass::end();
