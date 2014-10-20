@@ -18,9 +18,10 @@ class UpdateFormAction extends Action
 
     public function run()
     {
+        $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $this->formConfig
+            'formConfig' => $formConfig
         ]);
     }
 }
