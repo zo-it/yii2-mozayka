@@ -2,11 +2,11 @@
 
 namespace yii\mozayka\crud;
 
-//use yii\base\Action;
-
 
 class CreateAction extends Action
 {
+
+    public $viewAction = 'updateForm';
 
     public $view = '@yii/mozayka/views/active/create';
 

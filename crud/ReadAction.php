@@ -2,8 +2,6 @@
 
 namespace yii\mozayka\crud;
 
-//use yii\base\Action;
-
 
 class ReadAction extends Action
 {
