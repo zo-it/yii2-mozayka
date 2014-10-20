@@ -16,8 +16,7 @@ class DeleteFormAction extends Action
     {
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $this->formConfig,
-            'view' => $this->view
+            'formConfig' => $this->formConfig
         ]);
     }
 }

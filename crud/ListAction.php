@@ -8,7 +8,7 @@ use Yii;
 class ListAction extends Action
 {
 
-    public $dataProviderClass = 'yii\data\ActiveDataProvider';
+    public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
     public $dataProviderConfig = [];
 
@@ -20,19 +20,18 @@ class ListAction extends Action
 
     public function run()
     {
-        $gridClass = $this->gridClass;
-        if (!array_key_exists('dataProvider', $gridClass)) {
+        $gridConfig = $this->gridConfig;
+        if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;
             if (!array_key_exists('query', $dataProviderConfig)) {
                 $modelClass = $this->modelClass;
                 $dataProviderConfig['query'] = $modelClass::find();
             }
-            $gridClass['dataProvider'] = Yii::createObject($this->dataProviderClass, $dataProviderConfig);
+            $gridConfig['dataProvider'] = Yii::createObject($this->dataProviderClass, $dataProviderConfig);
         }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridClass,
-            'view' => $this->view
+            'gridConfig' => $gridConfig
         ]);
     }
 }
