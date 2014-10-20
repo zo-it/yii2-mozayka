@@ -24,7 +24,8 @@ class ListAction extends Action
         if (!array_key_exists('dataProvider', $gridClass)) {
             $dataProviderConfig = $this->dataProviderConfig;
             if (!array_key_exists('query', $dataProviderConfig)) {
-                $dataProviderConfig['query'] = call_user_func([$this->modelClass, 'find']);
+                $modelClass = $this->modelClass;
+                $dataProviderConfig['query'] = $modelClass::find();
             }
             $gridClass['dataProvider'] = Yii::createObject($this->dataProviderClass, $dataProviderConfig);
         }
