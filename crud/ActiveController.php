@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\mozayka\web;
+namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController;
 
@@ -10,6 +10,12 @@ class ActiveController extends YiiActiveController
 
     public function init()
     {
+        if (!$this->modelClass) {
+            $modelClass = 'app\models\\' . substr(get_class($this), 0, -10);
+            if (class_exists($modelClass)) {
+                $this->modelClass = $modelClass;
+            }
+        }
         parent::init();
     }
 
