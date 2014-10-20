@@ -3,7 +3,7 @@
 namespace yii\mozayka\crud;
 
 
-class UpdateAction extends Action
+class UpdateFormAction extends Action
 {
 
     public $formClass = 'yii\mozayka\form\ActiveForm';

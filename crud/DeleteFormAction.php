@@ -3,14 +3,14 @@
 namespace yii\mozayka\crud;
 
 
-class ReadAction extends Action
+class DeleteFormAction extends Action
 {
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];
 
-    public $view = '@yii/mozayka/views/active/read-form';
+    public $view = '@yii/mozayka/views/active/delete-form';
 
     public function run()
     {
