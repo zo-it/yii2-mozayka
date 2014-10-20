@@ -8,7 +8,7 @@ class CreateAction extends Action
 
     public $viewAction = 'updateForm';
 
-    public $view = '@yii/mozayka/views/active/create';
+    public $view = '@yii/mozayka/views/active/create-form';
 
     public function run()
     {
