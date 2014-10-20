@@ -20,13 +20,17 @@ class ListAction extends Action
 
     public function run()
     {
+        $gridClass = $this->gridClass;
+        if (!array_key_exists('dataProvider', $gridClass)) {
+            $dataProviderConfig = $this->dataProviderConfig;
+            if (!array_key_exists('query', $dataProviderConfig)) {
+                $dataProviderConfig['query'] = call_user_func([$this->modelClass, 'find']);
+            }
+            $gridClass['dataProvider'] = Yii::createObject($this->dataProviderClass, $dataProviderConfig);
+        }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
-            'gridConfig' => [
-                'dataProvider' => Yii::createObject($this->dataProviderClass, [
-                    'query' => call_user_func([$this->modelClass, 'find'])
-                ] + $this->dataProviderConfig)
-            ] + $this->gridConfig,
+            'gridConfig' => $gridClass,
             'view' => $this->view
         ]);
     }
