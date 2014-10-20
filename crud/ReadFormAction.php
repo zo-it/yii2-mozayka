@@ -3,7 +3,7 @@
 namespace yii\mozayka\crud;
 
 
-class ReadAction extends Action
+class ReadFormAction extends Action
 {
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
@@ -14,10 +14,10 @@ class ReadAction extends Action
 
     public function run()
     {
+        $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $this->formConfig,
-            'view' => $this->view
+            'formConfig' => $formConfig
         ]);
     }
 }

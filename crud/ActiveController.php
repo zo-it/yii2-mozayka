@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\mozayka\web;
+namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController;
 
@@ -10,41 +10,47 @@ class ActiveController extends YiiActiveController
 
     public function init()
     {
+        if (!$this->modelClass) {
+            $modelClass = 'app\models\\' . substr(get_class($this), 0, -10);
+            if (class_exists($modelClass)) {
+                $this->modelClass = $modelClass;
+            }
+        }
         parent::init();
     }
 
     public function actions()
     {
         return parent::actions() + [
-            'list' => [
-                'class' => 'yii\mozayka\crud\ListAction',
-                'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess']
-            ],
             'createForm' => [
-                'class' => 'yii\mozayka\crud\CreateAction',
+                'class' => 'yii\mozayka\crud\CreateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->createScenario
             ],
             'readForm' => [
-                'class' => 'yii\mozayka\crud\ReadAction',
+                'class' => 'yii\mozayka\crud\ReadFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
             'updateForm' => [
-                'class' => 'yii\mozayka\crud\UpdateAction',
+                'class' => 'yii\mozayka\crud\UpdateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->updateScenario
             ],
-            'changePosition' => [
-                'class' => 'yii\mozayka\crud\ChangePositionAction',
+            'deleteForm' => [
+                'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
-            'deleteForm' => [
-                'class' => 'yii\mozayka\crud\DeleteAction',
+            'list' => [
+                'class' => 'yii\mozayka\crud\ListAction',
+                'modelClass' => $this->modelClass,
+                'checkAccess' => [$this, 'checkAccess']
+            ],
+            'changePosition' => [
+                'class' => 'yii\mozayka\crud\ChangePositionAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ]

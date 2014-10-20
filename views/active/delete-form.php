@@ -1,3 +1,9 @@
 <?php
+/**
+ * @var string $formClass
+ * @var array $formConfig
+ */
 
-echo __FILE__;
+$form = $formClass::begin($formConfig);
+
+$formClass::end();

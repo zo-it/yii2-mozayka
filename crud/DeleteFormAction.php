@@ -3,7 +3,7 @@
 namespace yii\mozayka\crud;
 
 
-class DeleteAction extends Action
+class DeleteFormAction extends Action
 {
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
@@ -14,10 +14,10 @@ class DeleteAction extends Action
 
     public function run()
     {
+        $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $this->formConfig,
-            'view' => $this->view
+            'formConfig' => $formConfig
         ]);
     }
 }

@@ -1,3 +1,7 @@
 <?php
+/**
+ * @var string $gridClass
+ * @var array $gridConfig
+ */
 
-echo __FILE__;
+echo $gridClass::widgets($gridConfig);
