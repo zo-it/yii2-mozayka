@@ -57,4 +57,13 @@ class ActiveController extends YiiActiveController
             ]
         ];
     }
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        if (array_key_exists('contentNegotiator', $behaviors)) {
+            $behaviors['contentNegotiator']['except'] = ['createForm', 'readForm', 'updateForm', 'deleteForm', 'list', 'changePosition'];
+        }
+        return $behaviors;
+    }
 }
