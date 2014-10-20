@@ -15,7 +15,7 @@ class ActiveController extends YiiActiveController
 
     public function actions()
     {
-        return parent::actions() + [
+        return [
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
                 'modelClass' => $this->modelClass,
@@ -48,6 +48,6 @@ class ActiveController extends YiiActiveController
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ]
-        ];
+        ] + parent::actions();
     }
 }
