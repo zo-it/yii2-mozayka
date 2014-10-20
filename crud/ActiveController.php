@@ -38,8 +38,8 @@ class ActiveController extends YiiActiveController
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->updateScenario
             ],
-            'updatePosition' => [
-                'class' => 'yii\mozayka\crud\UpdatePositionAction',
+            'changePosition' => [
+                'class' => 'yii\mozayka\crud\ChangePositionAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],

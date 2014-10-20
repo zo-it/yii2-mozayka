@@ -3,7 +3,7 @@
 namespace yii\mozayka\crud;
 
 
-class UpdatePositionAction extends Action
+class ChangePositionAction extends Action
 {
 
     public function run()
