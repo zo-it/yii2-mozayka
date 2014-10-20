@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\mozayka\crud;
+namespace yii\mozayka\grid;
 
 use yii\grid\GridView as YiiGridView;
 

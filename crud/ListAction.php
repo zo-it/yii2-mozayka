@@ -2,8 +2,6 @@
 
 namespace yii\mozayka\crud;
 
-use Yii;
-
 
 class ListAction extends Action
 {
@@ -27,7 +25,8 @@ class ListAction extends Action
                 $modelClass = $this->modelClass;
                 $dataProviderConfig['query'] = $modelClass::find();
             }
-            $gridConfig['dataProvider'] = Yii::createObject($this->dataProviderClass, $dataProviderConfig);
+            $dataProviderClass = $this->dataProviderClass;
+            $gridConfig['dataProvider'] = new $dataProviderClass($dataProviderConfig);
         }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
