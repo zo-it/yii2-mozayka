@@ -61,8 +61,8 @@ class ActiveController extends YiiActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        if (array_key_exists('contentNegotiator', $behaviors)) {
-            $behaviors['contentNegotiator']['except'] = ['createForm', 'readForm', 'updateForm', 'deleteForm', 'list', 'changePosition'];
+        if (array_key_exists('contentNegotiator', $behaviors) && ($this->action instanceof Action)) { // yii\mozayka\crud\Action
+            unset($behaviors['contentNegotiator']);
         }
         return $behaviors;
     }
