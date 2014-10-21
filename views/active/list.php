@@ -4,4 +4,4 @@
  * @var array $gridConfig
  */
 
-echo $gridClass::widgets($gridConfig);
+echo $gridClass::widget($gridConfig);

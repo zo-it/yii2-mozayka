@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\crud;
 
-use yii\rest\ActiveController as YiiActiveController;
+use yii\rest\ActiveController as YiiActiveController,
+    yii\helpers\StringHelper;
 
 
 class ActiveController extends YiiActiveController
@@ -11,7 +12,7 @@ class ActiveController extends YiiActiveController
     public function init()
     {
         if (!$this->modelClass) {
-            $modelClass = 'app\models\\' . substr(get_class($this), 0, -10);
+            $modelClass = 'app\models\\' . StringHelper::basename(get_class($this), 'Controller');
             if (class_exists($modelClass)) {
                 $this->modelClass = $modelClass;
             }
@@ -55,5 +56,14 @@ class ActiveController extends YiiActiveController
                 'checkAccess' => [$this, 'checkAccess']
             ]
         ];
+    }
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        if (array_key_exists('contentNegotiator', $behaviors)) {
+            $behaviors['contentNegotiator']['except'] = ['createForm', 'readForm', 'updateForm', 'deleteForm', 'list', 'changePosition'];
+        }
+        return $behaviors;
     }
 }
