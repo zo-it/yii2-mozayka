@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\controllers;
 
-use yii\mozayka\web\Controller;
+use yii\web\Controller;
 
 
 class DefaultController extends Controller
