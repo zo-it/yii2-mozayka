@@ -2,7 +2,8 @@
 /**
  * @var string $formClass
  * @var array $formConfig
- * @var yii\base\Model $model
+ * @var yii\db\ActiveRecord $model
+ * @var array $fields
  */
 
 $form = $formClass::begin($formConfig);

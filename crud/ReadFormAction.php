@@ -22,7 +22,8 @@ class ReadFormAction extends Action
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
-            'model' => $model
+            'model' => $model,
+            'fields' => $this->buildFields($model)
         ]);
     }
 }
