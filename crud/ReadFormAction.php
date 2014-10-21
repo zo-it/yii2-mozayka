@@ -12,8 +12,12 @@ class ReadFormAction extends Action
 
     public $view = '@yii/mozayka/views/active/read-form';
 
-    public function run()
+    public function run($id)
     {
+        $model = $this->findModel($id);
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id, $model);
+        }
         $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,

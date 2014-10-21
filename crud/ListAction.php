@@ -18,6 +18,9 @@ class ListAction extends Action
 
     public function run()
     {
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id);
+        }
         $gridConfig = $this->gridConfig;
         if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;

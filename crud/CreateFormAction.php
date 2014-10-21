@@ -20,6 +20,9 @@ class CreateFormAction extends Action
 
     public function run()
     {
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id);
+        }
         $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
