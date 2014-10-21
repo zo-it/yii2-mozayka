@@ -14,6 +14,7 @@ class Action extends YiiAction
     protected function prepareFields(ActiveRecord $model)
     {
         $labels = $model->attributeLabels();
+        $tableSchema = $model->getTableSchema();
         $rawFields = $this->fields;
         if (!$rawFields && method_exists($model, 'attributeFields')) {
             $rawFields = $model->attributeFields();
@@ -25,7 +26,6 @@ class Action extends YiiAction
                 $rawFields = $model->attributes();
             }
         }
-        $tableSchema = $model->getTableSchema();
         $fields = [];
         foreach ($rawFields as $key => $value) {
             $attribute = null;

@@ -9,7 +9,7 @@
 $form = $formClass::begin($formConfig);
 
 foreach ($fields as $attribute => $options) {
-    $form->field($model, $attribute, $options);
+    echo $form->field($model, $attribute, $options);
 }
 
 $formClass::end();
