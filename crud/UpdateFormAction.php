@@ -22,10 +22,12 @@ class UpdateFormAction extends Action
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
         }
+        $model->setScenario($this->scenario);
         $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $formConfig
+            'formConfig' => $formConfig,
+            'model' => $model
         ]);
     }
 }

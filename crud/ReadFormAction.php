@@ -21,7 +21,8 @@ class ReadFormAction extends Action
         $formConfig = $this->formConfig;
         return $this->controller->render($this->view, [
             'formClass' => $this->formClass,
-            'formConfig' => $formConfig
+            'formConfig' => $formConfig,
+            'model' => $model
         ]);
     }
 }

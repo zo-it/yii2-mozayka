@@ -28,8 +28,7 @@ class ListAction extends Action
                 $modelClass = $this->modelClass;
                 $dataProviderConfig['query'] = $modelClass::find();
             }
-            $dataProviderClass = $this->dataProviderClass;
-            $gridConfig['dataProvider'] = new $dataProviderClass($dataProviderConfig);
+            $gridConfig['dataProvider'] = new $this->dataProviderClass($dataProviderConfig);
         }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
