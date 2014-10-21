@@ -11,74 +11,74 @@ class Action extends YiiAction
 
     public $fields = [];
 
-    protected function buildFields(ActiveRecord $model)
+    protected function prepareFields(ActiveRecord $model)
     {
         $labels = $model->attributeLabels();
-        $fields = $this->fields;
-        if (!$fields && method_exists($model, 'attributeFields')) {
-            $fields = $model->attributeFields();
+        $rawFields = $this->fields;
+        if (!$rawFields && method_exists($model, 'attributeFields')) {
+            $rawFields = $model->attributeFields();
         }
-        if (!$fields) {
+        if (!$rawFields) {
             if ($labels) {
-                $fields = array_keys($labels);
+                $rawFields = array_keys($labels);
             } else {
-                $fields = $model->attributes();
+                $rawFields = $model->attributes();
             }
         }
         $tableSchema = $model->getTableSchema();
-        $fields2 = [];
-        foreach ($fields as $key => $value) {
-            $fieldName = null;
-            $fieldConfig = [];
+        $fields = [];
+        foreach ($rawFields as $key => $value) {
+            $attribute = null;
+            $options = [];
             if (is_int($key)) {
                 if (is_string($value) && $model->hasAttribute($value)) {
-                    $fieldName = $value;
+                    $attribute = $value;
                 } elseif (is_array($value)) {
                     if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
-                        $fieldName = $value[0];
-                        $fieldConfig = $value;
-                        unset($fieldConfig[0]);
+                        $attribute = $value[0];
+                        $options = $value;
+                        unset($options[0]);
                     } elseif (array_key_exists('name', $value) && $model->hasAttribute($value['name'])) {
-                        $fieldName = $value['name'];
-                        $fieldConfig = $value;
-                        unset($fieldConfig['name']);
+                        $attribute = $value['name'];
+                        $options = $value;
+                        unset($options['name']);
                     }
                 }
             } elseif (is_string($key) && $model->hasAttribute($key)) {
-                $fieldName = $key;
+                $attribute = $key;
                 if (is_string($value)) {
                     if (class_exists($value)) {
-                        $fieldConfig['class'] = $value;
+                        $options['class'] = $value;
                     } else {
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($value) . 'Field';
                         if (class_exists($fieldClass)) {
-                            $fieldConfig['class'] = $fieldClass;
+                            $options['class'] = $fieldClass;
                         }
                     }
                 } elseif (is_array($value)) {
-                    $fieldConfig = $value;
+                    $options = $value;
                 }
             }
-            if (array_key_exists('type', $fieldConfig)) {
-                $fieldClass = 'yii\mozayka\form\\' . ucfirst($fieldConfig['type']) . 'Field';
+            if (array_key_exists('type', $options)) {
+                $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
                 if (class_exists($fieldClass)) {
-                    $fieldConfig['class'] = $fieldClass;
+                    $options['class'] = $fieldClass;
                 }
-                unset($fieldConfig['type']);
+                unset($options['type']);
             }
-            if (!array_key_exists('class', $fieldConfig)) {
-                $columnSchema = $tableSchema->getColumn($fieldName);
+            if (!array_key_exists('class', $options)) {
+                $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
                     if (class_exists($fieldClass)) {
-                        $fieldConfig['class'] = $fieldClass;
+                        $options['class'] = $fieldClass;
                     }
                 }
             }
-            if ($fieldName) {
-                $fields2[$fieldName] = $fieldConfig;
+            if ($attribute) {
+                $fields[$attribute] = $options;
             }
         }
-        return $fields2;
+        return $fields;
     }
 }

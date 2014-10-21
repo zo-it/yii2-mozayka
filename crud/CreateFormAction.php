@@ -29,7 +29,7 @@ class CreateFormAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'model' => $model,
-            'fields' => $this->buildFields($model)
+            'fields' => $this->prepareFields($model)
         ]);
     }
 }

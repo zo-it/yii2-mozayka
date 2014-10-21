@@ -8,4 +8,9 @@
 
 $form = $formClass::begin($formConfig);
 
+foreach ($fields as $attribute => $options) {
+    $options['readonly'] = true;
+    $form->field($model, $attribute, $options);
+}
+
 $formClass::end();
