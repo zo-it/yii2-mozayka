@@ -60,9 +60,11 @@ class Action extends YiiAction
                 }
             }
             if (array_key_exists('type', $options)) {
-                $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
-                if (class_exists($fieldClass)) {
-                    $options['class'] = $fieldClass;
+                if (!array_key_exists('class', $options)) {
+                    $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                    if (class_exists($fieldClass)) {
+                        $options['class'] = $fieldClass;
+                    }
                 }
                 unset($options['type']);
             }
