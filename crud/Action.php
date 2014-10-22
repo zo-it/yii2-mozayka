@@ -69,7 +69,13 @@ class Action extends YiiAction
             if (!array_key_exists('class', $options)) {
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
-                    $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                    if ($columnSchema->isPrimaryKey) {
+                        $fieldClass = 'yii\mozayka\form\\PrimaryKeyField';
+                    } elseif (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
+                        $fieldClass = 'yii\mozayka\form\\BooleanField';
+                    } else {
+                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                    }
                     if (class_exists($fieldClass)) {
                         $options['class'] = $fieldClass;
                     }
