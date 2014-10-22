@@ -70,12 +70,10 @@ class Action extends YiiAction
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     if ($columnSchema->isPrimaryKey) {
-                        if ($model->getIsNewRecord()) {
-                            if ($columnSchema->autoIncrement) {
-                                continue;
-                            }
-                        } else {
+                        if (!$model->getIsNewRecord()) {
                             $options['readOnly'] = true;
+                        } elseif ($columnSchema->autoIncrement) {
+                            continue;
                         }
                     }
                     if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
