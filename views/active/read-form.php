@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 /**
  * @var string $formClass
  * @var array $formConfig
@@ -9,8 +10,10 @@
 $form = $formClass::begin($formConfig);
 
 foreach ($fields as $attribute => $options) {
-    $options['readonly'] = true;
+    $options['readOnly'] = true;
     echo $form->field($model, $attribute, $options);
 }
+
+echo Html::button('Back', ['class' => 'btn']);
 
 $formClass::end();

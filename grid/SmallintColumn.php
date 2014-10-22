@@ -3,7 +3,7 @@
 namespace yii\mozayka\grid;
 
 
-class SmallintColumn extends DataColumn
+class SmallintColumn extends IntegerColumn
 {
 
 }

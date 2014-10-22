@@ -70,8 +70,9 @@ class Action extends YiiAction
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     if ($columnSchema->isPrimaryKey) {
-                        $fieldClass = 'yii\mozayka\form\\PrimaryKeyField';
-                    } elseif (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
+                        $options['readOnly'] = true;
+                    }
+                    if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
                         $fieldClass = 'yii\mozayka\form\\BooleanField';
                     } else {
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
