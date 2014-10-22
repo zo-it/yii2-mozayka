@@ -1,5 +1,7 @@
 <?php
+use yii\helpers\Html;
 /**
+ * @var yii\web\View $this
  * @var string $formClass
  * @var array $formConfig
  * @var yii\db\ActiveRecord $model
@@ -11,5 +13,9 @@ $form = $formClass::begin($formConfig);
 foreach ($fields as $attribute => $options) {
     echo $form->field($model, $attribute, $options);
 }
+
+echo Html::submitButton('Save', ['class' => 'btn btn-primary']);
+
+echo Html::a('Back', [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
 
 $formClass::end();

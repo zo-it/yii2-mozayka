@@ -3,7 +3,7 @@
 namespace yii\mozayka\form;
 
 
-class BigintField extends ActiveField
+class BigintField extends IntegerField
 {
 
 }
