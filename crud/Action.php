@@ -3,7 +3,8 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
-    yii\db\ActiveRecord;
+    yii\db\ActiveRecord,
+    yii\helpers\ArrayHelper;
 
 
 class Action extends YiiAction
@@ -90,7 +91,7 @@ class Action extends YiiAction
                     }
                 }
                 if (array_key_exists($attribute, $fields)) {
-                    $fields[$attribute] = array_merge($fields[$attribute], $options);
+                    $fields[$attribute] = ArrayHelper::merge($fields[$attribute], $options);
                 } else {
                     $fields[$attribute] = $options;
                 }
