@@ -77,17 +77,21 @@ class Action extends YiiAction
                         }
                     }
                     if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
-                        $fieldClass = 'yii\mozayka\form\\BooleanField';
+                        $options['class'] = 'yii\mozayka\form\BooleanField';
                     } else {
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                    }
-                    if (class_exists($fieldClass)) {
-                        $options['class'] = $fieldClass;
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
+                        }
                     }
                 }
             }
             if ($attribute) {
-                $fields[$attribute] = $options;
+                if (array_key_exists($attribute, $fields)) {
+                    $fields[$attribute] = array_merge($fields[$attribute], $options);
+                } else {
+                    $fields[$attribute] = $options;
+                }
             }
         }
         return $fields;
