@@ -10,7 +10,6 @@ use yii\helpers\Html;
 $form = $formClass::begin($formConfig);
 
 foreach ($fields as $attribute => $options) {
-    $options['readOnly'] = true;
     echo $form->field($model, $attribute, $options);
 }
 
