@@ -66,27 +66,27 @@ class Action extends YiiAction
                 }
                 unset($options['type']);
             }
-            if (!array_key_exists('class', $options)) {
-                $columnSchema = $tableSchema->getColumn($attribute);
-                if ($columnSchema) {
-                    if ($columnSchema->isPrimaryKey) {
-                        if (!$model->getIsNewRecord()) {
-                            $options['readOnly'] = true;
-                        } elseif ($columnSchema->autoIncrement) {
-                            continue;
+            if ($attribute) {
+                if (!array_key_exists('class', $options)) {
+                    $columnSchema = $tableSchema->getColumn($attribute);
+                    if ($columnSchema) {
+                        if ($columnSchema->isPrimaryKey) {
+                            if (!$model->getIsNewRecord()) {
+                                $options['readOnly'] = true;
+                            } elseif ($columnSchema->autoIncrement) {
+                                continue;
+                            }
                         }
-                    }
-                    if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
-                        $options['class'] = 'yii\mozayka\form\BooleanField';
-                    } else {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
+                        if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['class'] = 'yii\mozayka\form\BooleanField';
+                        } else {
+                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                            if (class_exists($fieldClass)) {
+                                $options['class'] = $fieldClass;
+                            }
                         }
                     }
                 }
-            }
-            if ($attribute) {
                 if (array_key_exists($attribute, $fields)) {
                     $fields[$attribute] = array_merge($fields[$attribute], $options);
                 } else {
