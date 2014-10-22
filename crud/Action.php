@@ -70,7 +70,13 @@ class Action extends YiiAction
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     if ($columnSchema->isPrimaryKey) {
-                        $options['readOnly'] = true;
+                        if ($model->getIsNewRecord()) {
+                            if ($columnSchema->autoIncrement) {
+                                continue;
+                            }
+                        } else {
+                            $options['readOnly'] = true;
+                        }
                     }
                     if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
                         $fieldClass = 'yii\mozayka\form\\BooleanField';
