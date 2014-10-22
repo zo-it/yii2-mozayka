@@ -12,11 +12,11 @@ class ActiveForm extends YiiActiveForm
 
     public $readOnly = false;
 
-    public function field($model, $attribute, $options = [])
+    public function init()
     {
         if ($this->readOnly) {
-            $options['readOnly'] = true;
+            $this->fieldConfig['readOnly'] = true;
         }
-        return parent::field($model, $attribute, $options);
+        parent::init();
     }
 }
