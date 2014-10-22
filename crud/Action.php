@@ -49,11 +49,8 @@ class Action extends YiiAction
                 if (is_string($value)) {
                     if (class_exists($value)) {
                         $options['class'] = $value;
-                    } else {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($value) . 'Field';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
-                        }
+                    } elseif (class_exists('yii\mozayka\form\\' . ucfirst($value) . 'Field')) {
+                        $options['type'] = $value;
                     }
                 } elseif (is_array($value)) {
                     $options = $value;
