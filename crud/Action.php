@@ -3,9 +3,9 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
-    yii\base\Model,
     yii\db\ActiveRecord,
-    yii\helpers\ArrayHelper;
+    yii\helpers\ArrayHelper,
+    yii\behaviors\TimestampBehavior as YiiTimestampBehavior;
 
 
 class Action extends YiiAction
@@ -15,12 +15,8 @@ class Action extends YiiAction
 
     public $fields = [];
 
-    protected function prepareColumns(Model $model)
+    protected function prepareColumns(ActiveRecord $model)
     {
-        $tableSchema = null;
-        if ($model instanceof ActiveRecord) {
-            $tableSchema = $model->getTableSchema();
-        }
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
@@ -35,6 +31,7 @@ class Action extends YiiAction
         } elseif (!$rawColumns) {
             $rawColumns = $attributes;
         }
+        $tableSchema = $model->getTableSchema();
         $columns = [];
         foreach ($rawColumns as $key => $value) {
             $attribute = null;
@@ -113,12 +110,8 @@ class Action extends YiiAction
         }));
     }
 
-    protected function prepareFields(Model $model)
+    protected function prepareFields(ActiveRecord $model)
     {
-        $tableSchema = null;
-        if ($model instanceof ActiveRecord) {
-            $tableSchema = $model->getTableSchema();
-        }
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
@@ -133,6 +126,7 @@ class Action extends YiiAction
         } elseif (!$rawFields) {
             $rawFields = $attributes;
         }
+        $tableSchema = $model->getTableSchema();
         $fields = [];
         foreach ($rawFields as $key => $value) {
             $attribute = null;
@@ -206,6 +200,16 @@ class Action extends YiiAction
                     $fields[$attribute] = ArrayHelper::merge($fields[$attribute], $options);
                 } else {
                     $fields[$attribute] = $options;
+                }
+            }
+        }
+        foreach ($model->getBehaviors() as $behavior) {
+            if ($behavior instanceof YiiTimestampBehavior) {
+                if (array_key_exists($behavior->createdAtAttribute, $fields)) {
+                    $fields[$behavior->createdAtAttribute]['readOnly'] = true;
+                }
+                if (array_key_exists($behavior->updatedAtAttribute, $fields)) {
+                    $fields[$behavior->updatedAtAttribute]['readOnly'] = true;
                 }
             }
         }
