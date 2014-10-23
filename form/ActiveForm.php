@@ -9,4 +9,14 @@ class ActiveForm extends YiiActiveForm
 {
 
     public $fieldClass = 'yii\mozayka\form\ActiveField';
+
+    public $readOnly = false;
+
+    public function init()
+    {
+        if ($this->readOnly) {
+            $this->fieldConfig['readOnly'] = true;
+        }
+        parent::init();
+    }
 }

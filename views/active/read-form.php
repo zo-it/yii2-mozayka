@@ -1,5 +1,7 @@
 <?php
+use yii\helpers\Html;
 /**
+ * @var yii\web\View $this
  * @var string $formClass
  * @var array $formConfig
  * @var yii\db\ActiveRecord $model
@@ -9,8 +11,9 @@
 $form = $formClass::begin($formConfig);
 
 foreach ($fields as $attribute => $options) {
-    $options['readonly'] = true;
-    $form->field($model, $attribute, $options);
+    echo $form->field($model, $attribute, $options);
 }
+
+echo Html::a(Yii::t('mozayka', 'Back'), [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
 
 $formClass::end();

@@ -13,7 +13,11 @@ class Module extends YiiModule implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof YiiWebApplication) {
-            //$app->getUrlManager()->addRules([], false);
+            $app->getI18n()->translations['mozayka'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => 'en-US',
+                'basePath' => '@yii/mozayka/messages'
+            ];
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
+use yii\helpers\Html;
 /**
+ * @var yii\web\View $this
  * @var string $formClass
  * @var array $formConfig
  * @var yii\db\ActiveRecord $model
@@ -9,7 +11,11 @@
 $form = $formClass::begin($formConfig);
 
 foreach ($fields as $attribute => $options) {
-    $form->field($model, $attribute, $options);
+    echo $form->field($model, $attribute, $options);
 }
+
+echo Html::submitButton(Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
+
+echo Html::a(Yii::t('mozayka', 'Back'), [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
 
 $formClass::end();

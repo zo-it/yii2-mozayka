@@ -8,7 +8,7 @@ class DeleteFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [];
+    public $formConfig = ['readOnly' => true];
 
     public $view = '@yii/mozayka/views/active/delete-form';
 
