@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\crud;
 
-use yii\web\Response,
+use yii\base\Model,
+    yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\web\ServerErrorHttpException,
     Yii;
@@ -10,6 +11,8 @@ use yii\web\Response,
 
 class DeleteFormAction extends Action
 {
+
+    public $scenario = Model::SCENARIO_DEFAULT;
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
@@ -21,6 +24,7 @@ class DeleteFormAction extends Action
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
+        $model->setScenario($this->scenario);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
         }

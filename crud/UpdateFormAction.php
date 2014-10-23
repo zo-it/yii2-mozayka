@@ -24,10 +24,10 @@ class UpdateFormAction extends Action
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
+        $model->setScenario($this->scenario);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
         }
-$model->setScenario($this->scenario);
 $request = Yii::$app->getRequest();
 if ($request->getIsPost()) {
     $model->load($request->getBodyParams());

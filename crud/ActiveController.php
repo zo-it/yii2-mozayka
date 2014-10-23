@@ -3,11 +3,14 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
+    yii\base\Model,
     yii\helpers\StringHelper;
 
 
 class ActiveController extends YiiActiveController
 {
+
+    public $deleteScenario = Model::SCENARIO_DEFAULT;
 
     public function init()
     {
@@ -43,7 +46,8 @@ class ActiveController extends YiiActiveController
             'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'checkAccess' => [$this, 'checkAccess'],
+                'scenario' => $this->deleteScenario
             ],
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
