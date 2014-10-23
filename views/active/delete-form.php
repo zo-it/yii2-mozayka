@@ -16,6 +16,6 @@ foreach ($fields as $attribute => $options) {
 
 echo Html::submitButton(Yii::t('mozayka', 'Delete'), ['class' => 'btn btn-danger']);
 
-echo Html::a(Yii::t('mozayka', 'Back'), [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
+echo Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn']);
 
 $formClass::end();

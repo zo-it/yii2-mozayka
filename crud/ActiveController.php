@@ -23,24 +23,24 @@ class ActiveController extends YiiActiveController
     public function actions()
     {
         return parent::actions() + [
-            'createForm' => [
+            'create-form' => [
                 'class' => 'yii\mozayka\crud\CreateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->createScenario
             ],
-            'readForm' => [
+            'read-form' => [
                 'class' => 'yii\mozayka\crud\ReadFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
-            'updateForm' => [
+            'update-form' => [
                 'class' => 'yii\mozayka\crud\UpdateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->updateScenario
             ],
-            'deleteForm' => [
+            'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
@@ -50,7 +50,7 @@ class ActiveController extends YiiActiveController
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
-            'changePosition' => [
+            'change-position' => [
                 'class' => 'yii\mozayka\crud\ChangePositionAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']

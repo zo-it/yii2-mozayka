@@ -14,6 +14,6 @@ foreach ($fields as $attribute => $options) {
     echo $form->field($model, $attribute, $options);
 }
 
-echo Html::a(Yii::t('mozayka', 'Back'), [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
+echo Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn']);
 
 $formClass::end();

@@ -11,9 +11,9 @@ class ActionColumn extends YiiActionColumn
     public function createUrl($action, $model, $key, $index)
     {
         switch ($action) {
-            case 'view': $action = 'readForm'; break;
-            case 'update': $action = 'updateForm'; break;
-            case 'delete': $action = 'deleteForm'; break;
+            case 'view': $action = 'read-form'; break;
+            case 'update': $action = 'update-form'; break;
+            case 'delete': $action = 'delete-form'; break;
         }
         return parent::createUrl($action, $model, $key, $index);
     }
