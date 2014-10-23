@@ -42,10 +42,10 @@ class Action extends YiiAction
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('name', $value) && in_array($value['name'], $attributes)) {
-                        $attribute = $value['name'];
+                    } elseif (array_key_exists('attribute', $value) && in_array($value['attribute'], $attributes)) {
+                        $attribute = $value['attribute'];
                         $options = $value;
-                        unset($options['name']);
+                        unset($options['attribute']);
                     }
                 }
             } elseif (is_string($key) && in_array($key, $attributes)) {
