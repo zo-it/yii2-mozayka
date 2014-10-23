@@ -25,15 +25,18 @@ class Action extends YiiAction
         if (!$attributes) {
             $attributes = $model->attributes();
         }
-        $rawFields = $this->columns;
-        if (!$rawFields && method_exists($model, 'attributeColumns')) {
-            $rawFields = $model->attributeColumns();
+        $rawColumns = $this->columns;
+        if (!$rawColumns && method_exists($model, 'attributeColumns')) {
+            $rawColumns = $model->attributeColumns();
         }
-        if (!$rawFields) {
-            $rawFields = $attributes;
+        $offset = array_search('*', $rawColumns);
+        if ($offset !== false) {
+            array_splice($rawColumns, $offset, 1, $attributes);
+        } elseif (!$rawColumns) {
+            $rawColumns = $attributes;
         }
         $columns = [];
-        foreach ($rawFields as $key => $value) {
+        foreach ($rawColumns as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
@@ -54,7 +57,7 @@ class Action extends YiiAction
                 $attribute = $key;
                 if (is_string($value)) {
                     if ($value == 'skip') {
-                        continue;
+                        $options['visible'] = false;
                     } elseif (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
@@ -69,19 +72,19 @@ class Action extends YiiAction
                     $options = $value;
                 }
             }
-            if (array_key_exists('type', $options)) {
-                if ($options['type'] == 'skip') {
-                    continue;
-                } elseif (!array_key_exists('class', $options)) {
-                    $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
-                    if (class_exists($fieldClass)) {
-                        $options['class'] = $fieldClass;
-                    }
-                }
-                unset($options['type']);
-            }
             if ($attribute) {
                 $options['attribute'] = $attribute;
+                if (array_key_exists('type', $options)) {
+                    if ($options['type'] == 'skip') {
+                        $options['visible'] = false;
+                    } elseif (!array_key_exists('class', $options)) {
+                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
+                        }
+                    }
+                    unset($options['type']);
+                }
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
@@ -89,7 +92,7 @@ class Action extends YiiAction
                             if (!$model->getIsNewRecord()) {
                                 $options['readOnly'] = true;
                             } elseif ($columnSchema->autoIncrement) {
-                                //continue;
+                                //$options['visible'] = false;
                             }
                         }
                         if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
@@ -109,7 +112,9 @@ class Action extends YiiAction
                 }
             }
         }
-        return array_values($columns);
+        return array_values(array_filter($columns, function ($options) {
+            return !array_key_exists('visible', $options) || $options['visible'];
+        }));
     }
 
     protected function prepareFields(Model $model)
@@ -126,7 +131,10 @@ class Action extends YiiAction
         if (!$rawFields && method_exists($model, 'attributeFields')) {
             $rawFields = $model->attributeFields();
         }
-        if (!$rawFields) {
+        $offset = array_search('*', $rawFields);
+        if ($offset !== false) {
+            array_splice($rawFields, $offset, 1, $attributes);
+        } elseif (!$rawFields) {
             $rawFields = $attributes;
         }
         $fields = [];
@@ -151,7 +159,7 @@ class Action extends YiiAction
                 $attribute = $key;
                 if (is_string($value)) {
                     if ($value == 'skip') {
-                        continue;
+                        $options['visible'] = false;
                     } elseif (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
@@ -166,19 +174,18 @@ class Action extends YiiAction
                     $options = $value;
                 }
             }
-            if (array_key_exists('type', $options)) {
-                if ($options['type'] == 'skip') {
-                    continue;
-                } elseif (!array_key_exists('class', $options)) {
-                    $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
-                    if (class_exists($fieldClass)) {
-                        $options['class'] = $fieldClass;
-                    }
-                }
-                unset($options['type']);
-            }
             if ($attribute) {
-                //$options['attribute'] = $attribute;
+                if (array_key_exists('type', $options)) {
+                    if ($options['type'] == 'skip') {
+                        $options['visible'] = false;
+                    } elseif (!array_key_exists('class', $options)) {
+                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
+                        }
+                    }
+                    unset($options['type']);
+                }
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
@@ -186,7 +193,7 @@ class Action extends YiiAction
                             if (!$model->getIsNewRecord()) {
                                 $options['readOnly'] = true;
                             } elseif ($columnSchema->autoIncrement) {
-                                continue;
+                                $options['visible'] = false;
                             }
                         }
                         if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
@@ -206,6 +213,8 @@ class Action extends YiiAction
                 }
             }
         }
-        return $fields;
+        return array_filter($fields, function ($options) {
+            return !array_key_exists('visible', $options) || $options['visible'];
+        });
     }
 }
