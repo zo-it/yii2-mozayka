@@ -85,9 +85,9 @@ class Action extends YiiAction
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
-                        if ($columnSchema->isPrimaryKey) {
+                        /*if ($columnSchema->isPrimaryKey) {
                             $options['readOnly'] = true;
-                        }
+                        }*/
                         if (($columnSchema->type == 'smallint') && ($columnSchema->size == 1) && $columnSchema->unsigned) {
                             $options['class'] = 'yii\mozayka\grid\BooleanColumn';
                         } else {
