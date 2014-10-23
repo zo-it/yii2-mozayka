@@ -53,13 +53,16 @@ class Action extends YiiAction
             } elseif (is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if (is_string($value)) {
-                    if (class_exists($value)) {
+                    if ($value == 'skip') {
+                        continue;
+                    } elseif (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
-                        //$options['type'] = $value;
                         $fieldClass = 'yii\mozayka\grid\\' . ucfirst($value) . 'Column';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
+                        } else {
+                            $options['type'] = $value;
                         }
                     }
                 } elseif (is_array($value)) {
@@ -145,13 +148,16 @@ class Action extends YiiAction
             } elseif (is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if (is_string($value)) {
-                    if (class_exists($value)) {
+                    if ($value == 'skip') {
+                        continue;
+                    } elseif (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
-                        //$options['type'] = $value;
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($value) . 'Field';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
+                        } else {
+                            $options['type'] = $value;
                         }
                     }
                 } elseif (is_array($value)) {
