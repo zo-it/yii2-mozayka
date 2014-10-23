@@ -10,6 +10,14 @@ class ActiveForm extends YiiActiveForm
 
     public $fieldClass = 'yii\mozayka\form\ActiveField';
 
+    public $enableClientValidation = false;
+
+    public $enableAjaxValidation = true;
+
+    public $validateOnChange = false;
+
+    public $validateOnBlur = false;
+
     public $readOnly = false;
 
     public function init()

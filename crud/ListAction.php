@@ -21,6 +21,7 @@ class ListAction extends Action
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id);
         }
+        // config
         $gridConfig = $this->gridConfig;
         if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;
@@ -37,6 +38,7 @@ class ListAction extends Action
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
+        // render
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig
