@@ -30,6 +30,10 @@ class ListAction extends Action
             }
             $gridConfig['dataProvider'] = new $this->dataProviderClass($dataProviderConfig);
         }
+        if (!array_key_exists('columns', $gridConfig)) {
+            $gridConfig['columns'] = $this->prepareColumns(new $this->modelClass);
+            $gridConfig['columns'][] = ['class' => 'yii\grid\ActionColumn'];
+        }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig
