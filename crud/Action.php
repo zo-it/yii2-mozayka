@@ -56,6 +56,7 @@ class Action extends YiiAction
                     if (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
+                        //$options['type'] = $value;
                         $fieldClass = 'yii\mozayka\grid\\' . ucfirst($value) . 'Column';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
@@ -147,6 +148,7 @@ class Action extends YiiAction
                     if (class_exists($value)) {
                         $options['class'] = $value;
                     } else {
+                        //$options['type'] = $value;
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($value) . 'Field';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
