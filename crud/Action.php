@@ -70,7 +70,9 @@ class Action extends YiiAction
                 }
             }
             if (array_key_exists('type', $options)) {
-                if (!array_key_exists('class', $options)) {
+                if ($options['type'] == 'skip') {
+                    continue;
+                } elseif (!array_key_exists('class', $options)) {
                     $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
                     if (class_exists($fieldClass)) {
                         $options['class'] = $fieldClass;
@@ -165,7 +167,9 @@ class Action extends YiiAction
                 }
             }
             if (array_key_exists('type', $options)) {
-                if (!array_key_exists('class', $options)) {
+                if ($options['type'] == 'skip') {
+                    continue;
+                } elseif (!array_key_exists('class', $options)) {
                     $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
                     if (class_exists($fieldClass)) {
                         $options['class'] = $fieldClass;
