@@ -3,6 +3,7 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
+    yii\base\Model,
     yii\db\ActiveRecord,
     yii\helpers\ArrayHelper;
 
@@ -12,40 +13,42 @@ class Action extends YiiAction
 
     public $fields = [];
 
-    protected function prepareFields(ActiveRecord $model)
+    protected function prepareFields(Model $model)
     {
-        $labels = $model->attributeLabels();
-        $tableSchema = $model->getTableSchema();
+        $tableSchema = null;
+        if ($model instanceof ActiveRecord) {
+            $tableSchema = $model->getTableSchema();
+        }
+        $attributes = array_keys($model->attributeLabels());
+        if (!$attributes) {
+            $attributes = $model->attributes();
+        }
         $rawFields = $this->fields;
         if (!$rawFields && method_exists($model, 'attributeFields')) {
             $rawFields = $model->attributeFields();
         }
         if (!$rawFields) {
-            if ($labels) {
-                $rawFields = array_keys($labels);
-            } else {
-                $rawFields = $model->attributes();
-            }
+            $rawFields = $attributes;
         }
         $fields = [];
         foreach ($rawFields as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
-                if (is_string($value) && $model->hasAttribute($value)) {
+                if (is_string($value) && in_array($value, $attributes)) {
                     $attribute = $value;
                 } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
+                    if (array_key_exists(0, $value) && in_array($value[0], $attributes)) {
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('name', $value) && $model->hasAttribute($value['name'])) {
+                    } elseif (array_key_exists('name', $value) && in_array($value['name'], $attributes)) {
                         $attribute = $value['name'];
                         $options = $value;
                         unset($options['name']);
                     }
                 }
-            } elseif (is_string($key) && $model->hasAttribute($key)) {
+            } elseif (is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if (is_string($value)) {
                     if (class_exists($value)) {
@@ -70,7 +73,7 @@ class Action extends YiiAction
                 unset($options['type']);
             }
             if ($attribute) {
-                if (!array_key_exists('class', $options)) {
+                if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
                         if ($columnSchema->isPrimaryKey) {
