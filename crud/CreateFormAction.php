@@ -10,7 +10,7 @@ class CreateFormAction extends Action
 
     public $scenario = Model::SCENARIO_DEFAULT;
 
-    public $viewAction = 'updateForm';
+    public $viewAction = 'update-form';
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
