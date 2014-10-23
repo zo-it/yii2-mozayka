@@ -30,6 +30,13 @@ class ListAction extends Action
             }
             $gridConfig['dataProvider'] = new $this->dataProviderClass($dataProviderConfig);
         }
+        if (!array_key_exists('columns', $gridConfig)) {
+            $columns = [];
+            //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
+            $columns = array_merge($columns, $this->prepareColumns(new $this->modelClass));
+            $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
+            $gridConfig['columns'] = $columns;
+        }
         return $this->controller->render($this->view, [
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig
