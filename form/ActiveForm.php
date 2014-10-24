@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\form;
 
-use yii\widgets\ActiveForm as YiiActiveForm;
+use yii\bootstrap\ActiveForm as YiiActiveForm;
 
 
 class ActiveForm extends YiiActiveForm

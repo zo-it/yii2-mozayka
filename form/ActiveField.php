@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\form;
 
-use yii\widgets\ActiveField as YiiActiveField;
+use yii\bootstrap\ActiveField as YiiActiveField;
 
 
 class ActiveField extends YiiActiveField
