@@ -19,15 +19,20 @@ class ReadFormAction extends Action
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
         }
-        // config
+        // form config
         $formConfig = $this->formConfig;
         $formConfig['readOnly'] = true;
-        // render
-        return $this->controller->render($this->view, [
+        // rendering
+        $viewParams = [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'model' => $model,
             'fields' => $this->prepareFields($model)
-        ]);
+        ];
+        if ($request->getIsAjax()) {
+            return $this->controller->renderPartial($this->view, $viewParams);
+        } else {
+            return $this->controller->render($this->view, $viewParams);
+        }
     }
 }
