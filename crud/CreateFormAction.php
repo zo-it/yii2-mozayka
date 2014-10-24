@@ -43,14 +43,14 @@ class CreateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $successMessage = Yii::t('mozayka', 'Data has been successfully saved.');
+                $successMessage = Yii::t('mozayka', 'Record has been successfully saved.');
                 $id = implode(',', array_values($model->getPrimaryKey(true)));
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     return $this->controller->redirect([$this->viewAction, 'id' => $id]);
                 }
             } else {
-                $errorMessage = Yii::t('mozayka', 'Data has not been saved.');
+                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
                 Yii::error(VarDumper::dumpAsString([
                     'class' => get_class($model),
                     'attributes' => $model->getAttributes(),

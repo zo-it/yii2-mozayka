@@ -3,9 +3,11 @@
 return [
     'Create' => 'Создать',
     'Update' => 'Редактировать',
-    'Delete' => 'Удалить',
     'Save' => 'Сохранить',
-    'Data has been successfully saved.' => 'Данные были успешно сохранены.',
-    'Data has not been saved.' => 'Данные не были сохранены.',
+    'Record has been successfully saved.' => 'Запись была успешно сохранена.',
+    'Record has not been saved.' => 'Запись не была сохранена.',
+    'Delete' => 'Удалить',
+    'Record has been successfully saved.' => 'Запись была успешно удалена.',
+    'Record has not been saved.' => 'Запись не была удалена.',
     'Back' => 'Назад'
 ];
