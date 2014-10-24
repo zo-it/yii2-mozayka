@@ -2,6 +2,8 @@
 
 namespace yii\mozayka\crud;
 
+use Yii;
+
 
 class ListAction extends Action
 {
@@ -14,13 +16,17 @@ class ListAction extends Action
 
     public $gridConfig = [];
 
-    public $view = '@yii/mozayka/views/active/list';
+    public $view = '@yii/mozayka/views/crud/list';
 
     public function run()
     {
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id);
         }
+        $session = Yii::$app->getSession();
+        $successMessage = $session->getFlash('success');
+        $errorMessage = $session->getFlash('error');
+        // grid config
         $gridConfig = $this->gridConfig;
         if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;
@@ -37,9 +43,17 @@ class ListAction extends Action
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
-        return $this->controller->render($this->view, [
+        // rendering
+        $viewParams = [
+            'successMessage' => $successMessage,
+            'errorMessage' => $errorMessage,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig
-        ]);
+        ];
+        if (Yii::$app->getRequest()->getIsAjax()) {
+            return $this->controller->renderPartial($this->view, $viewParams);
+        } else {
+            return $this->controller->render($this->view, $viewParams);
+        }
     }
 }

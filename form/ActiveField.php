@@ -26,13 +26,11 @@ class ActiveField extends YiiActiveField
 
     public function radio($options = [], $enclosedByLabel = true)
     {
-        $options = array_merge($this->radioOptions, $options);
-        return parent::radio($options, $enclosedByLabel);
+        return parent::radio(array_merge($this->radioOptions, $options), $enclosedByLabel);
     }
 
     public function checkbox($options = [], $enclosedByLabel = true)
     {
-        $options = array_merge($this->checkboxOptions, $options);
-        return parent::checkbox($options, $enclosedByLabel);
+        return parent::checkbox(array_merge($this->checkboxOptions, $options), $enclosedByLabel);
     }
 }

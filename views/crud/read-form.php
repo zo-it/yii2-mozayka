@@ -1,5 +1,6 @@
 <?php
-use yii\helpers\Html;
+use yii\bootstrap\ButtonGroup,
+    yii\helpers\Html;
 /**
  * @var yii\web\View $this
  * @var string $formClass
@@ -14,8 +15,11 @@ foreach ($fields as $attribute => $options) {
     echo $form->field($model, $attribute, $options);
 }
 
-echo Html::submitButton(Yii::t('mozayka', 'Delete'), ['class' => 'btn btn-danger']);
-
-echo Html::a(Yii::t('mozayka', 'Back'), [Yii::$app->controller->id . '/list'], ['class' => 'btn']);
+echo Html::tag('div', ButtonGroup::widget([
+    'buttons' => [
+        Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default'])
+    ],
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'clearfix']);
 
 $formClass::end();

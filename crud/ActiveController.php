@@ -3,11 +3,14 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
+    yii\base\Model,
     yii\helpers\StringHelper;
 
 
 class ActiveController extends YiiActiveController
 {
+
+    public $deleteScenario = Model::SCENARIO_DEFAULT;
 
     public function init()
     {
@@ -23,34 +26,35 @@ class ActiveController extends YiiActiveController
     public function actions()
     {
         return parent::actions() + [
-            'createForm' => [
+            'create-form' => [
                 'class' => 'yii\mozayka\crud\CreateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->createScenario
             ],
-            'readForm' => [
+            'read-form' => [
                 'class' => 'yii\mozayka\crud\ReadFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
-            'updateForm' => [
+            'update-form' => [
                 'class' => 'yii\mozayka\crud\UpdateFormAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->updateScenario
             ],
-            'deleteForm' => [
+            'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'checkAccess' => [$this, 'checkAccess'],
+                'scenario' => $this->deleteScenario
             ],
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
-            'changePosition' => [
+            'change-position' => [
                 'class' => 'yii\mozayka\crud\ChangePositionAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
