@@ -40,7 +40,8 @@ class UpdateFormAction extends Action
                 return ActiveForm::validate($model);
             }
             // processing
-            if ($model->validate() && $model->save()) {
+            $saved = $model->validate() && $model->save();
+            if ($saved) {
                 $successMessage = Yii::t('mozayka', 'Data has been successfully saved.');
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
@@ -56,10 +57,11 @@ class UpdateFormAction extends Action
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                return [
-                    'successMessage' => $successMessage,
-                    'errorMessage' => $errorMessage
-                ];
+                if ($saved) {
+                    return ['ok' => $saved, 'message' => $successMessage];
+                } else {
+                    return ['ok' => $saved, 'message' => $errorMessage];
+                }
             }
         }
         // form config

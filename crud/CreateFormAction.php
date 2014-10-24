@@ -41,11 +41,12 @@ class CreateFormAction extends Action
                 return ActiveForm::validate($model);
             }
             // processing
-            if ($model->validate() && $model->save()) {
+            $saved = $model->validate() && $model->save();
+            if ($saved) {
                 $successMessage = Yii::t('mozayka', 'Data has been successfully saved.');
+                $id = implode(',', array_values($model->getPrimaryKey(true)));
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
-                    $id = implode(',', array_values($model->getPrimaryKey(true)));
                     return $this->controller->redirect([$this->viewAction, 'id' => $id]);
                 }
             } else {
@@ -58,10 +59,11 @@ class CreateFormAction extends Action
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                return [
-                    'successMessage' => $successMessage,
-                    'errorMessage' => $errorMessage
-                ];
+                if ($saved) {
+                    return ['ok' => $saved, 'message' => $successMessage, 'id' => $id];
+                } else {
+                    return ['ok' => $saved, 'message' => $errorMessage];
+                }
             }
         }
         // form config
