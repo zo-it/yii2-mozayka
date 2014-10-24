@@ -1,5 +1,6 @@
 <?php
 use yii\bootstrap\Alert,
+    yii\bootstrap\ButtonGroup,
     yii\helpers\Html;
 /**
  * @var yii\web\View $this
@@ -17,6 +18,14 @@ if ($errorMessage) {
     echo Alert::widget(['body' => $errorMessage, 'options' => ['class' => 'alert-danger']]);
 }
 
+$buttonGroup = Html::tag('div', ButtonGroup::widget([
+    'buttons' => [
+        Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary'])
+    ],
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'clearfix']);
+echo $buttonGroup;
+
 echo $gridClass::widget($gridConfig);
 
-echo Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
+echo $buttonGroup;
