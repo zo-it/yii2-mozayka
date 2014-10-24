@@ -39,11 +39,11 @@ class Action extends YiiAction
                 if (is_string($value) && $model->hasAttribute($value)) {
                     $attribute = $value;
                 } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
+                    if (array_key_exists(0, $value) && is_string($value[0]) && $model->hasAttribute($value[0])) {
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && $model->hasAttribute($value['attribute'])) {
+                    } elseif (array_key_exists('attribute', $value) && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
                         $attribute = $value['attribute'];
                         $options = $value;
                         unset($options['attribute']);
@@ -134,11 +134,11 @@ class Action extends YiiAction
                 if (is_string($value) && $model->hasAttribute($value)) {
                     $attribute = $value;
                 } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
+                    if (array_key_exists(0, $value) && is_string($value[0]) && $model->hasAttribute($value[0])) {
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && $model->hasAttribute($value['attribute'])) {
+                    } elseif (array_key_exists('attribute', $value) && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
                         $attribute = $value['attribute'];
                         $options = $value;
                         unset($options['attribute']);
