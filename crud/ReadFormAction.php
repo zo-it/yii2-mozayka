@@ -2,6 +2,8 @@
 
 namespace yii\mozayka\crud;
 
+use Yii;
+
 
 class ReadFormAction extends Action
 {
@@ -29,7 +31,7 @@ class ReadFormAction extends Action
             'model' => $model,
             'fields' => $this->prepareFields($model)
         ];
-        if ($request->getIsAjax()) {
+        if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
         } else {
             return $this->controller->render($this->view, $viewParams);

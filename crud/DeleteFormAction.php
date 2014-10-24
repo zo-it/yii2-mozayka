@@ -45,7 +45,7 @@ class DeleteFormAction extends Action
                 $successMessage = Yii::t('mozayka', 'Record has been successfully deleted.');
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
-                    return $this->controller->redirect(['update-form', 'id' => $id]);
+                    return $this->controller->redirect(['list']);
                 }
             } else {
                 $errorMessage = Yii::t('mozayka', 'Record has not been deleted.');
