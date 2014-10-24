@@ -3,7 +3,6 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
-    yii\base\Model,
     yii\helpers\StringHelper;
 
 
