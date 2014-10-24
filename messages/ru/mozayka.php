@@ -3,7 +3,9 @@
 return [
     'Create' => 'Создать',
     'Update' => 'Редактировать',
-    'Save' => 'Сохранить',
     'Delete' => 'Удалить',
+    'Save' => 'Сохранить',
+    'Data has been successfully saved.' => 'Данные были успешно сохранены.',
+    'Data has not been saved.' => 'Данные не были сохранены.',
     'Back' => 'Назад'
 ];
