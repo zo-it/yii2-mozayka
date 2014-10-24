@@ -55,7 +55,7 @@ class Action extends YiiAction
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
-                        if ($value == 'skip') {
+                        if ($value == 'invisible') {
                             $options['visible'] = false;
                         } elseif (class_exists($value)) {
                             $options['class'] = $value;
@@ -70,12 +70,14 @@ class Action extends YiiAction
                     } elseif (is_array($value)) {
                         $options = $value;
                     }
+                } elseif ($value === false) {
+                    $options['visible'] = false;
                 }
             }
             if ($attribute) {
                 $options['attribute'] = $attribute;
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'skip') {
+                    if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
                         $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
@@ -154,7 +156,7 @@ class Action extends YiiAction
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
-                        if ($value == 'skip') {
+                        if ($value == 'invisible') {
                             $options['visible'] = false;
                         } elseif (class_exists($value)) {
                             $options['class'] = $value;
@@ -169,11 +171,13 @@ class Action extends YiiAction
                     } elseif (is_array($value)) {
                         $options = $value;
                     }
+                } elseif ($value === false) {
+                    $options['visible'] = false;
                 }
             }
             if ($attribute) {
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'skip') {
+                    if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
                         $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
