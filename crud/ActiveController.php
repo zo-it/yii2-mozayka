@@ -10,8 +10,6 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
-    public $deleteScenario = Model::SCENARIO_DEFAULT;
-
     public function init()
     {
         if (!$this->modelClass) {
@@ -46,8 +44,7 @@ class ActiveController extends YiiActiveController
             'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
-                'scenario' => $this->deleteScenario
+                'checkAccess' => [$this, 'checkAccess']
             ],
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',

@@ -19,7 +19,7 @@ class ReadFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
+            call_user_func($this->checkAccess, /*$this->id*/'view', $model);
         }
         // form config
         $formConfig = $this->formConfig;
