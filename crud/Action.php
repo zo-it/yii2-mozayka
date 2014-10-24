@@ -36,17 +36,19 @@ class Action extends YiiAction
             $attribute = null;
             $options = [];
             if (is_int($key)) {
-                if (is_string($value) && $model->hasAttribute($value)) {
-                    $attribute = $value;
-                } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && is_string($value[0]) && $model->hasAttribute($value[0])) {
-                        $attribute = $value[0];
-                        $options = $value;
-                        unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
-                        $attribute = $value['attribute'];
-                        $options = $value;
-                        unset($options['attribute']);
+                if ($value) {
+                    if (is_string($value) && $model->hasAttribute($value)) {
+                        $attribute = $value;
+                    } elseif (is_array($value)) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                            $attribute = $value[0];
+                            $options = $value;
+                            unset($options[0]);
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                            $attribute = $value['attribute'];
+                            $options = $value;
+                            unset($options['attribute']);
+                        }
                     }
                 }
             } elseif (is_string($key) && $model->hasAttribute($key)) {
@@ -131,17 +133,19 @@ class Action extends YiiAction
             $attribute = null;
             $options = [];
             if (is_int($key)) {
-                if (is_string($value) && $model->hasAttribute($value)) {
-                    $attribute = $value;
-                } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && is_string($value[0]) && $model->hasAttribute($value[0])) {
-                        $attribute = $value[0];
-                        $options = $value;
-                        unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
-                        $attribute = $value['attribute'];
-                        $options = $value;
-                        unset($options['attribute']);
+                if ($value) {
+                    if (is_string($value) && $model->hasAttribute($value)) {
+                        $attribute = $value;
+                    } elseif (is_array($value)) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                            $attribute = $value[0];
+                            $options = $value;
+                            unset($options[0]);
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                            $attribute = $value['attribute'];
+                            $options = $value;
+                            unset($options['attribute']);
+                        }
                     }
                 }
             } elseif (is_string($key) && $model->hasAttribute($key)) {
