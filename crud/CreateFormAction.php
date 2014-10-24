@@ -20,7 +20,7 @@ class CreateFormAction extends Action
 
     public $formConfig = [];
 
-    public $view = '@yii/mozayka/views/active/create-form';
+    public $view = '@yii/mozayka/views/crud/create-form';
 
     public function run()
     {

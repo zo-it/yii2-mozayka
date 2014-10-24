@@ -12,7 +12,7 @@ class ReadFormAction extends Action
 
     public $formConfig = [];
 
-    public $view = '@yii/mozayka/views/active/read-form';
+    public $view = '@yii/mozayka/views/crud/read-form';
 
     public function run($id)
     {

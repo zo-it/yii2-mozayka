@@ -16,7 +16,7 @@ class ListAction extends Action
 
     public $gridConfig = [];
 
-    public $view = '@yii/mozayka/views/active/list';
+    public $view = '@yii/mozayka/views/crud/list';
 
     public function run()
     {
