@@ -204,14 +204,14 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof YiiTimestampBehavior) {
+            /*if ($behavior instanceof YiiTimestampBehavior) {
                 if (array_key_exists($behavior->createdAtAttribute, $fields)) {
                     $fields[$behavior->createdAtAttribute]['readOnly'] = true;
                 }
                 if (array_key_exists($behavior->updatedAtAttribute, $fields)) {
                     $fields[$behavior->updatedAtAttribute]['readOnly'] = true;
                 }
-            }
+            }*/
         }
         return array_filter($fields, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];

@@ -54,6 +54,13 @@ class UpdateFormAction extends Action
                     'errors' => $model->getErrors()
                 ]));
             }
+            if ($request->getIsAjax()) {
+                Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+                return [
+                    'successMessage' => $successMessage,
+                    'errorMessage' => $errorMessage
+                ];
+            }
         }
         // form config
         $formConfig = $this->formConfig;
@@ -70,18 +77,7 @@ class UpdateFormAction extends Action
             'fields' => $this->prepareFields($model)
         ];
         if ($request->getIsAjax()) {
-            if (array_key_exists('application/json', $request->getAcceptableContentTypes())) {
-                Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                $viewParams['successMessage'] = null;
-                $viewParams['errorMessage'] = null;
-                return [
-                    'successMessage' => $successMessage,
-                    'errorMessage' => $errorMessage,
-                    'html' => $this->controller->renderPartial($this->view, $viewParams)
-                ];
-            } else {
-                return $this->controller->renderPartial($this->view, $viewParams);
-            }
+            return $this->controller->renderPartial($this->view, $viewParams);
         } else {
             return $this->controller->render($this->view, $viewParams);
         }
