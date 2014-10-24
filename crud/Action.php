@@ -4,8 +4,7 @@ namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
     yii\db\ActiveRecord,
-    yii\helpers\ArrayHelper,
-    yii\behaviors\TimestampBehavior as YiiTimestampBehavior;
+    yii\helpers\ArrayHelper;
 
 
 class Action extends YiiAction
@@ -37,20 +36,20 @@ class Action extends YiiAction
             $attribute = null;
             $options = [];
             if (is_int($key)) {
-                if (is_string($value) && in_array($value, $attributes)) {
+                if (is_string($value) && $model->hasAttribute($value)) {
                     $attribute = $value;
                 } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && in_array($value[0], $attributes)) {
+                    if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && in_array($value['attribute'], $attributes)) {
+                    } elseif (array_key_exists('attribute', $value) && $model->hasAttribute($value['attribute'])) {
                         $attribute = $value['attribute'];
                         $options = $value;
                         unset($options['attribute']);
                     }
                 }
-            } elseif (is_string($key) && in_array($key, $attributes)) {
+            } elseif (is_string($key) && $model->hasAttribute($key)) {
                 $attribute = $key;
                 if (is_string($value)) {
                     if ($value == 'skip') {
@@ -132,20 +131,20 @@ class Action extends YiiAction
             $attribute = null;
             $options = [];
             if (is_int($key)) {
-                if (is_string($value) && in_array($value, $attributes)) {
+                if (is_string($value) && $model->hasAttribute($value)) {
                     $attribute = $value;
                 } elseif (is_array($value)) {
-                    if (array_key_exists(0, $value) && in_array($value[0], $attributes)) {
+                    if (array_key_exists(0, $value) && $model->hasAttribute($value[0])) {
                         $attribute = $value[0];
                         $options = $value;
                         unset($options[0]);
-                    } elseif (array_key_exists('attribute', $value) && in_array($value['attribute'], $attributes)) {
+                    } elseif (array_key_exists('attribute', $value) && $model->hasAttribute($value['attribute'])) {
                         $attribute = $value['attribute'];
                         $options = $value;
                         unset($options['attribute']);
                     }
                 }
-            } elseif (is_string($key) && in_array($key, $attributes)) {
+            } elseif (is_string($key) && $model->hasAttribute($key)) {
                 $attribute = $key;
                 if (is_string($value)) {
                     if ($value == 'skip') {
