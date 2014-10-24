@@ -51,7 +51,7 @@ class Action extends YiiAction
                         }
                     }
                 }
-            } elseif (is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
@@ -152,7 +152,7 @@ class Action extends YiiAction
                         }
                     }
                 }
-            } elseif (is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
