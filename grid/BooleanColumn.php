@@ -16,8 +16,7 @@ class BooleanColumn extends DataColumn
             } else {
                 return '<span class="label label-danger">' . Yii::t('mozayka', 'No') . '</span>';
             }
-        } else {
-            return parent::renderDataCellContent($model, $key, $index);
         }
+        return parent::renderDataCellContent($model, $key, $index);
     }
 }

@@ -4,7 +4,8 @@ namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
     yii\db\ActiveRecord,
-    yii\helpers\ArrayHelper;
+    yii\helpers\ArrayHelper,
+    yii\kladovka\behaviors\TimestampBehavior;
 
 
 class Action extends YiiAction
@@ -215,14 +216,17 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            /*if ($behavior instanceof YiiTimestampBehavior) {
+            if ($behavior instanceof TimestampBehavior) {
                 if (array_key_exists($behavior->createdAtAttribute, $fields)) {
                     $fields[$behavior->createdAtAttribute]['readOnly'] = true;
                 }
                 if (array_key_exists($behavior->updatedAtAttribute, $fields)) {
                     $fields[$behavior->updatedAtAttribute]['readOnly'] = true;
                 }
-            }*/
+                if (array_key_exists($behavior->timestampAttribute, $fields)) {
+                    $fields[$behavior->timestampAttribute]['readOnly'] = true;
+                }
+            }
         }
         return array_filter($fields, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
