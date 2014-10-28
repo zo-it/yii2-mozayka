@@ -4,7 +4,7 @@ namespace yii\mozayka\form;
 
 use yii\helpers\Json,
     yii\helpers\Html,
-    yii\jui\JuiAsset,
+    yii\mozayka\DatePickerAsset,
     Yii;
 
 
@@ -21,7 +21,8 @@ class DateField extends ActiveField
                 $this->inputOptions['value'] = date($this->dateFormat, $value);
                 if (!$this->readOnly) {
                     $datePicker = [
-                        'dateFormat' => 'yy-mm-dd'
+                        'dateFormat' => 'yy-mm-dd',
+                        'numberOfMonths' => 3
                     ];
                     $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
                     if (Yii::$app->getRequest()->getIsAjax()) {
@@ -30,7 +31,7 @@ class DateField extends ActiveField
                     } else {
                         $view = $this->form->getView();
                         $view->registerJs($js);
-                        JuiAsset::register($view);
+                        DatePickerAsset::register($view);
                     }
                 }
             }
