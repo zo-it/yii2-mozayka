@@ -15,7 +15,8 @@ class DatetimeField extends ActiveField
 
     public $dateTimePicker = [
         'dateFormat' => 'yy-mm-dd',
-        'timeFormat' => 'hh:mm:ss'
+        'timeFormat' => 'hh:mm:ss',
+        'numberOfMonths' => 3
     ];
 
     public function init()
