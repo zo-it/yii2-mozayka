@@ -13,6 +13,11 @@ class DateField extends ActiveField
 
     public $dateFormat = 'Y-m-d';
 
+    public $datePicker = [
+        'dateFormat' => 'yy-mm-dd',
+        'numberOfMonths' => 3
+    ];
+
     public function init()
     {
         if (!array_key_exists('value', $this->inputOptions)) {
@@ -20,11 +25,7 @@ class DateField extends ActiveField
             if (is_int($value)) {
                 $this->inputOptions['value'] = date($this->dateFormat, $value);
                 if (!$this->readOnly) {
-                    $datePicker = [
-                        'dateFormat' => 'yy-mm-dd',
-                        'numberOfMonths' => 3
-                    ];
-                    $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
+                    $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($this->datePicker) . ');';
                     if (Yii::$app->getRequest()->getIsAjax()) {
                         $this->template .= "\n{script}";
                         $this->parts['{script}'] = Html::script($js);

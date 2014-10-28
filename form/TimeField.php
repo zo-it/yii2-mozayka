@@ -13,6 +13,10 @@ class TimeField extends ActiveField
 
     public $timeFormat = 'H:i:s';
 
+    public $timePicker = [
+        'timeFormat' => 'hh:mm:ss'
+    ];
+
     public function init()
     {
         if (!array_key_exists('value', $this->inputOptions)) {
@@ -20,10 +24,7 @@ class TimeField extends ActiveField
             if (is_int($value)) {
                 $this->inputOptions['value'] = date($this->timeFormat, $value);
                 if (!$this->readOnly) {
-                    $timePicker = [
-                        'timeFormat' => 'hh:mm:ss'
-                    ];
-                    $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').timepicker(' . Json::encode($timePicker) . ');';
+                    $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').timepicker(' . Json::encode($this->timePicker) . ');';
                     if (Yii::$app->getRequest()->getIsAjax()) {
                         $this->template .= "\n{script}";
                         $this->parts['{script}'] = Html::script($js);
