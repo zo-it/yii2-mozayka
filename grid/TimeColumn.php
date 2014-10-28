@@ -8,14 +8,12 @@ class TimeColumn extends DataColumn
 
     public $timeFormat = 'H:i:s';
 
-    protected function renderDataCellContent($model, $key, $index)
+    public function getDataCellValue($model, $key, $index)
     {
-        if (is_null($this->content)) {
-            $value = $model->{$this->attribute};
-            if (is_int($value)) {
-                return date($this->timeFormat, $value);
-            }
+        $value = parent::getDataCellValue($model, $key, $index);
+        if (is_int($value)) {
+            return date($this->timeFormat, $value);
         }
-        return parent::renderDataCellContent($model, $key, $index);
+        return $value;
     }
 }
