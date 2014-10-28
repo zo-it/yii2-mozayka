@@ -24,17 +24,17 @@ class DateField extends ActiveField
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
                 $this->inputOptions['value'] = date($this->dateFormat, $value);
-                if (!$this->readOnly) {
-                    $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($this->datePicker) . ');';
-                    if (Yii::$app->getRequest()->getIsAjax()) {
-                        $this->template .= "\n{script}";
-                        $this->parts['{script}'] = Html::script($js);
-                    } else {
-                        $view = $this->form->getView();
-                        $view->registerJs($js);
-                        DatePickerAsset::register($view);
-                    }
-                }
+            }
+        }
+        if (!$this->readOnly) {
+            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($this->datePicker) . ');';
+            if (Yii::$app->getRequest()->getIsAjax()) {
+                $this->template .= "\n{script}";
+                $this->parts['{script}'] = Html::script($js);
+            } else {
+                $view = $this->form->getView();
+                $view->registerJs($js);
+                DatePickerAsset::register($view);
             }
         }
         parent::init();
