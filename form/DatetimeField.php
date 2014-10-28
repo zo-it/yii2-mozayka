@@ -11,7 +11,9 @@ use yii\helpers\Json,
 class DatetimeField extends ActiveField
 {
 
-    public $dateTimeFormat = 'Y-m-d H:i:s';
+    public $dateFormat = 'Y-m-d';
+
+    public $timeFormat = 'H:i:s';
 
     public $dateTimePicker = [
         'dateFormat' => 'yy-mm-dd',
@@ -24,7 +26,7 @@ class DatetimeField extends ActiveField
         if (!array_key_exists('value', $this->inputOptions)) {
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
-                $this->inputOptions['value'] = date($this->dateTimeFormat, $value);
+                $this->inputOptions['value'] = date($this->dateFormat . ' ' . $this->timeFormat, $value);
             }
         }
         if (!$this->readOnly) {
