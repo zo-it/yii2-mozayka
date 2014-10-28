@@ -21,7 +21,7 @@ class ListAction extends Action
     public function run()
     {
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id);
+            call_user_func($this->checkAccess, /*$this->id*/'index');
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');

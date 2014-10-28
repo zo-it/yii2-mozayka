@@ -9,5 +9,7 @@ return [
     'Delete' => 'Удалить',
     'Record has been successfully deleted.' => 'Запись была успешно удалена.',
     'Record has not been deleted.' => 'Запись не была удалена.',
-    'Back' => 'Назад'
+    'Back' => 'Назад',
+    'Yes' => 'Да',
+    'No' => 'Нет'
 ];

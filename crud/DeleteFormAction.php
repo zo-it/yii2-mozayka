@@ -12,8 +12,6 @@ use yii\base\Model,
 class DeleteFormAction extends Action
 {
 
-    public $scenario = Model::SCENARIO_DEFAULT;
-
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];
@@ -24,9 +22,8 @@ class DeleteFormAction extends Action
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
-        $model->setScenario($this->scenario);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
+            call_user_func($this->checkAccess, /*$this->id*/'delete', $model);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
