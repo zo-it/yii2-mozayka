@@ -2,9 +2,9 @@
 
 namespace yii\mozayka\form;
 
-use yii\helpers\Json,
-    yii\helpers\Html,
-    yii\mozayka\DatePickerAsset,
+use yii\helpers\Html,
+    yii\helpers\Json,
+    yii\mozayka\web\DatePickerAsset,
     Yii;
 
 

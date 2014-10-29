@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\mozayka;
+namespace yii\mozayka\web;
 
 use yii\web\AssetBundle;
 
@@ -11,7 +11,7 @@ class MozaykaAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
         'yii\jui\JuiAsset',
-        'yii\mozayka\DatePickerAsset',
-        'yii\mozayka\TimePickerAsset'
+        'yii\mozayka\web\DatePickerAsset',
+        'yii\mozayka\web\TimePickerAsset'
     ];
 }
