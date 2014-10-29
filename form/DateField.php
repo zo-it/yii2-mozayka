@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\form;
 
-use yii\mozayka\helpers\Text,
+use yii\kladovka\helpers\Text,
     yii\helpers\Html,
     yii\helpers\Json,
     yii\mozayka\web\DatePickerAsset,

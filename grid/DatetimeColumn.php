@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\grid;
 
-use yii\mozayka\helpers\Text;
+use yii\kladovka\helpers\Text;
 
 
 class DatetimeColumn extends DataColumn
