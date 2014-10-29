@@ -16,9 +16,13 @@ class DateField extends ActiveField
 
     public $datePicker = [
         //'dateFormat' => 'yy-mm-dd',
+        //'altField' => '',
+        'altFormat' => 'yy-mm-dd',
         'showButtonPanel' => true,
         'numberOfMonths' => 3
     ];
+
+    public $hiddenInputOptions = [];
 
     public function init()
     {
@@ -26,6 +30,7 @@ class DateField extends ActiveField
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
                 $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
+                $this->hiddenInputOptions['value'] = date('Y-m-d', $value);
             }
         }
         if (!$this->readOnly) {
@@ -44,7 +49,16 @@ class DateField extends ActiveField
                     'j' => 'd'
                 ]);
             }
-            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
+$js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
+$datePicker['altField'] = '#' . Html::getInputId($this->model, $this->attribute) . '_alt';
+
+
+
+$this->inputOptions['name'] = false;
+$this->hiddenInputOptions['id'] = Html::getInputId($this->model, $this->attribute) . '_alt';
+$this->template .= "\n{hiddenInput}";
+$this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
+
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);
