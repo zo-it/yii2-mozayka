@@ -14,7 +14,7 @@ class TimeField extends ActiveField
     public $timeFormat = 'H:i:s';
 
     public $timePicker = [
-        'timeFormat' => 'hh:mm:ss',
+        //'timeFormat' => 'hh:mm:ss',
         'showButtonPanel' => true
     ];
 
@@ -27,7 +27,16 @@ class TimeField extends ActiveField
             }
         }
         if (!$this->readOnly) {
-            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').timepicker(' . Json::encode($this->timePicker) . ');';
+            $timePicker = $this->timePicker;
+            if (!array_key_exists('timeFormat', $timePicker)) {
+                $timePicker['timeFormat'] = strtr($this->timeFormat, [
+                    'H' => 'hh',
+                    'G' => 'h',
+                    'i' => 'mm',
+                    's' => 'ss'
+                ]);
+            }
+            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').timepicker(' . Json::encode($timePicker) . ');';
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);

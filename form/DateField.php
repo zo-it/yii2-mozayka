@@ -14,7 +14,7 @@ class DateField extends ActiveField
     public $dateFormat = 'Y-m-d';
 
     public $datePicker = [
-        'dateFormat' => 'yy-mm-dd',
+        //'dateFormat' => 'yy-mm-dd',
         'showButtonPanel' => true,
         'numberOfMonths' => 3
     ];
@@ -28,7 +28,22 @@ class DateField extends ActiveField
             }
         }
         if (!$this->readOnly) {
-            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($this->datePicker) . ');';
+            $datePicker = $this->datePicker;
+            if (!array_key_exists('dateFormat', $datePicker)) {
+                $datePicker['dateFormat'] = strtr($this->dateFormat, [
+                    'Y' => 'yy',
+                    //'y' => 'y',
+                    'F' => 'MM',
+                    //'M' => 'M',
+                    'm' => 'mm',
+                    'n' => 'm',
+                    'l' => 'DD',
+                    'D' => 'D',
+                    'd' => 'dd',
+                    'j' => 'd'
+                ]);
+            }
+            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);
