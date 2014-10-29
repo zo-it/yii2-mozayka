@@ -5,7 +5,9 @@ namespace yii\mozayka\crud;
 use yii\rest\Action as YiiAction,
     yii\db\ActiveRecord,
     yii\helpers\ArrayHelper,
-    yii\kladovka\behaviors\TimestampBehavior;
+    yii\kladovka\behaviors\TimestampBehavior,
+    yii\kladovka\behaviors\TimeDeleteBehavior,
+    yii\kladovka\behaviors\SoftDeleteBehavior;
 
 
 class Action extends YiiAction
@@ -108,6 +110,18 @@ class Action extends YiiAction
                     $columns[$attribute] = ArrayHelper::merge($columns[$attribute], $options);
                 } else {
                     $columns[$attribute] = $options;
+                }
+            }
+        }
+        foreach ($model->getBehaviors() as $behavior) {
+            if ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
+                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            }
+            if ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $columns)) {
+                    $columns[$behavior->deletedAttribute]['visible'] = false;
                 }
             }
         }
@@ -225,6 +239,16 @@ class Action extends YiiAction
                 }
                 if (array_key_exists($behavior->timestampAttribute, $fields)) {
                     $fields[$behavior->timestampAttribute]['readOnly'] = true;
+                }
+            }
+            if ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
+                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            }
+            if ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $fields)) {
+                    $fields[$behavior->deletedAttribute]['visible'] = false;
                 }
             }
         }
