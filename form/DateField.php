@@ -15,6 +15,7 @@ class DateField extends ActiveField
 
     public $datePicker = [
         'dateFormat' => 'yy-mm-dd',
+        'showButtonPanel' => true,
         'numberOfMonths' => 3
     ];
 

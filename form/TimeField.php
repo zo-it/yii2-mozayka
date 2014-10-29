@@ -14,7 +14,8 @@ class TimeField extends ActiveField
     public $timeFormat = 'H:i:s';
 
     public $timePicker = [
-        'timeFormat' => 'hh:mm:ss'
+        'timeFormat' => 'hh:mm:ss',
+        'showButtonPanel' => true
     ];
 
     public function init()
