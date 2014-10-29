@@ -2,11 +2,13 @@
 
 namespace yii\mozayka\grid;
 
+use yii\mozayka\helpers\Text;
+
 
 class DatetimeColumn extends DataColumn
 {
 
-    public $dateFormat = 'Y-m-d';
+    public $dateFormat = 'd M Y';
 
     public $timeFormat = 'H:i:s';
 
@@ -14,7 +16,7 @@ class DatetimeColumn extends DataColumn
     {
         $value = parent::getDataCellValue($model, $key, $index);
         if (is_int($value)) {
-            return date($this->dateFormat . ' ' . $this->timeFormat, $value);
+            return Text::date($this->dateFormat . ' ' . $this->timeFormat, $value);
         }
         return $value;
     }

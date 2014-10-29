@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\form;
 
-use yii\helpers\Html,
+use yii\mozayka\helpers\Text,
+    yii\helpers\Html,
     yii\helpers\Json,
     yii\mozayka\web\DatePickerAsset,
     Yii;
@@ -11,7 +12,7 @@ use yii\helpers\Html,
 class DateField extends ActiveField
 {
 
-    public $dateFormat = 'Y-m-d';
+    public $dateFormat = 'd M Y';
 
     public $datePicker = [
         //'dateFormat' => 'yy-mm-dd',
@@ -24,7 +25,7 @@ class DateField extends ActiveField
         if (!array_key_exists('value', $this->inputOptions)) {
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
-                $this->inputOptions['value'] = date($this->dateFormat, $value);
+                $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
             }
         }
         if (!$this->readOnly) {
