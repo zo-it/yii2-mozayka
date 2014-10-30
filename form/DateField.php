@@ -12,11 +12,10 @@ use yii\kladovka\helpers\Text,
 class DateField extends ActiveField
 {
 
-    public $dateFormat = 'd M Y';
+    public $dateFormat = 'd F Y';
 
     public $datePicker = [
         //'dateFormat' => 'yy-mm-dd',
-        //'altField' => '',
         'altFormat' => 'yy-mm-dd',
         'showButtonPanel' => true,
         'numberOfMonths' => 3
@@ -49,16 +48,14 @@ class DateField extends ActiveField
                     'j' => 'd'
                 ]);
             }
-$js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datepicker(' . Json::encode($datePicker) . ');';
-$datePicker['altField'] = '#' . Html::getInputId($this->model, $this->attribute) . '_alt';
-
-
-
+$inputId = Html::getInputId($this->model, $this->attribute);
+$datePicker['altField'] = '#' . $inputId . '_alt';
+$datePicker['altFormat'] = 'yy-mm-dd';
+$js = 'jQuery(\'#' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
 $this->inputOptions['name'] = false;
-$this->hiddenInputOptions['id'] = Html::getInputId($this->model, $this->attribute) . '_alt';
+$this->hiddenInputOptions['id'] = $inputId . '_alt';
 $this->template .= "\n{hiddenInput}";
 $this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
-
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);
