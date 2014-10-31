@@ -73,8 +73,13 @@ class ActiveController extends YiiActiveController
         switch ($action) {
             case 'create':
             case 'create-form':
+                $newModel = null;
+                if (array_key_exists('newModel', $params)) {
+                    $newModel = $params['newModel'];
+                    unset($params['newModel']);
+                }
                 $modelClass = $this->modelClass;
-                $allowed = $modelClass::canCreate($params);
+                $allowed = $modelClass::canCreate($params, $newModel);
                 break;
             case 'view':
             case 'read-form':

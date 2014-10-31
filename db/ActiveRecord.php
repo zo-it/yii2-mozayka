@@ -24,7 +24,7 @@ class ActiveRecord extends YiiActiveRecord
         return [];
     }
 
-    public static function canCreate($params = [])
+    public static function canCreate($params = [], $newModel = null)
     {
         return true;
     }

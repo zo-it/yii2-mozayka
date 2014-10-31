@@ -19,18 +19,16 @@ if ($errorMessage) {
     echo Alert::widget(['body' => $errorMessage, 'options' => ['class' => 'alert-danger']]);
 }
 
+$buttons = [];
+if ($canCreate) {
+    $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
+}
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
-    'buttons' => [
-        Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary'])
-    ],
+    'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
-if ($canCreate) {
-    echo $buttonGroup;
-}
+echo $buttonGroup;
 
 echo $gridClass::widget($gridConfig);
 
-if ($canCreate) {
-    echo $buttonGroup;
-}
+echo $buttonGroup;
