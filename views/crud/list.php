@@ -23,6 +23,8 @@ $buttons = [];
 if ($canCreate) {
     $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
+$buttons[] = Html::button(Yii::t('mozayka', 'Print'), ['class' => 'btn btn-default', 'onclick' => 'print();']);
+
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']

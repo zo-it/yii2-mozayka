@@ -2,6 +2,7 @@
 
 return [
     'Create' => 'Создать',
+    'Print' => 'Печать',
     'Update' => 'Редактировать',
     'Save' => 'Сохранить',
     'Record has been successfully saved.' => 'Запись была успешно сохранена.',
