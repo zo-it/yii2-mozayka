@@ -3,7 +3,7 @@
 namespace yii\mozayka\form;
 
 
-class TimestampField extends ActiveField
+class TimestampField extends DatetimeField
 {
 
 }

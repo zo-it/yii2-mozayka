@@ -3,7 +3,7 @@
 namespace yii\mozayka\grid;
 
 
-class TimestampColumn extends DataColumn
+class TimestampColumn extends DatetimeColumn
 {
 
 }
