@@ -3,7 +3,8 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
-    yii\helpers\StringHelper;
+    yii\helpers\StringHelper,
+    yii\web\ForbiddenHttpException;
 
 
 class ActiveController extends YiiActiveController
@@ -65,5 +66,51 @@ class ActiveController extends YiiActiveController
             unset($behaviors['contentNegotiator']);
         }
         return $behaviors;
+    }
+
+    public function canCreate($model = null, $params = [])
+    {
+        return true;
+    }
+
+    public function canRead($model = null, $params = [])
+    {
+        return true;
+    }
+
+    public function canUpdate($model = null, $params = [])
+    {
+        return true;
+    }
+
+    public function canDelete($model = null, $params = [])
+    {
+        return true;
+    }
+
+    public function canList($query = null, $params = [])
+    {
+        return true;
+    }
+
+    public function canChangePosition($model = null, $params = [])
+    {
+        return $this->canUpdate($model, $params);
+    }
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        switch ($action) {
+            case 'create-form': $allowed = $this->canCreate($model, $params); break;
+            case 'read-form': $allowed = $this->canRead($model, $params); break;
+            case 'update-form': $allowed = $this->canUpdate($model, $params); break;
+            case 'delete-form': $allowed = $this->canDelete($model, $params); break;
+            case 'list': $allowed = $this->canList($model, $params); break;
+            case 'change-position': $allowed = $this->canChangePosition($model, $params); break;
+            default: $allowed = false; break;
+        }
+        if (!$allowed) {
+            throw new ForbiddenHttpException;
+        }
     }
 }

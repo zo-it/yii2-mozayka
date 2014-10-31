@@ -20,13 +20,6 @@ class ListAction extends Action
 
     public function run()
     {
-        if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'index');
-        }
-        $session = Yii::$app->getSession();
-        $successMessage = $session->getFlash('success');
-        $errorMessage = $session->getFlash('error');
-        // grid config
         $gridConfig = $this->gridConfig;
         if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;
@@ -36,6 +29,13 @@ class ListAction extends Action
             }
             $gridConfig['dataProvider'] = new $this->dataProviderClass($dataProviderConfig);
         }
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id, null, ['query' => $gridConfig['dataProvider']->query]);
+        }
+        $session = Yii::$app->getSession();
+        $successMessage = $session->getFlash('success');
+        $errorMessage = $session->getFlash('error');
+        // grid config
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
             //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];

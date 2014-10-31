@@ -23,7 +23,7 @@ class DeleteFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'delete', $model);
+            call_user_func($this->checkAccess, $this->id, $model);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
