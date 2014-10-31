@@ -12,7 +12,7 @@ use yii\kladovka\helpers\Text,
 class TimeField extends ActiveField
 {
 
-    public $timeFormat = 'H:i';
+    public $timeFormat = 'H:i:s';
 
     public $altTimeFormat = 'H:i:s';
 

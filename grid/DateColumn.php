@@ -8,7 +8,7 @@ use yii\kladovka\helpers\Text;
 class DateColumn extends DataColumn
 {
 
-    public $dateFormat = 'd M Y';
+    public $dateFormat = 'j M Y';
 
     public function getDataCellValue($model, $key, $index)
     {

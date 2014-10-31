@@ -17,6 +17,7 @@ class ActiveField extends YiiActiveField
     public function init()
     {
         if ($this->readOnly) {
+            $this->inputOptions['name'] = false;
             $this->inputOptions['readonly'] = true;
             $this->radioOptions['disabled'] = true;
             $this->checkboxOptions['disabled'] = true;

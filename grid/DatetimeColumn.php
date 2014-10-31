@@ -8,7 +8,7 @@ use yii\kladovka\helpers\Text;
 class DatetimeColumn extends DataColumn
 {
 
-    public $dateFormat = 'd M Y';
+    public $dateFormat = 'j M Y';
 
     public $timeFormat = 'H:i:s';
 

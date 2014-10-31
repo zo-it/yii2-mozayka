@@ -12,11 +12,11 @@ use yii\kladovka\helpers\Text,
 class DatetimeField extends ActiveField
 {
 
-    public $dateFormat = 'd M Y';
+    public $dateFormat = 'j M Y';
 
     public $altDateFormat = 'Y-m-d';
 
-    public $timeFormat = 'H:i';
+    public $timeFormat = 'H:i:s';
 
     public $altTimeFormat = 'H:i:s';
 
