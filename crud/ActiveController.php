@@ -72,19 +72,36 @@ class ActiveController extends YiiActiveController
     {
         $modelClass = $this->modelClass;
         switch ($action) {
-            case 'create-form': $allowed = $modelClass::canCreate($model, $params); break;
-            case 'read-form': $allowed = $modelClass::canRead($model, $params); break;
-            case 'update-form': $allowed = $modelClass::canUpdate($model, $params); break;
-            case 'delete-form': $allowed = $modelClass::canDelete($model, $params); break;
+            case 'create':
+            case 'create-form':
+                $allowed = $modelClass::canCreate($model, $params);
+                break;
+            case 'view':
+            case 'read-form':
+                $allowed = $modelClass::canRead($model, $params);
+                break;
+            case 'update':
+            case 'update-form':
+                $allowed = $modelClass::canUpdate($model, $params);
+                break;
+            case 'delete':
+            case 'delete-form':
+                $allowed = $modelClass::canDelete($model, $params);
+                break;
+            case 'index':
             case 'list':
                 $query = null;
                 if (array_key_exists('query', $params)) {
                     $query = $params['query'];
                     unset($params['query']);
                 }
-                $allowed = $modelClass::canList($query, $params); break;
-            case 'change-position': $allowed = $modelClass::canChangePosition($model, $params); break;
-            default: $allowed = false; break;
+                $allowed = $modelClass::canList($query, $params);
+                break;
+            case 'change-position':
+                $allowed = $modelClass::canChangePosition($model, $params);
+                break;
+            default:
+                $allowed = false;
         }
         if (!$allowed) {
             throw new ForbiddenHttpException;
