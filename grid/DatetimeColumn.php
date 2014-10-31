@@ -16,7 +16,7 @@ class DatetimeColumn extends DataColumn
     {
         $value = parent::getDataCellValue($model, $key, $index);
         if (is_int($value)) {
-            return Text::date($this->dateFormat . ' ' . $this->timeFormat, $value);
+            return Text::date2($this->dateFormat . ' ' . $this->timeFormat, $value);
         }
         return $value;
     }
