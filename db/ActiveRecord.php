@@ -39,6 +39,11 @@ class ActiveRecord extends YiiActiveRecord
         return static::canUpdate($model, $params);
     }
 
+    public static function canSelect($model = null, $params = [])
+    {
+        return static::canRead($model, $params);
+    }
+
     public static function find()
     {
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
