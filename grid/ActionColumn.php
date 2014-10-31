@@ -20,6 +20,11 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
+        $this->template = implode(' ', array_keys(array_filter([
+            '{view}' => $model->canRead(),
+            '{update}' => $model->canUpdate(),
+            '{delete}' => $model->canDelete()
+        ])));
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''

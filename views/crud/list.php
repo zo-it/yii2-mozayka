@@ -8,6 +8,7 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var string $gridClass
  * @var array $gridConfig
+ * @var bool $canCreate
  */
 
 if ($successMessage) {
@@ -24,8 +25,12 @@ $buttonGroup = Html::tag('div', ButtonGroup::widget([
     ],
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
-echo $buttonGroup;
+if ($canCreate) {
+    echo $buttonGroup;
+}
 
 echo $gridClass::widget($gridConfig);
 
-echo $buttonGroup;
+if ($canCreate) {
+    echo $buttonGroup;
+}

@@ -27,7 +27,7 @@ class CreateFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = new $this->modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
+            call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');

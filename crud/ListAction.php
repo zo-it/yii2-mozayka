@@ -48,7 +48,8 @@ class ListAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridConfig
+            'gridConfig' => $gridConfig,
+            'canCreate' => $modelClass::canCreate()
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

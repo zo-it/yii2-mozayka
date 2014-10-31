@@ -70,23 +70,23 @@ class ActiveController extends YiiActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        $modelClass = $this->modelClass;
         switch ($action) {
             case 'create':
             case 'create-form':
-                $allowed = $modelClass::canCreate($model, $params);
+                $modelClass = $this->modelClass;
+                $allowed = $modelClass::canCreate($params);
                 break;
             case 'view':
             case 'read-form':
-                $allowed = $modelClass::canRead($model, $params);
+                $allowed = $model->canRead($params);
                 break;
             case 'update':
             case 'update-form':
-                $allowed = $modelClass::canUpdate($model, $params);
+                $allowed = $model->canUpdate($params);
                 break;
             case 'delete':
             case 'delete-form':
-                $allowed = $modelClass::canDelete($model, $params);
+                $allowed = $model->canDelete($params);
                 break;
             case 'index':
             case 'list':
@@ -95,10 +95,11 @@ class ActiveController extends YiiActiveController
                     $query = $params['query'];
                     unset($params['query']);
                 }
-                $allowed = $modelClass::canList($query, $params);
+                $modelClass = $this->modelClass;
+                $allowed = $modelClass::canList($params, $query);
                 break;
             case 'change-position':
-                $allowed = $modelClass::canChangePosition($model, $params);
+                $allowed = $model->canChangePosition($params);
                 break;
             default:
                 $allowed = false;
