@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\form;
 
-use yii\helpers\Html,
+use yii\kladovka\helpers\Text,
+    yii\helpers\Html,
     yii\helpers\Json,
     yii\mozayka\web\TimePickerAsset,
     Yii;
@@ -11,10 +12,13 @@ use yii\helpers\Html,
 class TimeField extends ActiveField
 {
 
-    public $timeFormat = 'H:i:s';
+    public $timeFormat = 'H:i';
+
+    public $altTimeFormat = 'H:i:s';
+
+    public $hiddenInputOptions = [];
 
     public $timePicker = [
-        //'timeFormat' => 'hh:mm:ss',
         'showButtonPanel' => true
     ];
 
@@ -24,19 +28,24 @@ class TimeField extends ActiveField
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
                 $this->inputOptions['value'] = date($this->timeFormat, $value);
+                $this->hiddenInputOptions['value'] = date($this->altTimeFormat, $value);
             }
         }
         if (!$this->readOnly) {
             $timePicker = $this->timePicker;
             if (!array_key_exists('timeFormat', $timePicker)) {
-                $timePicker['timeFormat'] = strtr($this->timeFormat, [
-                    'H' => 'hh',
-                    'G' => 'h',
-                    'i' => 'mm',
-                    's' => 'ss'
-                ]);
+                $timePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
             }
-            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').timepicker(' . Json::encode($timePicker) . ');';
+            if (!array_key_exists('altTimeFormat', $timePicker)) {
+                $timePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
+            }
+            $inputId = Html::getInputId($this->model, $this->attribute);
+            $timePicker['altField'] = '#' . $inputId . '_alt';
+            $js = 'jQuery(\'#' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
+            $this->inputOptions['name'] = false;
+            $this->hiddenInputOptions['id'] = $inputId . '_alt';
+            $this->template .= "\n{hiddenInput}";
+            $this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);

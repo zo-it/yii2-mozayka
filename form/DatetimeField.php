@@ -14,11 +14,15 @@ class DatetimeField extends ActiveField
 
     public $dateFormat = 'd M Y';
 
-    public $timeFormat = 'H:i:s';
+    public $altDateFormat = 'Y-m-d';
+
+    public $timeFormat = 'H:i';
+
+    public $altTimeFormat = 'H:i:s';
+
+    public $hiddenInputOptions = [];
 
     public $dateTimePicker = [
-        //'dateFormat' => 'yy-mm-dd',
-        //'timeFormat' => 'hh:mm:ss',
         'showButtonPanel' => true,
         'numberOfMonths' => 3
     ];
@@ -29,33 +33,31 @@ class DatetimeField extends ActiveField
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
                 $this->inputOptions['value'] = Text::date($this->dateFormat . ' ' . $this->timeFormat, $value);
+                $this->hiddenInputOptions['value'] = date($this->altDateFormat . ' ' . $this->altTimeFormat, $value);
             }
         }
         if (!$this->readOnly) {
             $dateTimePicker = $this->dateTimePicker;
             if (!array_key_exists('dateFormat', $dateTimePicker)) {
-                $dateTimePicker['dateFormat'] = strtr($this->dateFormat, [
-                    'Y' => 'yy',
-                    //'y' => 'y',
-                    'F' => 'MM',
-                    //'M' => 'M',
-                    'm' => 'mm',
-                    'n' => 'm',
-                    'l' => 'DD',
-                    'D' => 'D',
-                    'd' => 'dd',
-                    'j' => 'd'
-                ]);
+                $dateTimePicker['dateFormat'] = Text::juiDateFormat($this->dateFormat);
+            }
+            if (!array_key_exists('altFormat', $dateTimePicker)) {
+                $dateTimePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
             }
             if (!array_key_exists('timeFormat', $dateTimePicker)) {
-                $dateTimePicker['timeFormat'] = strtr($this->timeFormat, [
-                    'H' => 'hh',
-                    'G' => 'h',
-                    'i' => 'mm',
-                    's' => 'ss'
-                ]);
+                $dateTimePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
             }
-            $js = 'jQuery(\'#' . Html::getInputId($this->model, $this->attribute) . '\').datetimepicker(' . Json::encode($dateTimePicker) . ');';
+            if (!array_key_exists('altTimeFormat', $dateTimePicker)) {
+                $dateTimePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
+            }
+            $inputId = Html::getInputId($this->model, $this->attribute);
+            $dateTimePicker['altField'] = '#' . $inputId . '_alt';
+            $dateTimePicker['altFieldTimeOnly'] = false;
+            $js = 'jQuery(\'#' . $inputId . '\').datetimepicker(' . Json::encode($dateTimePicker) . ');';
+            $this->inputOptions['name'] = false;
+            $this->hiddenInputOptions['id'] = $inputId . '_alt';
+            $this->template .= "\n{hiddenInput}";
+            $this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
             if (Yii::$app->getRequest()->getIsAjax()) {
                 $this->template .= "\n{script}";
                 $this->parts['{script}'] = Html::script($js);
