@@ -68,45 +68,22 @@ class ActiveController extends YiiActiveController
         return $behaviors;
     }
 
-    public function canCreate($model = null, $params = [])
-    {
-        return true;
-    }
-
-    public function canRead($model = null, $params = [])
-    {
-        return true;
-    }
-
-    public function canUpdate($model = null, $params = [])
-    {
-        return true;
-    }
-
-    public function canDelete($model = null, $params = [])
-    {
-        return true;
-    }
-
-    public function canList($query = null, $params = [])
-    {
-        return true;
-    }
-
-    public function canChangePosition($model = null, $params = [])
-    {
-        return $this->canUpdate($model, $params);
-    }
-
     public function checkAccess($action, $model = null, $params = [])
     {
+        $modelClass = $this->modelClass;
         switch ($action) {
-            case 'create-form': $allowed = $this->canCreate($model, $params); break;
-            case 'read-form': $allowed = $this->canRead($model, $params); break;
-            case 'update-form': $allowed = $this->canUpdate($model, $params); break;
-            case 'delete-form': $allowed = $this->canDelete($model, $params); break;
-            case 'list': $allowed = $this->canList($model, $params); break;
-            case 'change-position': $allowed = $this->canChangePosition($model, $params); break;
+            case 'create-form': $allowed = $modelClass::canCreate($model, $params); break;
+            case 'read-form': $allowed = $modelClass::canRead($model, $params); break;
+            case 'update-form': $allowed = $modelClass::canUpdate($model, $params); break;
+            case 'delete-form': $allowed = $modelClass::canDelete($model, $params); break;
+            case 'list':
+                $query = null;
+                if (array_key_exists('query', $params)) {
+                    $query = $params['query'];
+                    unset($params['query']);
+                }
+                $allowed = $modelClass::canList($query, $params); break;
+            case 'change-position': $allowed = $modelClass::canChangePosition($model, $params); break;
             default: $allowed = false; break;
         }
         if (!$allowed) {
