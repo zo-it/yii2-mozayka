@@ -16,6 +16,10 @@ class DatetimeField extends ActiveField
 
     public $altDateFormat = 'Y-m-d';
 
+    public $separator = ' ';
+
+    public $altSeparator = ' ';
+
     public $timeFormat = 'H:i:s';
 
     public $altTimeFormat = 'H:i:s';
@@ -32,8 +36,8 @@ class DatetimeField extends ActiveField
         if (!array_key_exists('value', $this->inputOptions)) {
             $value = $this->model->{$this->attribute};
             if (is_int($value)) {
-                $this->inputOptions['value'] = Text::date($this->dateFormat . ' ' . $this->timeFormat, $value);
-                $this->hiddenInputOptions['value'] = date($this->altDateFormat . ' ' . $this->altTimeFormat, $value);
+                $this->inputOptions['value'] = Text::date($this->dateFormat . $this->separator . $this->timeFormat, $value);
+                $this->hiddenInputOptions['value'] = date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
             }
         }
         if (!$this->readOnly) {
@@ -43,6 +47,12 @@ class DatetimeField extends ActiveField
             }
             if (!array_key_exists('altFormat', $dateTimePicker)) {
                 $dateTimePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
+            }
+            if (!array_key_exists('separator', $dateTimePicker)) {
+                $dateTimePicker['separator'] = $this->separator;
+            }
+            if (!array_key_exists('altSeparator', $dateTimePicker)) {
+                $dateTimePicker['altSeparator'] = $this->altSeparator;
             }
             if (!array_key_exists('timeFormat', $dateTimePicker)) {
                 $dateTimePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
