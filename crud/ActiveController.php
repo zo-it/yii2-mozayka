@@ -10,12 +10,23 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
+    public $basename = null;
+
+    public $filterModelClass = null;
+
     public function init()
     {
+        $this->basename = StringHelper::basename(get_class($this), 'Controller');
         if (!$this->modelClass) {
-            $modelClass = 'app\models\\' . StringHelper::basename(get_class($this), 'Controller');
+            $modelClass = 'app\models\\' . $this->basename;
             if (class_exists($modelClass)) {
                 $this->modelClass = $modelClass;
+            }
+        }
+        if (!$this->filterModelClass) {
+            $filterModelClass = 'app\models\filters\\' . $this->basename;
+            if (class_exists($filterModelClass)) {
+                $this->filterModelClass = $filterModelClass;
             }
         }
         parent::init();
@@ -49,6 +60,7 @@ class ActiveController extends YiiActiveController
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
                 'modelClass' => $this->modelClass,
+                'filterModelClass' => $this->filterModelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ],
             'change-position' => [

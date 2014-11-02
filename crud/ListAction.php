@@ -8,6 +8,8 @@ use Yii;
 class ListAction extends Action
 {
 
+    public $filterModelClass = null;
+
     public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
     public $dataProviderConfig = [];
@@ -42,6 +44,9 @@ class ListAction extends Action
             $columns = array_merge($columns, $this->prepareColumns(new $this->modelClass));
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
+        }
+        if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
+            $gridConfig['filterModel'] = new $this->filterModelClass;
         }
         // rendering
         $viewParams = [
