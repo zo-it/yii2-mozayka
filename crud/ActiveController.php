@@ -4,6 +4,7 @@ namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
     yii\helpers\StringHelper,
+    yii\mozayka\db\ActiveRecord,
     yii\web\ForbiddenHttpException;
 
 
@@ -24,7 +25,7 @@ class ActiveController extends YiiActiveController
             }
         }
         if (!$this->filterModelClass) {
-            $filterModelClass = 'app\models\filters\\' . $this->basename;
+            $filterModelClass = 'app\models\filters\\' . $this->basename . 'Filter';
             if (class_exists($filterModelClass)) {
                 $this->filterModelClass = $filterModelClass;
             }
@@ -91,19 +92,35 @@ class ActiveController extends YiiActiveController
                     unset($params['newModel']);
                 }
                 $modelClass = $this->modelClass;
-                $allowed = $modelClass::canCreate($params, $newModel);
+                if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $modelClass::canCreate($params, $newModel);
+                } else {
+                    $allowed = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $query) : true;
+                }
                 break;
             case 'view':
             case 'read-form':
-                $allowed = $model->canRead($params);
+                if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $model->canRead($params);
+                } else {
+                    $allowed = is_callable([$model, 'canRead']) ? $model->canRead() : true;
+                }
                 break;
             case 'update':
             case 'update-form':
-                $allowed = $model->canUpdate($params);
+                if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $model->canUpdate($params);
+                } else {
+                    $allowed = is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true;
+                }
                 break;
             case 'delete':
             case 'delete-form':
-                $allowed = $model->canDelete($params);
+                if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $model->canDelete($params);
+                } else {
+                    $allowed = is_callable([$model, 'canDelete']) ? $model->canDelete() : true;
+                }
                 break;
             case 'index':
             case 'list':
@@ -113,10 +130,18 @@ class ActiveController extends YiiActiveController
                     unset($params['query']);
                 }
                 $modelClass = $this->modelClass;
-                $allowed = $modelClass::canList($params, $query);
+                if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $modelClass::canList($params, $query);
+                } else {
+                    $allowed = is_callable([$modelClass, 'canList']) ? $modelClass::canList($params, $query) : true;
+                }
                 break;
             case 'change-position':
-                $allowed = $model->canChangePosition($params);
+                if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
+                    $allowed = $model->canChangePosition($params);
+                } else {
+                    $allowed = is_callable([$model, 'canChangePosition']) ? $model->canChangePosition() : true;
+                }
                 break;
             default:
                 $allowed = false;
