@@ -6,6 +6,8 @@ use yii\bootstrap\Alert,
  * @var yii\web\View $this
  * @var string|null $successMessage
  * @var string|null $errorMessage
+ * @var string $formClass
+ * @var array $formConfig
  * @var string $gridClass
  * @var array $gridConfig
  * @var bool $canCreate
@@ -31,6 +33,10 @@ $buttonGroup = Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'clearfix']);
 echo $buttonGroup;
 
+$gridConfig['form'] = $formClass::begin($formConfig);
+
 echo $gridClass::widget($gridConfig);
+
+$formClass::end();
 
 echo $buttonGroup;

@@ -67,7 +67,7 @@ class UpdateFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['update-form', 'id' => $id, 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
         // rendering
         $viewParams = [

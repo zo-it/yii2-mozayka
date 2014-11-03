@@ -2,8 +2,7 @@
 
 namespace yii\mozayka\crud;
 
-use yii\base\Model,
-    yii\web\Response,
+use yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\helpers\VarDumper,
     Yii;
@@ -64,7 +63,7 @@ class DeleteFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['update-form', 'id' => $id, 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
         $formConfig['readOnly'] = true;
         // rendering

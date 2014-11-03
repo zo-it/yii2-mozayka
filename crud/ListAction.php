@@ -11,6 +11,10 @@ class ListAction extends Action
 
     public $filterModelClass = null;
 
+    public $formClass = 'yii\mozayka\form\ActiveForm';
+
+    public $formConfig = [];
+
     public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
     public $dataProviderConfig = [];
@@ -38,6 +42,11 @@ class ListAction extends Action
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
+        // form config
+        $formConfig = $this->formConfig;
+        if (!array_key_exists('validationUrl', $formConfig)) {
+            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
+        }
         // grid config
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
@@ -46,8 +55,14 @@ class ListAction extends Action
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
+        $request = Yii::$app->getRequest();
         if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
-            $gridConfig['filterModel'] = new $this->filterModelClass;
+            /* @var yii\base\Model $filterModel */
+            $filterModel = new $this->filterModelClass;
+            if ($request->getIsGet()) {
+                $filterModel->load($request->getQueryParams());
+            }
+            $gridConfig['filterModel'] = $filterModel;
         }
         // can create?
         $modelClass = $this->modelClass;
@@ -60,11 +75,13 @@ class ListAction extends Action
         $viewParams = [
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
+            'formClass' => $this->formClass,
+            'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
             'canCreate' => $canCreate
         ];
-        if (Yii::$app->getRequest()->getIsAjax()) {
+        if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
         } else {
             return $this->controller->render($this->view, $viewParams);

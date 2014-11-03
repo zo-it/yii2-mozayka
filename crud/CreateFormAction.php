@@ -69,7 +69,7 @@ class CreateFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['create-form', 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
         }
         // rendering
         $viewParams = [
