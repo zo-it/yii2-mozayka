@@ -54,7 +54,7 @@ class ListAction extends Action
             'errorMessage' => $errorMessage,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
-            'canCreate' => $modelClass::canCreate()
+            'canCreate' => is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
