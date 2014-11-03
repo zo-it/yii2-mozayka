@@ -44,11 +44,11 @@ class Action extends YiiAction
                     if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
                             $attribute = $value[0];
                             $options = $value;
                             unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
                             $attribute = $value['attribute'];
                             $options = $value;
                             unset($options['attribute']);
@@ -81,12 +81,14 @@ class Action extends YiiAction
             if ($attribute) {
                 $options['attribute'] = $attribute;
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'invisible') {
-                        $options['visible'] = false;
-                    } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
+                    if ($options['type'] && is_string($options['type'])) {
+                        if ($options['type'] == 'invisible') {
+                            $options['visible'] = false;
+                        } elseif (!array_key_exists('class', $options)) {
+                            $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                            if (class_exists($fieldClass)) {
+                                $options['class'] = $fieldClass;
+                            }
                         }
                     }
                     unset($options['type']);
@@ -157,11 +159,11 @@ class Action extends YiiAction
                     if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
                             $attribute = $value[0];
                             $options = $value;
                             unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
                             $attribute = $value['attribute'];
                             $options = $value;
                             unset($options['attribute']);
@@ -193,12 +195,14 @@ class Action extends YiiAction
             }
             if ($attribute) {
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'invisible') {
-                        $options['visible'] = false;
-                    } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
+                    if ($options['type'] && is_string($options['type'])) {
+                        if ($options['type'] == 'invisible') {
+                            $options['visible'] = false;
+                        } elseif (!array_key_exists('class', $options)) {
+                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                            if (class_exists($fieldClass)) {
+                                $options['class'] = $fieldClass;
+                            }
                         }
                     }
                     unset($options['type']);
