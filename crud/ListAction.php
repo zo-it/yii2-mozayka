@@ -49,7 +49,7 @@ class ListAction extends Action
         if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
             $gridConfig['filterModel'] = new $this->filterModelClass;
         }
-        // can create
+        // can create?
         $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canCreate = $modelClass::canCreate();

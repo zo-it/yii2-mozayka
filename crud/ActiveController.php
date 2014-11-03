@@ -5,7 +5,8 @@ namespace yii\mozayka\crud;
 use yii\rest\ActiveController as YiiActiveController,
     yii\helpers\StringHelper,
     yii\mozayka\db\ActiveRecord,
-    yii\web\ForbiddenHttpException;
+    yii\web\ForbiddenHttpException,
+    Yii;
 
 
 class ActiveController extends YiiActiveController
@@ -147,7 +148,11 @@ class ActiveController extends YiiActiveController
                 $allowed = false;
         }
         if (!$allowed) {
-            throw new ForbiddenHttpException('Access denied');
+            $user = Yii::$app->getUser();
+            throw new ForbiddenHttpException(Yii::t('mozayka', 'Permission denied for user "{user}" to perform action "{action}".', [
+                'user' => $user->getIsGuest() ? 'guest' : $user->getId(),
+                'action' => $this->id . '/' . $action
+            ]));
         }
     }
 }
