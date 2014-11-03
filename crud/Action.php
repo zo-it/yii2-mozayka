@@ -117,14 +117,13 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
-                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            }
             if ($behavior instanceof SoftDeleteBehavior) {
                 if (array_key_exists($behavior->deletedAttribute, $columns)) {
                     $columns[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
+                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
                 }
             }
         }
@@ -235,7 +234,15 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof TimestampBehavior) {
+            if ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $fields)) {
+                    $fields[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
+                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimestampBehavior) {
                 if (array_key_exists($behavior->createdAtAttribute, $fields)) {
                     $fields[$behavior->createdAtAttribute]['readOnly'] = true;
                 }
@@ -244,16 +251,6 @@ class Action extends YiiAction
                 }
                 if (array_key_exists($behavior->timestampAttribute, $fields)) {
                     $fields[$behavior->timestampAttribute]['readOnly'] = true;
-                }
-            }
-            if ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
-                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            }
-            if ($behavior instanceof SoftDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAttribute, $fields)) {
-                    $fields[$behavior->deletedAttribute]['visible'] = false;
                 }
             }
         }
