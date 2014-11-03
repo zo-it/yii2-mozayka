@@ -96,7 +96,7 @@ class ActiveController extends YiiActiveController
                 if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
                     $allowed = $modelClass::canCreate($params, $newModel);
                 } else {
-                    $allowed = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : true;
+                    $allowed = method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : true;
                 }
                 break;
             case 'view':
@@ -104,7 +104,7 @@ class ActiveController extends YiiActiveController
                 if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
                     $allowed = $model->canRead($params);
                 } else {
-                    $allowed = is_callable([$model, 'canRead']) ? $model->canRead() : true;
+                    $allowed = method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead() : true;
                 }
                 break;
             case 'update':
@@ -112,7 +112,7 @@ class ActiveController extends YiiActiveController
                 if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
                     $allowed = $model->canUpdate($params);
                 } else {
-                    $allowed = is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true;
+                    $allowed = method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true;
                 }
                 break;
             case 'delete':
@@ -120,7 +120,7 @@ class ActiveController extends YiiActiveController
                 if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
                     $allowed = $model->canDelete($params);
                 } else {
-                    $allowed = is_callable([$model, 'canDelete']) ? $model->canDelete() : true;
+                    $allowed = method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete() : true;
                 }
                 break;
             case 'index':
@@ -134,14 +134,14 @@ class ActiveController extends YiiActiveController
                 if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
                     $allowed = $modelClass::canList($params, $query);
                 } else {
-                    $allowed = is_callable([$modelClass, 'canList']) ? $modelClass::canList($params, $query) : true;
+                    $allowed = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList($params, $query) : true;
                 }
                 break;
             case 'change-position':
                 if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
                     $allowed = $model->canChangePosition($params);
                 } else {
-                    $allowed = is_callable([$model, 'canChangePosition']) ? $model->canChangePosition() : true;
+                    $allowed = method_exists($model, 'canChangePosition') && is_callable([$model, 'canChangePosition']) ? $model->canChangePosition() : true;
                 }
                 break;
             default:

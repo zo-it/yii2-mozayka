@@ -25,7 +25,7 @@ class Action extends YiiAction
             $attributes = $model->attributes();
         }
         $rawColumns = $this->columns;
-        if (!$rawColumns && is_callable([$model, 'attributeColumns'])) {
+        if (!$rawColumns && method_exists($model, 'attributeColumns') && is_callable([$model, 'attributeColumns'])) {
             $rawColumns = $model->attributeColumns();
         }
         $offset = array_search('*', $rawColumns);
@@ -139,7 +139,7 @@ class Action extends YiiAction
             $attributes = $model->attributes();
         }
         $rawFields = $this->fields;
-        if (!$rawFields && is_callable([$model, 'attributeFields'])) {
+        if (!$rawFields && method_exists($model, 'attributeFields') && is_callable([$model, 'attributeFields'])) {
             $rawFields = $model->attributeFields();
         }
         $offset = array_search('*', $rawFields);

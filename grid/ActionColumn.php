@@ -29,9 +29,9 @@ class ActionColumn extends YiiActionColumn
             ])));
         } else {
             $this->template = implode(' ', array_keys(array_filter([
-                '{view}' => is_callable([$model, 'canRead']) ? $model->canRead() : true,
-                '{update}' => is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true,
-                '{delete}' => is_callable([$model, 'canDelete']) ? $model->canDelete() : true
+                '{view}' => method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead() : true,
+                '{update}' => method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true,
+                '{delete}' => method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete() : true
             ])));
         }
         $fix = [

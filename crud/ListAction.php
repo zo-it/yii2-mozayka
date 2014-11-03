@@ -70,7 +70,7 @@ class ListAction extends Action
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canCreate = $modelClass::canCreate();
         } else {
-            $canCreate = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true;
+            $canCreate = method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true;
         }
         // rendering
         $viewParams = [
