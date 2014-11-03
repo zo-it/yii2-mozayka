@@ -11,4 +11,6 @@ class GridView extends YiiGridView
     public $dataColumnClass = 'yii\mozayka\grid\DataColumn';
 
     public $form = null;
+
+    public $filterFields = [];
 }

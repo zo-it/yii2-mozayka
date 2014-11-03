@@ -2,7 +2,9 @@
 
 namespace yii\mozayka\crud;
 
-use yii\mozayka\db\ActiveRecord,
+use yii\web\Response,
+    yii\mozayka\form\ActiveForm,
+    yii\mozayka\db\ActiveRecord,
     Yii;
 
 
@@ -13,7 +15,10 @@ class ListAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['method' => 'get'];
+    public $formConfig = [
+        'method' => 'get',
+        'layout' => 'horizontal'
+    ];
 
     public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
@@ -61,9 +66,14 @@ class ListAction extends Action
             $filterModel = new $this->filterModelClass;
             if ($request->getIsGet()) {
                 $filterModel->load($request->getQueryParams());
+                // validation
+                if ($request->getIsAjax() && $request->getQueryParam('validation')) {
+                    Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($filterModel);
+                }
             }
             $gridConfig['filterModel'] = $filterModel;
-//$gridConfig['filterFields'] = $this->prepareFields($filterModel);
+            $gridConfig['filterFields'] = $this->prepareFields($filterModel);
         }
         // can create?
         $modelClass = $this->modelClass;
