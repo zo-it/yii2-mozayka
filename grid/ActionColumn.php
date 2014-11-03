@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\grid;
 
-use yii\grid\ActionColumn as YiiActionColumn;
+use yii\grid\ActionColumn as YiiActionColumn,
+    yii\mozayka\db\ActiveRecord;
 
 
 class ActionColumn extends YiiActionColumn
@@ -20,11 +21,19 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        $this->template = implode(' ', array_keys(array_filter([
-            '{view}' => is_callable([$model, 'canRead']) ? $model->canRead() : true,
-            '{update}' => is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true,
-            '{delete}' => is_callable([$model, 'canDelete']) ? $model->canDelete() : true
-        ])));
+        if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
+            $this->template = implode(' ', array_keys(array_filter([
+                '{view}' => $model->canRead(),
+                '{update}' => $model->canUpdate(),
+                '{delete}' => $model->canDelete()
+            ])));
+        } else {
+            $this->template = implode(' ', array_keys(array_filter([
+                '{view}' => is_callable([$model, 'canRead']) ? $model->canRead() : true,
+                '{update}' => is_callable([$model, 'canUpdate']) ? $model->canUpdate() : true,
+                '{delete}' => is_callable([$model, 'canDelete']) ? $model->canDelete() : true
+            ])));
+        }
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
