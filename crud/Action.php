@@ -3,6 +3,7 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
+    yii\base\Model,
     yii\db\ActiveRecord,
     yii\helpers\ArrayHelper,
     yii\kladovka\behaviors\TimestampBehavior,
@@ -17,14 +18,14 @@ class Action extends YiiAction
 
     public $fields = [];
 
-    protected function prepareColumns(ActiveRecord $model)
+    protected function prepareColumns(Model $model)
     {
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
         }
         $rawColumns = $this->columns;
-        if (!$rawColumns && method_exists($model, 'attributeColumns')) {
+        if (!$rawColumns && is_callable([$model, 'attributeColumns'])) {
             $rawColumns = $model->attributeColumns();
         }
         $offset = array_search('*', $rawColumns);
@@ -33,14 +34,14 @@ class Action extends YiiAction
         } elseif (!$rawColumns) {
             $rawColumns = $attributes;
         }
-        $tableSchema = $model->getTableSchema();
+        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
         $columns = [];
         foreach ($rawColumns as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
                 if ($value) {
-                    if (is_string($value) && $model->hasAttribute($value)) {
+                    if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
                         if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
@@ -54,7 +55,7 @@ class Action extends YiiAction
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
@@ -130,14 +131,14 @@ class Action extends YiiAction
         }));
     }
 
-    protected function prepareFields(ActiveRecord $model)
+    protected function prepareFields(Model $model)
     {
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
         }
         $rawFields = $this->fields;
-        if (!$rawFields && method_exists($model, 'attributeFields')) {
+        if (!$rawFields && is_callable([$model, 'attributeFields'])) {
             $rawFields = $model->attributeFields();
         }
         $offset = array_search('*', $rawFields);
@@ -146,14 +147,14 @@ class Action extends YiiAction
         } elseif (!$rawFields) {
             $rawFields = $attributes;
         }
-        $tableSchema = $model->getTableSchema();
+        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
         $fields = [];
         foreach ($rawFields as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
                 if ($value) {
-                    if (is_string($value) && $model->hasAttribute($value)) {
+                    if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
                         if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
@@ -167,7 +168,7 @@ class Action extends YiiAction
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {

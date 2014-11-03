@@ -13,7 +13,7 @@ class ListAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [];
+    public $formConfig = ['method' => 'get'];
 
     public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
@@ -63,6 +63,7 @@ class ListAction extends Action
                 $filterModel->load($request->getQueryParams());
             }
             $gridConfig['filterModel'] = $filterModel;
+//$gridConfig['filterFields'] = $this->prepareFields($filterModel);
         }
         // can create?
         $modelClass = $this->modelClass;

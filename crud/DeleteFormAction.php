@@ -13,7 +13,7 @@ class DeleteFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [];
+    public $formConfig = ['readOnly' => true];
 
     public $view = '@yii/mozayka/views/crud/delete-form';
 
@@ -65,7 +65,6 @@ class DeleteFormAction extends Action
         if (!array_key_exists('validationUrl', $formConfig)) {
             $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
-        $formConfig['readOnly'] = true;
         // rendering
         $viewParams = [
             'successMessage' => $successMessage,
