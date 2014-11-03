@@ -95,7 +95,7 @@ class ActiveController extends YiiActiveController
                 if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
                     $allowed = $modelClass::canCreate($params, $newModel);
                 } else {
-                    $allowed = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $query) : true;
+                    $allowed = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : true;
                 }
                 break;
             case 'view':
@@ -147,7 +147,7 @@ class ActiveController extends YiiActiveController
                 $allowed = false;
         }
         if (!$allowed) {
-            throw new ForbiddenHttpException;
+            throw new ForbiddenHttpException('Access denied');
         }
     }
 }

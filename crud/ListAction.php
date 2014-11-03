@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\crud;
 
-use Yii;
+use yii\mozayka\db\ActiveRecord,
+    Yii;
 
 
 class ListAction extends Action
@@ -48,13 +49,20 @@ class ListAction extends Action
         if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
             $gridConfig['filterModel'] = new $this->filterModelClass;
         }
+        // can create
+        $modelClass = $this->modelClass;
+        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+            $canCreate = $modelClass::canCreate();
+        } else {
+            $canCreate = is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true;
+        }
         // rendering
         $viewParams = [
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
-            'canCreate' => is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true
+            'canCreate' => $canCreate
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
