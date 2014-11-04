@@ -26,7 +26,7 @@ class UpdateFormAction extends Action
         $model = $this->findModel($id);
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'update', $model);
+            call_user_func($this->checkAccess, $this->id, $model);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
@@ -67,7 +67,7 @@ class UpdateFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['update-form', 'id' => $id, 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
         // rendering
         $viewParams = [

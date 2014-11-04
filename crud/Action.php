@@ -3,6 +3,7 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as YiiAction,
+    yii\base\Model,
     yii\db\ActiveRecord,
     yii\helpers\ArrayHelper,
     yii\kladovka\behaviors\TimestampBehavior,
@@ -17,14 +18,14 @@ class Action extends YiiAction
 
     public $fields = [];
 
-    protected function prepareColumns(ActiveRecord $model)
+    protected function prepareColumns(Model $model)
     {
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
         }
         $rawColumns = $this->columns;
-        if (!$rawColumns && method_exists($model, 'attributeColumns')) {
+        if (!$rawColumns && method_exists($model, 'attributeColumns') && is_callable([$model, 'attributeColumns'])) {
             $rawColumns = $model->attributeColumns();
         }
         $offset = array_search('*', $rawColumns);
@@ -33,28 +34,28 @@ class Action extends YiiAction
         } elseif (!$rawColumns) {
             $rawColumns = $attributes;
         }
-        $tableSchema = $model->getTableSchema();
+        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
         $columns = [];
         foreach ($rawColumns as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
                 if ($value) {
-                    if (is_string($value) && $model->hasAttribute($value)) {
+                    if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
                             $attribute = $value[0];
                             $options = $value;
                             unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
                             $attribute = $value['attribute'];
                             $options = $value;
                             unset($options['attribute']);
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
@@ -80,12 +81,14 @@ class Action extends YiiAction
             if ($attribute) {
                 $options['attribute'] = $attribute;
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'invisible') {
-                        $options['visible'] = false;
-                    } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
+                    if ($options['type'] && is_string($options['type'])) {
+                        if ($options['type'] == 'invisible') {
+                            $options['visible'] = false;
+                        } elseif (!array_key_exists('class', $options)) {
+                            $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                            if (class_exists($fieldClass)) {
+                                $options['class'] = $fieldClass;
+                            }
                         }
                     }
                     unset($options['type']);
@@ -114,14 +117,13 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
-                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            }
             if ($behavior instanceof SoftDeleteBehavior) {
                 if (array_key_exists($behavior->deletedAttribute, $columns)) {
                     $columns[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
+                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
                 }
             }
         }
@@ -130,14 +132,14 @@ class Action extends YiiAction
         }));
     }
 
-    protected function prepareFields(ActiveRecord $model)
+    protected function prepareFields(Model $model)
     {
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
         }
         $rawFields = $this->fields;
-        if (!$rawFields && method_exists($model, 'attributeFields')) {
+        if (!$rawFields && method_exists($model, 'attributeFields') && is_callable([$model, 'attributeFields'])) {
             $rawFields = $model->attributeFields();
         }
         $offset = array_search('*', $rawFields);
@@ -146,28 +148,28 @@ class Action extends YiiAction
         } elseif (!$rawFields) {
             $rawFields = $attributes;
         }
-        $tableSchema = $model->getTableSchema();
+        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
         $fields = [];
         foreach ($rawFields as $key => $value) {
             $attribute = null;
             $options = [];
             if (is_int($key)) {
                 if ($value) {
-                    if (is_string($value) && $model->hasAttribute($value)) {
+                    if (is_string($value) && in_array($value, $attributes)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && $model->hasAttribute($value[0])) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
                             $attribute = $value[0];
                             $options = $value;
                             unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && $model->hasAttribute($value['attribute'])) {
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
                             $attribute = $value['attribute'];
                             $options = $value;
                             unset($options['attribute']);
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && $model->hasAttribute($key)) {
+            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
@@ -192,12 +194,14 @@ class Action extends YiiAction
             }
             if ($attribute) {
                 if (array_key_exists('type', $options)) {
-                    if ($options['type'] == 'invisible') {
-                        $options['visible'] = false;
-                    } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
+                    if ($options['type'] && is_string($options['type'])) {
+                        if ($options['type'] == 'invisible') {
+                            $options['visible'] = false;
+                        } elseif (!array_key_exists('class', $options)) {
+                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                            if (class_exists($fieldClass)) {
+                                $options['class'] = $fieldClass;
+                            }
                         }
                     }
                     unset($options['type']);
@@ -230,7 +234,15 @@ class Action extends YiiAction
             }
         }
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof TimestampBehavior) {
+            if ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $fields)) {
+                    $fields[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
+                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimestampBehavior) {
                 if (array_key_exists($behavior->createdAtAttribute, $fields)) {
                     $fields[$behavior->createdAtAttribute]['readOnly'] = true;
                 }
@@ -239,16 +251,6 @@ class Action extends YiiAction
                 }
                 if (array_key_exists($behavior->timestampAttribute, $fields)) {
                     $fields[$behavior->timestampAttribute]['readOnly'] = true;
-                }
-            }
-            if ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
-                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            }
-            if ($behavior instanceof SoftDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAttribute, $fields)) {
-                    $fields[$behavior->deletedAttribute]['visible'] = false;
                 }
             }
         }

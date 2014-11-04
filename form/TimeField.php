@@ -40,10 +40,10 @@ class TimeField extends ActiveField
                 $timePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
             }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $timePicker['altField'] = '#' . $inputId . '_alt';
+            $timePicker['altField'] = '#' . $inputId . '-alt';
             $js = 'jQuery(\'#' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
             $this->inputOptions['name'] = false;
-            $this->hiddenInputOptions['id'] = $inputId . '_alt';
+            $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
             $this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
             if (Yii::$app->getRequest()->getIsAjax()) {

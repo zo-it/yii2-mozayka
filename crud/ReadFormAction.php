@@ -10,7 +10,7 @@ class ReadFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [];
+    public $formConfig = ['readOnly' => true];
 
     public $view = '@yii/mozayka/views/crud/read-form';
 
@@ -19,11 +19,10 @@ class ReadFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'view', $model);
+            call_user_func($this->checkAccess, $this->id, $model);
         }
         // form config
         $formConfig = $this->formConfig;
-        $formConfig['readOnly'] = true;
         // rendering
         $viewParams = [
             'formClass' => $this->formClass,

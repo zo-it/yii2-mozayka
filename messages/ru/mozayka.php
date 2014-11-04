@@ -2,6 +2,7 @@
 
 return [
     'Create' => 'Создать',
+    'Print' => 'Печать',
     'Update' => 'Редактировать',
     'Save' => 'Сохранить',
     'Record has been successfully saved.' => 'Запись была успешно сохранена.',
@@ -11,5 +12,6 @@ return [
     'Record has not been deleted.' => 'Запись не была удалена.',
     'Back' => 'Назад',
     'Yes' => 'Да',
-    'No' => 'Нет'
+    'No' => 'Нет',
+    'Permission denied for user "{user}" to perform action "{action}".' => 'Отказано в доступе для пользователя "{user}" чтобы выполнить действие "{action}".'
 ];

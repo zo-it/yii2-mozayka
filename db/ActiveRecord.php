@@ -23,4 +23,39 @@ class ActiveRecord extends YiiActiveRecord
     {
         return [];
     }
+
+    public static function canCreate($params = [], $newModel = null)
+    {
+        return true;
+    }
+
+    public function canRead($params = [])
+    {
+        return true;
+    }
+
+    public function canUpdate($params = [])
+    {
+        return true;
+    }
+
+    public function canDelete($params = [])
+    {
+        return true;
+    }
+
+    public static function canList($params = [], $query = null)
+    {
+        return true;
+    }
+
+    public function canChangePosition($params = [])
+    {
+        return $this->canUpdate($params);
+    }
+
+    public function canSelect($params = [])
+    {
+        return $this->canRead($params);
+    }
 }

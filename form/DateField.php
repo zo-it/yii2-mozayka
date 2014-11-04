@@ -41,10 +41,10 @@ class DateField extends ActiveField
                 $datePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
             }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $datePicker['altField'] = '#' . $inputId . '_alt';
+            $datePicker['altField'] = '#' . $inputId . '-alt';
             $js = 'jQuery(\'#' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
             $this->inputOptions['name'] = false;
-            $this->hiddenInputOptions['id'] = $inputId . '_alt';
+            $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
             $this->parts['{hiddenInput}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->hiddenInputOptions);
             if (Yii::$app->getRequest()->getIsAjax()) {

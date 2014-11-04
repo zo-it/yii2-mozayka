@@ -17,6 +17,7 @@ foreach ($fields as $attribute => $options) {
 
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => [
+        Html::button(Yii::t('mozayka', 'Print'), ['class' => 'btn btn-default', 'onclick' => 'print();']),
         Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default'])
     ],
     'options' => ['class' => 'pull-right']

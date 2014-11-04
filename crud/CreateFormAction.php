@@ -27,7 +27,7 @@ class CreateFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = new $this->modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'create', $model);
+            call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
@@ -69,7 +69,7 @@ class CreateFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['create-form', 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
         }
         // rendering
         $viewParams = [

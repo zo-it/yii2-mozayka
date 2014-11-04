@@ -2,8 +2,7 @@
 
 namespace yii\mozayka\crud;
 
-use yii\base\Model,
-    yii\web\Response,
+use yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\helpers\VarDumper,
     Yii;
@@ -14,7 +13,7 @@ class DeleteFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [];
+    public $formConfig = ['readOnly' => true];
 
     public $view = '@yii/mozayka/views/crud/delete-form';
 
@@ -23,7 +22,7 @@ class DeleteFormAction extends Action
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, /*$this->id*/'delete', $model);
+            call_user_func($this->checkAccess, $this->id, $model);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
@@ -64,9 +63,8 @@ class DeleteFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = ['update-form', 'id' => $id, 'validation' => 1];
+            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
-        $formConfig['readOnly'] = true;
         // rendering
         $viewParams = [
             'successMessage' => $successMessage,
