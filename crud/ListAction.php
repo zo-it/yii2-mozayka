@@ -15,10 +15,7 @@ class ListAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = [
-        'method' => 'get',
-        'layout' => 'horizontal'
-    ];
+    public $formConfig = ['method' => 'get'];
 
     public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
 
