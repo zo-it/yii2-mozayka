@@ -26,7 +26,7 @@ class ActiveController extends YiiActiveController
             }
         }
         if (!$this->filterModelClass) {
-            $filterModelClass = 'app\models\filters\\' . $this->basename . 'Filter';
+            $filterModelClass = 'app\models\search\\' . $this->basename . 'Search';
             if (class_exists($filterModelClass)) {
                 $this->filterModelClass = $filterModelClass;
             }
@@ -36,7 +36,7 @@ class ActiveController extends YiiActiveController
 
     public function actions()
     {
-        return parent::actions() + [
+        return array_merge(parent::actions(), [
             'create-form' => [
                 'class' => 'yii\mozayka\crud\CreateFormAction',
                 'modelClass' => $this->modelClass,
@@ -70,7 +70,7 @@ class ActiveController extends YiiActiveController
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ]
-        ];
+        ]);
     }
 
     public function behaviors()
