@@ -24,4 +24,15 @@ class DataColumn extends YiiDataColumn
         }
         return parent::renderFilterCell();
     }
+
+    protected function renderFilterCellContent()
+    {
+        $form = $this->grid->form;
+        $filterModel = $this->grid->filterModel;
+        $filterFields = $this->grid->filterFields;
+        if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
+            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]);
+        }
+        return parent::renderFilterCellContent();
+    }
 }

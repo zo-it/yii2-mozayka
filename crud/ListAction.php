@@ -68,6 +68,7 @@ class ListAction extends Action
                     Yii::$app->getResponse()->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($filterModel);
                 }
+$filterModel->validate();
             }
             $gridConfig['filterModel'] = $filterModel;
             $gridConfig['filterFields'] = $this->prepareFields($filterModel);
