@@ -26,24 +26,22 @@ class ActiveRecord extends YiiActiveRecord
 
     public static function canCreate($params = [], $newModel = null)
     {
-        return (bool)static::getTableSchema()->primaryKey;
+        return static::hasRealPrimaryKey();
     }
 
     public function canRead($params = [])
     {
-        return true;
+        return $this::hasPrimaryKey();
     }
 
     public function canUpdate($params = [])
     {
-        $modelClass = get_class($this);
-        return (bool)$modelClass::getTableSchema()->primaryKey;
+        return $this::hasRealPrimaryKey();
     }
 
     public function canDelete($params = [])
     {
-        $modelClass = get_class($this);
-        return (bool)$modelClass::getTableSchema()->primaryKey;
+        return $this::hasRealPrimaryKey();
     }
 
     public static function canList($params = [], $query = null)
@@ -58,7 +56,6 @@ class ActiveRecord extends YiiActiveRecord
 
     public function canSelect($params = [])
     {
-        $modelClass = get_class($this);
-        return (bool)$modelClass::getTableSchema()->primaryKey || $this->canRead($params);
+        return $this->canRead($params);
     }
 }
