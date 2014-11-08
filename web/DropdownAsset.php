@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\web;
 
-use yii\web\AssetBundle;
+use yii\web\AssetBundle,
+    yii\web\View;
 
 
 class DropdownAsset extends AssetBundle
@@ -21,4 +22,11 @@ class DropdownAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset'
     ];
+
+    public static function register($view)
+    {
+        $view->registerJs('jQuery(document).on(\'beforeFilter.yiiGridView\', function (e) { if (jQuery(\'.dropdown:visible\').size()) e.result = false; });');
+        $view->registerJs('jQuery.fn.dropdown2 = jQuery.fn.dropdown;', View::POS_HEAD);
+        return $view->registerAssetBundle(get_called_class(), View::POS_HEAD);
+    }
 }

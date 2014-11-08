@@ -1,7 +1,7 @@
 <?php
 use yii\bootstrap\Alert,
-    yii\bootstrap\ButtonGroup,
-    yii\helpers\Html;
+    yii\helpers\Html,
+    yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
  * @var string|null $successMessage
@@ -26,6 +26,7 @@ if ($canCreate) {
     $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
 $buttons[] = Html::button(Yii::t('mozayka', 'Print'), ['class' => 'btn btn-default', 'onclick' => 'print();']);
+$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
 
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,

@@ -1,6 +1,6 @@
 <?php
-use yii\bootstrap\ButtonGroup,
-    yii\helpers\Html;
+use yii\helpers\Html,
+    yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
  * @var string $formClass
