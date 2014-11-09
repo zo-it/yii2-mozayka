@@ -18,6 +18,8 @@ class ActiveController extends YiiActiveController
 
     public $deleteScenario = ActiveRecord::SCENARIO_DELETE;
 
+    public $searchScenario = ActiveRecord::SCENARIO_SEARCH;
+
     public $basename = null;
 
     public $filterModelClass = null;
@@ -69,8 +71,9 @@ class ActiveController extends YiiActiveController
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
                 'modelClass' => $this->modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
                 'filterModelClass' => $this->filterModelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'filterScenario' => $this->searchScenario
             ],
             'change-position' => [
                 'class' => 'yii\mozayka\crud\ChangePositionAction',

@@ -15,6 +15,8 @@ class ActiveRecord extends YiiActiveRecord
 
     const SCENARIO_DELETE = 'delete';
 
+    const SCENARIO_SEARCH = 'search';
+
     public static function find()
     {
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);

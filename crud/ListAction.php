@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\crud;
 
-use yii\web\Response,
+use yii\base\Model,
+    yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\mozayka\db\ActiveRecord,
     Yii;
@@ -12,6 +13,8 @@ class ListAction extends Action
 {
 
     public $filterModelClass = null;
+
+    public $filterScenario = Model::SCENARIO_DEFAULT;
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
@@ -60,7 +63,7 @@ class ListAction extends Action
         $request = Yii::$app->getRequest();
         if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
             /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass;
+            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
             if ($request->getIsGet()) {
                 $filterModel->load($request->getQueryParams());
                 // validation
