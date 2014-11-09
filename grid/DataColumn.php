@@ -18,9 +18,11 @@ $cellContent = $this->renderFilterCellContent();
 if ($cellContent != $this->grid->emptyCell) {
 $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', ['id' => 'filter-trigger-' . $this->attribute, 'class' => 'btn btn-default btn-sm', 'data-dropdown' => '#filter-dropdown-' . $this->attribute]);
 
+$gridId = $this->grid->getId();
+
 $cellContent .= Html::tag('div', ButtonGroup::widget([
     'buttons' => [
-        Html::button(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm', 'onclick' => 'jQuery(\'#' . $this->grid->getId() . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $this->grid->getId() . '\').yiiGridView(\'applyFilter\');']),
+        Html::button(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');']),
         Html::button(Yii::t('mozayka', 'Clear'), ['class' => 'btn btn-default btn-sm'])
     ],
     'options' => ['class' => 'pull-right']
