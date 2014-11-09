@@ -12,6 +12,12 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
+    public $createScenario = ActiveRecord::SCENARIO_CREATE;
+
+    public $updateScenario = ActiveRecord::SCENARIO_UPDATE;
+
+    public $deleteScenario = ActiveRecord::SCENARIO_DELETE;
+
     public $basename = null;
 
     public $filterModelClass = null;
@@ -57,7 +63,8 @@ class ActiveController extends YiiActiveController
             'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'checkAccess' => [$this, 'checkAccess'],
+                'scenario' => $this->deleteScenario
             ],
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',

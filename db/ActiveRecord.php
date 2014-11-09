@@ -9,6 +9,12 @@ use yii\kladovka\db\ActiveRecord as YiiActiveRecord,
 class ActiveRecord extends YiiActiveRecord
 {
 
+    const SCENARIO_CREATE = 'create';
+
+    const SCENARIO_UPDATE = 'update';
+
+    const SCENARIO_DELETE = 'delete';
+
     public static function find()
     {
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
