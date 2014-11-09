@@ -23,7 +23,7 @@ $gridId = $this->grid->getId();
 $cellContent .= Html::tag('div', ButtonGroup::widget([
     'buttons' => [
         Html::button(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');']),
-        Html::button(Yii::t('mozayka', 'Clear'), ['class' => 'btn btn-default btn-sm'])
+        Html::button(Yii::t('mozayka', 'Clear'), ['class' => 'btn btn-default btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], textarea\').val(\'\');'])
     ],
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
