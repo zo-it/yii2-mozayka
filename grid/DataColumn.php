@@ -14,27 +14,24 @@ class DataColumn extends YiiDataColumn
 
     public function renderFilterCell()
     {
-$cellContent = $this->renderFilterCellContent();
-if ($cellContent != $this->grid->emptyCell) {
-$content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', ['id' => 'filter-trigger-' . $this->attribute, 'class' => 'btn btn-default btn-sm', 'data-dropdown' => '#filter-dropdown-' . $this->attribute]);
-
-$gridId = $this->grid->getId();
-
-$cellContent .= Html::tag('div', ButtonGroup::widget([
-    'buttons' => [
-        Html::button(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');']),
-        Html::button(Yii::t('mozayka', 'Clear'), ['class' => 'btn btn-default btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], textarea\').val(\'\');'])
-    ],
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix']);
-
-$content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown-panel']), ['id' => 'filter-dropdown-' . $this->attribute, 'class' => 'dropdown dropdown-tip']);
-if (!Yii::$app->getRequest()->getIsAjax()) {
-DropdownAsset::register($this->grid->getView());
-}
-return Html::tag('td', $content, $this->filterOptions);
-}
-return parent::renderFilterCell();
+        $cellContent = $this->renderFilterCellContent();
+        if ($cellContent != $this->grid->emptyCell) {
+            $gridId = $this->grid->getId();
+            $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', ['id' => 'filter-trigger-' . $this->attribute, 'class' => 'btn btn-default btn-sm', 'data-dropdown' => '#filter-dropdown-' . $this->attribute]);
+            $cellContent .= Html::tag('div', ButtonGroup::widget([
+                'buttons' => [
+                    Html::button(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');']),
+                    Html::button(Yii::t('mozayka', 'Clear'), ['class' => 'btn btn-default btn-sm', 'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], textarea\').val(\'\');'])
+                ],
+                'options' => ['class' => 'pull-right']
+            ]), ['class' => 'clearfix']);
+            $content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown-panel']), ['id' => 'filter-dropdown-' . $this->attribute, 'class' => 'dropdown dropdown-tip']);
+            if (!Yii::$app->getRequest()->getIsAjax()) {
+                DropdownAsset::register($this->grid->getView());
+            }
+            return Html::tag('td', $content, $this->filterOptions);
+        }
+        return parent::renderFilterCell();
     }
 
     protected function renderFilterCellContent()
