@@ -4,7 +4,7 @@ return [
     'Permission denied for user "{user}" to perform action "{action}".' => 'Отказано в доступе для пользователя "{user}" чтобы выполнить действие "{action}".',
     'Filter' => 'Фильтр',
     'Apply' => 'Применить',
-    'Reset' => 'Сброс',
+    'Clear' => 'Очистить',
     'Print' => 'Печать',
     'Export' => 'Экспорт',
     'Create' => 'Создать',
