@@ -209,7 +209,7 @@ class Action extends YiiAction
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
-                        if ($columnSchema->isPrimaryKey) {
+                        if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
                             if (!$model->getIsNewRecord()) {
                                 $options['readOnly'] = true;
                             } elseif ($columnSchema->autoIncrement) {

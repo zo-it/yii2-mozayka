@@ -63,7 +63,7 @@ class ListAction extends Action
         $request = Yii::$app->getRequest();
         if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
             /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass(); // ['scenario' => $this->filterScenario]
+            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
             if ($request->getIsGet()) {
                 $filterModel->load($request->getQueryParams());
                 // validation

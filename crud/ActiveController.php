@@ -3,6 +3,7 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
+    yii\base\Model,
     yii\helpers\StringHelper,
     yii\mozayka\db\ActiveRecord,
     yii\web\ForbiddenHttpException,
@@ -12,17 +13,13 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
-    public $createScenario = ActiveRecord::SCENARIO_CREATE;
-
-    public $updateScenario = ActiveRecord::SCENARIO_UPDATE;
-
-    public $deleteScenario = ActiveRecord::SCENARIO_DELETE;
-
-    public $searchScenario = ActiveRecord::SCENARIO_SEARCH;
-
     public $basename = null;
 
     public $filterModelClass = null;
+
+    public $deleteScenario = Model::SCENARIO_DEFAULT;
+
+    public $searchScenario = Model::SCENARIO_DEFAULT;
 
     public function init()
     {
