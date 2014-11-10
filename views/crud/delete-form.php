@@ -1,7 +1,7 @@
 <?php
 use yii\bootstrap\Alert,
-    yii\bootstrap\ButtonGroup,
-    yii\helpers\Html;
+    yii\helpers\Html,
+    yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
  * @var string|null $successMessage

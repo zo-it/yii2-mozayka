@@ -32,6 +32,7 @@ class TimeField extends ActiveField
             }
         }
         if (!$this->readOnly) {
+            $formId = $this->form->getId();
             $timePicker = $this->timePicker;
             if (!array_key_exists('timeFormat', $timePicker)) {
                 $timePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
@@ -40,8 +41,8 @@ class TimeField extends ActiveField
                 $timePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
             }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $timePicker['altField'] = '#' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
+            $timePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";

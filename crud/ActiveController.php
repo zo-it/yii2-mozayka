@@ -12,6 +12,14 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
+    public $createScenario = ActiveRecord::SCENARIO_CREATE;
+
+    public $updateScenario = ActiveRecord::SCENARIO_UPDATE;
+
+    public $deleteScenario = ActiveRecord::SCENARIO_DELETE;
+
+    public $searchScenario = ActiveRecord::SCENARIO_SEARCH;
+
     public $basename = null;
 
     public $filterModelClass = null;
@@ -26,7 +34,7 @@ class ActiveController extends YiiActiveController
             }
         }
         if (!$this->filterModelClass) {
-            $filterModelClass = 'app\models\filters\\' . $this->basename . 'Filter';
+            $filterModelClass = 'app\models\search\\' . $this->basename . 'Search';
             if (class_exists($filterModelClass)) {
                 $this->filterModelClass = $filterModelClass;
             }
@@ -36,7 +44,7 @@ class ActiveController extends YiiActiveController
 
     public function actions()
     {
-        return parent::actions() + [
+        return array_merge(parent::actions(), [
             'create-form' => [
                 'class' => 'yii\mozayka\crud\CreateFormAction',
                 'modelClass' => $this->modelClass,
@@ -57,20 +65,22 @@ class ActiveController extends YiiActiveController
             'delete-form' => [
                 'class' => 'yii\mozayka\crud\DeleteFormAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'checkAccess' => [$this, 'checkAccess'],
+                'scenario' => $this->deleteScenario
             ],
             'list' => [
                 'class' => 'yii\mozayka\crud\ListAction',
                 'modelClass' => $this->modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
                 'filterModelClass' => $this->filterModelClass,
-                'checkAccess' => [$this, 'checkAccess']
+                'filterScenario' => $this->searchScenario
             ],
             'change-position' => [
                 'class' => 'yii\mozayka\crud\ChangePositionAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess']
             ]
-        ];
+        ]);
     }
 
     public function behaviors()

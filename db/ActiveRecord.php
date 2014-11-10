@@ -9,6 +9,14 @@ use yii\kladovka\db\ActiveRecord as YiiActiveRecord,
 class ActiveRecord extends YiiActiveRecord
 {
 
+    const SCENARIO_CREATE = 'create';
+
+    const SCENARIO_UPDATE = 'update';
+
+    const SCENARIO_DELETE = 'delete';
+
+    const SCENARIO_SEARCH = 'search';
+
     public static function find()
     {
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
@@ -26,22 +34,22 @@ class ActiveRecord extends YiiActiveRecord
 
     public static function canCreate($params = [], $newModel = null)
     {
-        return true;
+        return static::hasRealPrimaryKey();
     }
 
     public function canRead($params = [])
     {
-        return true;
+        return $this::hasPrimaryKey();
     }
 
     public function canUpdate($params = [])
     {
-        return true;
+        return $this::hasRealPrimaryKey();
     }
 
     public function canDelete($params = [])
     {
-        return true;
+        return $this::hasRealPrimaryKey();
     }
 
     public static function canList($params = [], $query = null)

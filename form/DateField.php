@@ -33,6 +33,7 @@ class DateField extends ActiveField
             }
         }
         if (!$this->readOnly) {
+            $formId = $this->form->getId();
             $datePicker = $this->datePicker;
             if (!array_key_exists('dateFormat', $datePicker)) {
                 $datePicker['dateFormat'] = Text::juiDateFormat($this->dateFormat);
@@ -41,8 +42,8 @@ class DateField extends ActiveField
                 $datePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
             }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $datePicker['altField'] = '#' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
+            $datePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";

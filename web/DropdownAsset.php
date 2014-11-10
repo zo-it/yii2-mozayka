@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\web;
 
-use yii\web\AssetBundle;
+use yii\web\AssetBundle,
+    yii\web\View;
 
 
 class DropdownAsset extends AssetBundle
@@ -21,4 +22,12 @@ class DropdownAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset'
     ];
+
+    public static function register($view)
+    {
+        $view->registerJs('jQuery(document).on(\'beforeFilter.yiiGridView\', function (event) { if (jQuery(\'.dropdown\').is(\':visible\')) event.result = false; });');
+        $view->registerJs('jQuery(\'#ui-datepicker-div\').on(\'click\', function (event) { if (jQuery(\'.dropdown\').is(\':visible\')) event.stopPropagation(); });');
+        $view->registerJs('jQuery.fn.dropdown2 = jQuery.fn.dropdown;', View::POS_HEAD);
+        return $view->registerAssetBundle(get_called_class(), View::POS_HEAD);
+    }
 }
