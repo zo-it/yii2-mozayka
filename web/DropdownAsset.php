@@ -25,7 +25,8 @@ class DropdownAsset extends AssetBundle
 
     public static function register($view)
     {
-        $view->registerJs('jQuery(document).on(\'beforeFilter.yiiGridView\', function (event) { if (jQuery(\'.dropdown:visible\').size()) event.result = false; });');
+        $view->registerJs('jQuery(document).on(\'beforeFilter.yiiGridView\', function (event) { if (jQuery(\'.dropdown\').is(\':visible\')) event.result = false; });');
+        $view->registerJs('jQuery(\'#ui-datepicker-div\').on(\'click\', function (event) { if (jQuery(\'.dropdown\').is(\':visible\')) event.stopPropagation(); });');
         $view->registerJs('jQuery.fn.dropdown2 = jQuery.fn.dropdown;', View::POS_HEAD);
         return $view->registerAssetBundle(get_called_class(), View::POS_HEAD);
     }
