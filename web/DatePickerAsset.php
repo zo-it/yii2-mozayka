@@ -31,4 +31,10 @@ class DatePickerAsset extends AssetBundle
         }
         parent::init();
     }
+
+    public static function register($view)
+    {
+        $view->registerJs('jQuery(\'#ui-datepicker-div\').on(\'click\', function (event) { event.stopPropagation(); });');
+        return $view->registerAssetBundle(get_called_class());
+    }
 }
