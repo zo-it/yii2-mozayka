@@ -50,7 +50,7 @@ class ListAction extends Action
                 return ActiveForm::validate($filterModel);
             }
             // processing
-            $dataProvider = $filterModel->search([]);
+            $dataProvider = $filterModel->search([$filterModel->formName() => []]);
         } else {
             $modelClass = $this->modelClass;
             $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
