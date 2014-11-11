@@ -20,7 +20,7 @@ class ListAction extends Action
 
     public $formConfig = ['method' => 'get'];
 
-    public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
+    //public $dataProviderClass = 'yii\data\ActiveDataProvider';
 
     public $dataProviderConfig = [];
 
@@ -32,6 +32,27 @@ class ListAction extends Action
 
     public function run()
     {
+        $request = Yii::$app->getRequest();
+        if ($this->filterModelClass) {
+            /* @var yii\base\Model $filterModel */
+            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
+if ($request->getIsGet()) {
+$filterModel->load($request->getQueryParams());
+}
+// validation
+if ($request->getIsAjax() && $request->getQueryParam('validation')) {
+Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+return ActiveForm::validate($filterModel);
+}
+// processing
+$dataProvider = $filterModel->search([]);
+            $gridConfig['filterModel'] = $filterModel;
+            $gridConfig['filterFields'] = $this->prepareFields($filterModel);
+        }
+
+$modelClass = $this->modelClass;
+$dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
+
         $gridConfig = $this->gridConfig;
         if (!array_key_exists('dataProvider', $gridConfig)) {
             $dataProviderConfig = $this->dataProviderConfig;
@@ -60,22 +81,7 @@ class ListAction extends Action
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
-        $request = Yii::$app->getRequest();
-        if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
-            /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
-            if ($request->getIsGet()) {
-                $filterModel->load($request->getQueryParams());
-                // validation
-                if ($request->getIsAjax() && $request->getQueryParam('validation')) {
-                    Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                    return ActiveForm::validate($filterModel);
-                }
-$filterModel->validate();
-            }
-            $gridConfig['filterModel'] = $filterModel;
-            $gridConfig['filterFields'] = $this->prepareFields($filterModel);
-        }
+
         // can create?
         $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
@@ -89,6 +95,8 @@ $filterModel->validate();
             'errorMessage' => $errorMessage,
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
+'filterModel' => $filterModel,
+'filterFields' => $filterModel ? $this->prepareFields($filterModel) : [],
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
             'canCreate' => $canCreate

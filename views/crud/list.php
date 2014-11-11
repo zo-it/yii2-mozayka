@@ -8,6 +8,8 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var string $formClass
  * @var array $formConfig
+ * @var yii\db\ActiveRecord|null $filterModel
+ * @var array $filterFields
  * @var string $gridClass
  * @var array $gridConfig
  * @var bool $canCreate
