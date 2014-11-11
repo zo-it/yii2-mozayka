@@ -22,6 +22,7 @@ class ActiveForm extends YiiActiveForm
 
     public function init()
     {
+        $this->setId(uniqid($this->getId()));
         if ($this->readOnly) {
             $this->fieldConfig['readOnly'] = true;
         }

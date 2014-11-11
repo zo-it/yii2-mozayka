@@ -16,4 +16,10 @@ class GridView extends YiiGridView
      * @var yii\mozayka\form\ActiveForm the form that this grid is wrapped up.
      */
     public $form = null;
+
+    public function init()
+    {
+        $this->setId(uniqid($this->getId()));
+        parent::init();
+    }
 }
