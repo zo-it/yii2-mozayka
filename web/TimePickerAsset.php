@@ -30,11 +30,11 @@ class TimePickerAsset extends AssetBundle
         $sourcePath = Yii::getAlias($this->sourcePath);
         $language = Yii::$app->language;
         $jsFile = 'i18n/jquery-ui-timepicker-' . $language . '.js';
-        if (is_file($sourcePath . '/' . $jsFile)) {
+        if (is_file($sourcePath . DIRECTORY_SEPARATOR . $jsFile)) {
             $this->js[] = $jsFile;
         } elseif (strlen($language) > 2) {
             $jsFile = 'i18n/jquery-ui-timepicker-' . substr($language, 0, 2) . '.js';
-            if (is_file($sourcePath . '/' . $jsFile)) {
+            if (is_file($sourcePath . DIRECTORY_SEPARATOR . $jsFile)) {
                 $this->js[] = $jsFile;
             }
         }

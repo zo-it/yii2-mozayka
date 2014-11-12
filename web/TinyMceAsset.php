@@ -25,11 +25,11 @@ class TinyMceAsset extends AssetBundle
         $sourcePath = Yii::getAlias($this->sourcePath);
         $language = Yii::$app->language;
         $jsFile = 'langs/' . str_replace('-', '_', $language) . '.js';
-        if (is_file($sourcePath . '/' . $jsFile)) {
+        if (is_file($sourcePath . DIRECTORY_SEPARATOR . $jsFile)) {
             $this->js[] = $jsFile;
         } elseif (strlen($language) > 2) {
             $jsFile = 'langs/' . substr($language, 0, 2) . '.js';
-            if (is_file($sourcePath . '/' . $jsFile)) {
+            if (is_file($sourcePath . DIRECTORY_SEPARATOR . $jsFile)) {
                 $this->js[] = $jsFile;
             }
         }
