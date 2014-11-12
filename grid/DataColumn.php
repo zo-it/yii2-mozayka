@@ -16,12 +16,12 @@ class DataColumn extends YiiDataColumn
     {
         $cellContent = $this->renderFilterCellContent();
         if ($cellContent != $this->grid->emptyCell) {
-            $gridId = $this->grid->getId();
             $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-sm',
                 'data-dropdown' => '#filter-dropdown-' . $this->attribute
             ]);
+            $gridId = $this->grid->getId();
             $cellContent .= Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
                     Html::button(Yii::t('mozayka', 'Apply'), [

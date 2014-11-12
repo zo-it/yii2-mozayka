@@ -13,11 +13,17 @@ use yii\bootstrap\Alert,
  */
 
 if ($successMessage) {
-    echo Alert::widget(['body' => $successMessage, 'options' => ['class' => 'alert-success']]);
+    echo Alert::widget([
+        'body' => $successMessage,
+        'options' => ['class' => 'alert-success']
+    ]);
 }
 
 if ($errorMessage) {
-    echo Alert::widget(['body' => $errorMessage, 'options' => ['class' => 'alert-danger']]);
+    echo Alert::widget([
+        'body' => $errorMessage,
+        'options' => ['class' => 'alert-danger']
+    ]);
 }
 
 $form = $formClass::begin($formConfig);
