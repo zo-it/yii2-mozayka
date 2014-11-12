@@ -230,6 +230,11 @@ class Action extends YiiAction
                                 $options['size'] = $columnSchema->size;
                                 $options['unsigned'] = $columnSchema->unsigned;
                             }
+                        } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                            $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                            $options['size'] = $columnSchema->size;
+                            $options['scale'] = $columnSchema->scale;
+                            $options['unsigned'] = $columnSchema->unsigned;
                         } else {
                             $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
                             if (class_exists($fieldClass)) {
