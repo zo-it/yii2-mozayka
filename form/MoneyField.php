@@ -7,4 +7,6 @@ class MoneyField extends DecimalField
 {
 
     public $size = 20;
+
+    public $scale = 2;
 }
