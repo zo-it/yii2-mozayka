@@ -30,7 +30,7 @@ class DataColumn extends YiiDataColumn
                     ]),
                     Html::button(Yii::t('mozayka', 'Clear'), [
                         'class' => 'btn btn-default btn-sm',
-                        'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea\').val(\'\');'
+                        'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
                     ])
                 ],
                 'options' => ['class' => 'pull-right']
