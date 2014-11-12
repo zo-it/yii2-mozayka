@@ -21,7 +21,8 @@ class IntegerField extends ActiveField
                         'validator' => '\\-',
                         'cardinality' => 1
                     ]
-                ]
+                ],
+                'options' => $this->inputOptions
             ]);
         }
     }
