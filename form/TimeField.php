@@ -24,22 +24,17 @@ class TimeField extends ActiveField
 
     public function init()
     {
-        if (!array_key_exists('value', $this->inputOptions)) {
-            $value = $this->model->{$this->attribute};
-            if (is_int($value)) {
-                $this->inputOptions['value'] = date($this->timeFormat, $value);
-                $this->hiddenInputOptions['value'] = date($this->altTimeFormat, $value);
-            }
+        $value = $this->model->{$this->attribute};
+        if (is_int($value)) {
+            $this->inputOptions['value'] = date($this->timeFormat, $value);
+            $this->hiddenInputOptions['value'] = date($this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
+            $timePicker = array_merge($this->timePicker, [
+                'timeFormat' => Text::juiTimeFormat($this->timeFormat),
+                'altTimeFormat' => Text::juiTimeFormat($this->altTimeFormat)
+            ]);
             $formId = $this->form->getId();
-            $timePicker = $this->timePicker;
-            if (!array_key_exists('timeFormat', $timePicker)) {
-                $timePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
-            }
-            if (!array_key_exists('altTimeFormat', $timePicker)) {
-                $timePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
-            }
             $inputId = Html::getInputId($this->model, $this->attribute);
             $timePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
             $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
