@@ -33,7 +33,10 @@ $buttons = [];
 if ($canCreate) {
     $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
-$buttons[] = Html::button(Yii::t('mozayka', 'Print'), ['class' => 'btn btn-default', 'onclick' => 'print();']);
+$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'print();'
+]);
 $buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
 
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
