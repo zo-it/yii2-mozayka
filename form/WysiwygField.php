@@ -15,21 +15,27 @@ class WysiwygField extends TextField
 
     public function init()
     {
-        //if (!$this->readOnly) {
-            $formId = $this->form->getId();
-            $tinyMce = $this->tinyMce;
-            $inputId = Html::getInputId($this->model, $this->attribute);
-            $tinyMce['selector'] = '#' . $formId . ' #' . $inputId;
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').tinymce(' . Json::encode($tinyMce) . ');';
-            if (Yii::$app->getRequest()->getIsAjax()) {
-                $this->template .= "\n{script}";
-                $this->parts['{script}'] = Html::script($js);
-            } else {
-                $view = $this->form->getView();
-                $view->registerJs($js);
-                TinyMceAsset::register($view);
-            }
-        //}
+        $tinyMce = $this->tinyMce;
+        if ($this->readOnly) {
+            $tinyMce = array_merge($tinyMce, [
+                'readonly' => true,
+                'menubar' => false,
+                'toolbar' => false,
+                'statusbar' => false
+            ]);
+        }
+        $formId = $this->form->getId();
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $tinyMce['selector'] = '#' . $formId . ' #' . $inputId;
+        $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').tinymce(' . Json::encode($tinyMce) . ');';
+        if (Yii::$app->getRequest()->getIsAjax()) {
+            $this->template .= "\n{script}";
+            $this->parts['{script}'] = Html::script($js);
+        } else {
+            $view = $this->form->getView();
+            $view->registerJs($js);
+            TinyMceAsset::register($view);
+        }
         parent::init();
     }
 }
