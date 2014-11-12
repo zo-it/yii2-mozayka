@@ -14,6 +14,8 @@ class ActiveField extends YiiActiveField
 
     public $checkboxOptions = [];
 
+    public $selectOptions = [];
+
     public function init()
     {
         if ($this->readOnly) {
@@ -21,6 +23,7 @@ class ActiveField extends YiiActiveField
             $this->inputOptions['readonly'] = true;
             $this->radioOptions['disabled'] = true;
             $this->checkboxOptions['disabled'] = true;
+            $this->selectOptions['disabled'] = true;
         }
         parent::init();
     }
@@ -33,5 +36,15 @@ class ActiveField extends YiiActiveField
     public function checkbox($options = [], $enclosedByLabel = true)
     {
         return parent::checkbox(array_merge($this->checkboxOptions, $options), $enclosedByLabel);
+    }
+
+    public function dropDownList($items, $options = [])
+    {
+        return parent::dropDownList($items, array_merge($this->selectOptions, $options));
+    }
+
+    public function listBox($items, $options = [])
+    {
+        return parent::listBox($items, array_merge($this->selectOptions, $options));
     }
 }
