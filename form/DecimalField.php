@@ -15,14 +15,16 @@ class DecimalField extends ActiveField
     public function init()
     {
         parent::init();
-        $this->widget('yii\widgets\MaskedInput', [
-            'mask' => ($this->unsigned ? '' : '[m]') . str_pad('', ($this->size - $this->scale), '9') . ($this->scale ? ('[.' . str_pad('', $this->scale, '9') . ']') : ''),
-            'definitions' => [
-                'm' => [
-                    'validator' => '\\-',
-                    'cardinality' => 1
+        if (!$this->readOnly) {
+            $this->widget('yii\widgets\MaskedInput', [
+                'mask' => ($this->unsigned ? '' : '[m]') . str_pad('', ($this->size - $this->scale), '9') . ($this->scale ? ('[.' . str_pad('', $this->scale, '9') . ']') : ''),
+                'definitions' => [
+                    'm' => [
+                        'validator' => '\\-',
+                        'cardinality' => 1
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        }
     }
 }
