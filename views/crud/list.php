@@ -45,10 +45,12 @@ $buttonGroup = Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'clearfix']);
 echo $buttonGroup;
 
-$gridConfig['form'] = $formClass::begin($formConfig);
+/*$form = $formClass::begin($formConfig);
+foreach ($filterFields as $attribute => $options) {
+    echo $form->field($filterModel, $attribute, $options);
+}
+$formClass::end();*/
 
 echo $gridClass::widget($gridConfig);
-
-$formClass::end();
 
 echo $buttonGroup;

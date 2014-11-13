@@ -49,7 +49,7 @@ class DataColumn extends YiiDataColumn
 
     protected function renderFilterCellContent()
     {
-        $form = $this->grid->form;
+        $form = $this->grid->getForm();
         $filterModel = $this->grid->filterModel;
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {

@@ -72,8 +72,12 @@ class ListAction extends Action
         $gridConfig['dataProvider'] = $dataProvider;
         if ($filterModel) {
             $filterFields = $this->prepareFields($filterModel);
-            $gridConfig['filterModel'] = $filterModel;
-            $gridConfig['filterFields'] = $filterFields;
+$gridConfig = array_merge($gridConfig, [
+'formClass' => $this->formClass,
+'formConfig' => $formConfig,
+'filterModel' => $filterModel,
+'filterFields' => $filterFields
+]);
         }
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
