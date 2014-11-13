@@ -15,14 +15,15 @@ class TinymceField extends TextField
 
     public function init()
     {
-        $pluginOptions = $this->pluginOptions;
         if ($this->readOnly) {
-            $pluginOptions = array_merge($pluginOptions, [
+            $pluginOptions = array_merge($this->pluginOptions, [
                 'readonly' => true,
                 'menubar' => false,
                 'toolbar' => false,
                 'statusbar' => false
             ]);
+        } else {
+            $pluginOptions = $this->pluginOptions;
         }
         $formId = $this->form->getId();
         $inputId = Html::getInputId($this->model, $this->attribute);
