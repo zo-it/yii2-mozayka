@@ -61,8 +61,8 @@ class DatetimeField extends ActiveField
                 $this->parts['{script}'] = Html::script($js);
             } else {
                 $view = $this->form->getView();
-                $view->registerJs($js);
                 TimePickerAsset::register($view);
+                $view->registerJs($js);
             }
         }
         parent::init();

@@ -33,8 +33,8 @@ class WysiwygField extends TextField
             $this->parts['{script}'] = Html::script($js);
         } else {
             $view = $this->form->getView();
-            $view->registerJs($js);
             TinyMceAsset::register($view);
+            $view->registerJs($js);
         }
         parent::init();
     }
