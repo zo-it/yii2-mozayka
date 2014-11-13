@@ -18,7 +18,7 @@ class TimeField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $timePicker = [
+    public $pluginOptions = [
         'showButtonPanel' => true
     ];
 
@@ -30,14 +30,14 @@ class TimeField extends ActiveField
             $this->hiddenInputOptions['value'] = date($this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
-            $timePicker = array_merge($this->timePicker, [
+            $pluginOptions = array_merge($this->pluginOptions, [
                 'timeFormat' => Text::juiTimeFormat($this->timeFormat),
                 'altTimeFormat' => Text::juiTimeFormat($this->altTimeFormat)
             ]);
             $formId = $this->form->getId();
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $timePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').timepicker(' . Json::encode($timePicker) . ');';
+            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').timepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";

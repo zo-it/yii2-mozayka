@@ -18,7 +18,7 @@ class DateField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $datePicker = [
+    public $pluginOptions = [
         'numberOfMonths' => 3,
         'showButtonPanel' => true
     ];
@@ -31,14 +31,14 @@ class DateField extends ActiveField
             $this->hiddenInputOptions['value'] = date($this->altDateFormat, $value);
         }
         if (!$this->readOnly) {
-            $datePicker = array_merge($this->datePicker, [
+            $pluginOptions = array_merge($this->pluginOptions, [
                 'dateFormat' => Text::juiDateFormat($this->dateFormat),
                 'altFormat' => Text::juiDateFormat($this->altDateFormat)
             ]);
             $formId = $this->form->getId();
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $datePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
+            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";

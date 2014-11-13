@@ -26,7 +26,7 @@ class DatetimeField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $dateTimePicker = [
+    public $pluginOptions = [
         'numberOfMonths' => 3,
         'showButtonPanel' => true,
         'altFieldTimeOnly' => false
@@ -40,7 +40,7 @@ class DatetimeField extends ActiveField
             $this->hiddenInputOptions['value'] = date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
-            $dateTimePicker = array_merge($this->dateTimePicker, [
+            $pluginOptions = array_merge($this->pluginOptions, [
                 'dateFormat' => Text::juiDateFormat($this->dateFormat),
                 'altFormat' => Text::juiDateFormat($this->altDateFormat),
                 'separator' => $this->separator,
@@ -50,8 +50,8 @@ class DatetimeField extends ActiveField
             ]);
             $formId = $this->form->getId();
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $dateTimePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datetimepicker(' . Json::encode($dateTimePicker) . ');';
+            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datetimepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
