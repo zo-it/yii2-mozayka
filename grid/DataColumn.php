@@ -28,11 +28,6 @@ class DataColumn extends YiiDataColumn
     {
         $cellContent = $this->renderFilterCellContent();
         if ($cellContent != $this->grid->emptyCell) {
-            $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
-                'id' => 'filter-trigger-' . $this->attribute,
-                'class' => 'btn btn-default btn-sm',
-                'data-dropdown' => '#filter-dropdown-' . $this->attribute
-            ]);
             $gridId = $this->grid->getId();
             $cellContent .= Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
@@ -47,6 +42,11 @@ class DataColumn extends YiiDataColumn
                 ],
                 'options' => ['class' => 'pull-right']
             ]), ['class' => 'clearfix']);
+            $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
+                'id' => 'filter-trigger-' . $this->attribute,
+                'class' => 'btn btn-default btn-sm',
+                'data-dropdown' => '#filter-dropdown-' . $this->attribute
+            ]);
             $content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown-panel']), [
                 'id' => 'filter-dropdown-' . $this->attribute,
                 'class' => 'dropdown dropdown-tip'
