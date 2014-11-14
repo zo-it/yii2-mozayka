@@ -4,7 +4,7 @@ namespace yii\mozayka\form;
 
 use yii\helpers\Html,
     yii\helpers\Json,
-    yii\mozayka\web\TinyMceAsset,
+    yii\mozayka\web\TinymceAsset,
     Yii;
 
 
@@ -34,7 +34,7 @@ class TinymceField extends TextField
             $this->parts['{script}'] = Html::script($js);
         } else {
             $view = $this->form->getView();
-            TinyMceAsset::register($view);
+            TinymceAsset::register($view);
             $view->registerJs($js);
         }
         parent::init();

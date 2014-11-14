@@ -6,7 +6,7 @@ use yii\web\AssetBundle,
     Yii;
 
 
-class TinyMceAsset extends AssetBundle
+class TinymceAsset extends AssetBundle
 {
 
     public $sourcePath = '@bower/tinymce';

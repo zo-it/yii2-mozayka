@@ -13,6 +13,6 @@ class MozaykaAsset extends AssetBundle
         'yii\mozayka\web\IframeTransportAsset',
         'yii\mozayka\web\DatePickerAsset',
         'yii\mozayka\web\TimePickerAsset',
-        'yii\mozayka\web\TinyMceAsset'
+        'yii\mozayka\web\TinymceAsset'
     ];
 }
