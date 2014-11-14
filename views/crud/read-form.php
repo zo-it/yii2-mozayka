@@ -15,14 +15,15 @@ foreach ($fields as $attribute => $options) {
     echo $form->field($model, $attribute, $options);
 }
 
+$buttons = [];
+$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'print();'
+]);
+$buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+
 echo Html::tag('div', ButtonGroup::widget([
-    'buttons' => [
-        Html::button(Yii::t('mozayka', 'Print'), [
-            'class' => 'btn btn-default',
-            'onclick' => 'print();'
-        ]),
-        Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default'])
-    ],
+    'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
 

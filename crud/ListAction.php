@@ -96,7 +96,7 @@ $gridConfig = array_merge($gridConfig, [
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canCreate = $modelClass::canCreate();
         } else {
-            $canCreate = method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : true;
+            $canCreate = method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : (bool)$modelClass::getTableSchema()->primaryKey;
         }
         // rendering
         $viewParams = [
