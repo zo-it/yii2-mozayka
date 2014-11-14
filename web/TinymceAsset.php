@@ -9,11 +9,11 @@ use yii\web\AssetBundle,
 class TinymceAsset extends AssetBundle
 {
 
+    public $depends = ['yii\web\JqueryAsset'];
+
     public $sourcePath = '@bower/tinymce';
 
     public $js = ['tinymce.min.js', 'jquery.tinymce.min.js'];
-
-    public $depends = ['yii\web\JqueryAsset'];
 
     public function init()
     {

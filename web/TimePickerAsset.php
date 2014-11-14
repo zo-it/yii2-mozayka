@@ -9,13 +9,13 @@ use yii\web\AssetBundle,
 class TimePickerAsset extends AssetBundle
 {
 
+    public $depends = ['yii\mozayka\web\DatePickerAsset'];
+
     public $sourcePath = '@bower/jqueryui-timepicker-addon/dist';
 
     public $css = ['jquery-ui-timepicker-addon.min.css'];
 
     public $js = ['jquery-ui-timepicker-addon.min.js'];
-
-    public $depends = ['yii\mozayka\web\DatePickerAsset'];
 
     public function init()
     {

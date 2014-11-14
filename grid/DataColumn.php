@@ -37,7 +37,7 @@ class DataColumn extends YiiDataColumn
                     ]),
                     Html::button(Yii::t('mozayka', 'Clear'), [
                         'class' => 'btn btn-default btn-sm',
-                        'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+                        'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown2-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
                     ])
                 ],
                 'options' => ['class' => 'pull-right']
@@ -45,11 +45,11 @@ class DataColumn extends YiiDataColumn
             $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-sm',
-                'data-dropdown' => '#filter-dropdown-' . $this->attribute
+                'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
             ]);
-            $content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown-panel']), [
-                'id' => 'filter-dropdown-' . $this->attribute,
-                'class' => 'dropdown dropdown-tip'
+            $content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
+                'id' => 'filter-dropdown2-' . $this->attribute,
+                'class' => 'dropdown2 dropdown2-tip'
             ]);
             if (!Yii::$app->getRequest()->getIsAjax()) {
                 DropdownAsset::register($this->grid->getView());

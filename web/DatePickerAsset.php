@@ -9,9 +9,9 @@ use yii\web\AssetBundle,
 class DatePickerAsset extends AssetBundle
 {
 
-    public $sourcePath = '@bower/jquery-ui';
-
     public $depends = ['yii\web\JqueryAsset', 'yii\jui\JuiAsset'];
+
+    public $sourcePath = '@bower/jquery-ui';
 
     public function init()
     {
