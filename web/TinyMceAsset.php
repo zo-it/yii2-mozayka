@@ -11,14 +11,9 @@ class TinyMceAsset extends AssetBundle
 
     public $sourcePath = '@bower/tinymce';
 
-    public $js = [
-        'tinymce.min.js',
-        'jquery.tinymce.min.js'
-    ];
+    public $js = ['tinymce.min.js', 'jquery.tinymce.min.js'];
 
-    public $depends = [
-        'yii\web\JqueryAsset'
-    ];
+    public $depends = ['yii\web\JqueryAsset'];
 
     public function init()
     {

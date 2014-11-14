@@ -11,19 +11,11 @@ class TimePickerAsset extends AssetBundle
 
     public $sourcePath = '@bower/jqueryui-timepicker-addon/dist';
 
-    public $css = [
-        'jquery-ui-timepicker-addon.min.css'
-    ];
+    public $css = ['jquery-ui-timepicker-addon.min.css'];
 
-    public $js = [
-        'jquery-ui-timepicker-addon.min.js'
-    ];
+    public $js = ['jquery-ui-timepicker-addon.min.js'];
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-        'yii\jui\JuiAsset',
-        'yii\mozayka\web\DatePickerAsset'
-    ];
+    public $depends = ['yii\mozayka\web\DatePickerAsset'];
 
     public function init()
     {

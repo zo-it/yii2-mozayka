@@ -11,10 +11,7 @@ class DatePickerAsset extends AssetBundle
 
     public $sourcePath = '@bower/jquery-ui';
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-        'yii\jui\JuiAsset'
-    ];
+    public $depends = ['yii\web\JqueryAsset', 'yii\jui\JuiAsset'];
 
     public function init()
     {
@@ -32,9 +29,9 @@ class DatePickerAsset extends AssetBundle
         parent::init();
     }
 
-    public static function register($view)
+    public function registerAssetFiles($view)
     {
+        parent::registerAssetFiles($view);
         $view->registerJs('jQuery(\'<input>\').datepicker(\'widget\').on(\'click\', function (event) { event.stopPropagation(); });');
-        return $view->registerAssetBundle(get_called_class());
     }
 }
