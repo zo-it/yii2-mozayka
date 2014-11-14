@@ -16,8 +16,13 @@ class DecimalField extends ActiveField
     {
         parent::init();
         if (!$this->readOnly) {
+            $mask = $this->unsigned ? '' : '[m]';
+            $mask .= str_pad('', ($this->size - $this->scale) * 3, '[9]');
+            if ($this->scale) {
+                $mask .= '[.]' . str_pad('', $this->scale * 3, '[9]');
+            }
             $this->widget('yii\widgets\MaskedInput', [
-                'mask' => ($this->unsigned ? '' : '[m]') . str_pad('', ($this->size - $this->scale), '9') . ($this->scale ? ('[.' . str_pad('', $this->scale, '9') . ']') : ''),
+                'mask' => $mask,
                 'definitions' => [
                     'm' => [
                         'validator' => '\\-',
