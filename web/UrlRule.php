@@ -11,9 +11,11 @@ class UrlRule extends YiiUrlRule
 
     public function createUrl($manager, $route, $params)
     {
-        $modelId = Yii::$app->getRequest()->getQueryParam('modelId');
-        if ($modelId) {
-            $params['modelId'] = $modelId;
+        if (!array_key_exists('modelId', $params)) {
+            $modelId = Yii::$app->getRequest()->getQueryParam('modelId');
+            if ($modelId) {
+                $params['modelId'] = $modelId;
+            }
         }
         return parent::createUrl($manager, $route, $params);
     }
