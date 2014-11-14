@@ -33,6 +33,7 @@ class ListAction extends Action
 
     public function run()
     {
+        $dataProvider = null;
         $filterModel = null;
         $filterFields = [];
         $request = Yii::$app->getRequest();
@@ -50,10 +51,14 @@ class ListAction extends Action
                 return ActiveForm::validate($filterModel);
             }
             // processing
-            $dataProvider = $filterModel->search([$filterModel->formName() => []]);
-        } else {
-            $modelClass = $this->modelClass;
-            $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
+if ($filterModel->beforeSave(false)) {
+$dataProvider = $filterModel->search([$filterModel->formName() => []]);
+$filterModel->afterSave(false, []);
+}
+        }
+        if (!$dataProvider) {
+$modelClass = $this->modelClass;
+$dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
         Yii::configure($dataProvider, $this->dataProviderConfig);
         if ($this->checkAccess) {
