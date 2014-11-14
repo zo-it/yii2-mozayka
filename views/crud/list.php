@@ -53,4 +53,4 @@ $formClass::end();*/
 
 echo $gridClass::widget($gridConfig);
 
-echo $buttonGroup;
+//echo $buttonGroup;

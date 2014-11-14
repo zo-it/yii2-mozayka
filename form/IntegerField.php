@@ -24,7 +24,7 @@ class IntegerField extends ActiveField
                         'cardinality' => 1
                     ]
                 ],
-                'options' => $this->inputoptions
+                'options' => $this->inputOptions
             ]);
         }
     }

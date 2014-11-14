@@ -13,7 +13,7 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
-    public $basename = null;
+    public $modelName = null;
 
     public $filterModelClass = null;
 
@@ -23,17 +23,29 @@ class ActiveController extends YiiActiveController
 
     public function init()
     {
-        $this->basename = StringHelper::basename(get_class($this), 'Controller');
+        if (!$this->modelName) {
+            $this->modelName = StringHelper::basename(get_class($this), 'Controller');
+        }
         if (!$this->modelClass) {
-            $modelClass = 'app\models\\' . $this->basename;
+            $modelClass = 'app\models\\' . $this->modelName;
             if (class_exists($modelClass)) {
                 $this->modelClass = $modelClass;
+            } else {
+                $modelClass = 'app\models\readonly\\' . $this->modelName;
+                if (class_exists($modelClass)) {
+                    $this->modelClass = $modelClass;
+                }
             }
         }
         if (!$this->filterModelClass) {
-            $filterModelClass = 'app\models\search\\' . $this->basename . 'Search';
+            $filterModelClass = 'app\models\search\\' . $this->modelName . 'Search';
             if (class_exists($filterModelClass)) {
                 $this->filterModelClass = $filterModelClass;
+            } else {
+                $filterModelClass = 'app\models\readonly\search\\' . $this->modelName . 'Search';
+                if (class_exists($filterModelClass)) {
+                    $this->filterModelClass = $filterModelClass;
+                }
             }
         }
         parent::init();
