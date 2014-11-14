@@ -12,6 +12,18 @@ use yii\grid\DataColumn as YiiDataColumn,
 class DataColumn extends YiiDataColumn
 {
 
+    protected function renderFilterCellContent()
+    {
+        $form = $this->grid->getForm();
+        $filterModel = $this->grid->filterModel;
+        $filterFields = $this->grid->filterFields;
+        if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
+            $options = $filterFields[$this->attribute];
+            return $form->field($filterModel, $this->attribute, $options);
+        }
+        return parent::renderFilterCellContent();
+    }
+
     public function renderFilterCell()
     {
         $cellContent = $this->renderFilterCellContent();
@@ -45,17 +57,5 @@ class DataColumn extends YiiDataColumn
             return Html::tag('td', $content, $this->filterOptions);
         }
         return parent::renderFilterCell();
-    }
-
-    protected function renderFilterCellContent()
-    {
-        $form = $this->grid->getForm();
-        $filterModel = $this->grid->filterModel;
-        $filterFields = $this->grid->filterFields;
-        if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
-            $options = $filterFields[$this->attribute];
-            return $form->field($filterModel, $this->attribute, $options);
-        }
-        return parent::renderFilterCellContent();
     }
 }
