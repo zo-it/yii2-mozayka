@@ -26,45 +26,32 @@ class DatetimeField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $dateTimePicker = [
+    public $pluginOptions = [
+        'numberOfMonths' => 3,
         'showButtonPanel' => true,
-        'numberOfMonths' => 3
+        'altFieldTimeOnly' => false
     ];
 
     public function init()
     {
-        if (!array_key_exists('value', $this->inputOptions)) {
-            $value = $this->model->{$this->attribute};
-            if (is_int($value)) {
-                $this->inputOptions['value'] = Text::date($this->dateFormat . $this->separator . $this->timeFormat, $value);
-                $this->hiddenInputOptions['value'] = date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
-            }
+        $value = $this->model->{$this->attribute};
+        if (is_int($value)) {
+            $this->inputOptions['value'] = Text::date($this->dateFormat . $this->separator . $this->timeFormat, $value);
+            $this->hiddenInputOptions['value'] = date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
+            $pluginOptions = array_merge($this->pluginOptions, [
+                'dateFormat' => Text::juiDateFormat($this->dateFormat),
+                'altFormat' => Text::juiDateFormat($this->altDateFormat),
+                'separator' => $this->separator,
+                'altSeparator' => $this->altSeparator,
+                'timeFormat' => Text::juiTimeFormat($this->timeFormat),
+                'altTimeFormat' => Text::juiTimeFormat($this->altTimeFormat)
+            ]);
             $formId = $this->form->getId();
-            $dateTimePicker = $this->dateTimePicker;
-            if (!array_key_exists('dateFormat', $dateTimePicker)) {
-                $dateTimePicker['dateFormat'] = Text::juiDateFormat($this->dateFormat);
-            }
-            if (!array_key_exists('altFormat', $dateTimePicker)) {
-                $dateTimePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
-            }
-            if (!array_key_exists('separator', $dateTimePicker)) {
-                $dateTimePicker['separator'] = $this->separator;
-            }
-            if (!array_key_exists('altSeparator', $dateTimePicker)) {
-                $dateTimePicker['altSeparator'] = $this->altSeparator;
-            }
-            if (!array_key_exists('timeFormat', $dateTimePicker)) {
-                $dateTimePicker['timeFormat'] = Text::juiTimeFormat($this->timeFormat);
-            }
-            if (!array_key_exists('altTimeFormat', $dateTimePicker)) {
-                $dateTimePicker['altTimeFormat'] = Text::juiTimeFormat($this->altTimeFormat);
-            }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $dateTimePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $dateTimePicker['altFieldTimeOnly'] = false;
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datetimepicker(' . Json::encode($dateTimePicker) . ');';
+            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datetimepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
@@ -74,8 +61,8 @@ class DatetimeField extends ActiveField
                 $this->parts['{script}'] = Html::script($js);
             } else {
                 $view = $this->form->getView();
-                $view->registerJs($js);
                 TimePickerAsset::register($view);
+                $view->registerJs($js);
             }
         }
         parent::init();

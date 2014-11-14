@@ -8,24 +8,35 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var string $formClass
  * @var array $formConfig
+ * @var yii\db\ActiveRecord|null $filterModel
+ * @var array $filterFields
  * @var string $gridClass
  * @var array $gridConfig
  * @var bool $canCreate
  */
 
 if ($successMessage) {
-    echo Alert::widget(['body' => $successMessage, 'options' => ['class' => 'alert-success']]);
+    echo Alert::widget([
+        'body' => $successMessage,
+        'options' => ['class' => 'alert-success']
+    ]);
 }
 
 if ($errorMessage) {
-    echo Alert::widget(['body' => $errorMessage, 'options' => ['class' => 'alert-danger']]);
+    echo Alert::widget([
+        'body' => $errorMessage,
+        'options' => ['class' => 'alert-danger']
+    ]);
 }
 
 $buttons = [];
 if ($canCreate) {
     $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
-$buttons[] = Html::button(Yii::t('mozayka', 'Print'), ['class' => 'btn btn-default', 'onclick' => 'print();']);
+$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'print();'
+]);
 $buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
 
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
@@ -34,10 +45,12 @@ $buttonGroup = Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'clearfix']);
 echo $buttonGroup;
 
-$gridConfig['form'] = $formClass::begin($formConfig);
+/*$form = $formClass::begin($formConfig);
+foreach ($filterFields as $attribute => $options) {
+    echo $form->field($filterModel, $attribute, $options);
+}
+$formClass::end();*/
 
 echo $gridClass::widget($gridConfig);
 
-$formClass::end();
-
-echo $buttonGroup;
+//echo $buttonGroup;

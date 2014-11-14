@@ -3,6 +3,6 @@
 namespace yii\mozayka\form;
 
 
-class BinaryField extends ActiveField
+class NumericField extends DecimalField
 {
 }

@@ -5,6 +5,7 @@ namespace yii\mozayka\crud;
 use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
+    yii\data\ActiveDataProvider,
     yii\mozayka\db\ActiveRecord,
     Yii;
 
@@ -20,7 +21,7 @@ class ListAction extends Action
 
     public $formConfig = ['method' => 'get'];
 
-    public $dataProviderClass = 'yii\mozayka\data\ActiveDataProvider';
+    //public $dataProviderClass = 'yii\data\ActiveDataProvider';
 
     public $dataProviderConfig = [];
 
@@ -32,17 +33,31 @@ class ListAction extends Action
 
     public function run()
     {
-        $gridConfig = $this->gridConfig;
-        if (!array_key_exists('dataProvider', $gridConfig)) {
-            $dataProviderConfig = $this->dataProviderConfig;
-            if (!array_key_exists('query', $dataProviderConfig)) {
-                $modelClass = $this->modelClass;
-                $dataProviderConfig['query'] = $modelClass::find();
+        $filterModel = null;
+        $filterFields = [];
+        $request = Yii::$app->getRequest();
+        if ($this->filterModelClass) {
+            /* @var yii\base\Model $filterModel */
+            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
+            if ($request->getIsPost()) {
+                $filterModel->load($request->getBodyParams());
+            } else {
+                $filterModel->load($request->getQueryParams());
             }
-            $gridConfig['dataProvider'] = new $this->dataProviderClass($dataProviderConfig);
+            // validation
+            if ($request->getIsAjax() && $request->getQueryParam('validation')) {
+                Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($filterModel);
+            }
+            // processing
+            $dataProvider = $filterModel->search([$filterModel->formName() => []]);
+        } else {
+            $modelClass = $this->modelClass;
+            $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
+        Yii::configure($dataProvider, $this->dataProviderConfig);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, null, ['query' => $gridConfig['dataProvider']->query]);
+            call_user_func($this->checkAccess, $this->id, null, ['query' => $dataProvider->query]);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
@@ -53,28 +68,23 @@ class ListAction extends Action
             $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
         }
         // grid config
+        $gridConfig = $this->gridConfig;
+        $gridConfig['dataProvider'] = $dataProvider;
+        if ($filterModel) {
+            $filterFields = $this->prepareFields($filterModel);
+$gridConfig = array_merge($gridConfig, [
+'formClass' => $this->formClass,
+'formConfig' => $formConfig,
+'filterModel' => $filterModel,
+'filterFields' => $filterFields
+]);
+        }
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
             //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
             $columns = array_merge($columns, $this->prepareColumns(new $this->modelClass));
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
-        }
-        $request = Yii::$app->getRequest();
-        if (!array_key_exists('filterModel', $gridConfig) && $this->filterModelClass) {
-            /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass(); // ['scenario' => $this->filterScenario]
-            if ($request->getIsGet()) {
-                $filterModel->load($request->getQueryParams());
-                // validation
-                if ($request->getIsAjax() && $request->getQueryParam('validation')) {
-                    Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                    return ActiveForm::validate($filterModel);
-                }
-$filterModel->validate();
-            }
-            $gridConfig['filterModel'] = $filterModel;
-            $gridConfig['filterFields'] = $this->prepareFields($filterModel);
         }
         // can create?
         $modelClass = $this->modelClass;
@@ -89,6 +99,8 @@ $filterModel->validate();
             'errorMessage' => $errorMessage,
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
+            'filterModel' => $filterModel,
+            'filterFields' => $filterFields,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
             'canCreate' => $canCreate

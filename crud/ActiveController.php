@@ -3,6 +3,7 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\ActiveController as YiiActiveController,
+    yii\base\Model,
     yii\helpers\StringHelper,
     yii\mozayka\db\ActiveRecord,
     yii\web\ForbiddenHttpException,
@@ -12,31 +13,39 @@ use yii\rest\ActiveController as YiiActiveController,
 class ActiveController extends YiiActiveController
 {
 
-    public $createScenario = ActiveRecord::SCENARIO_CREATE;
-
-    public $updateScenario = ActiveRecord::SCENARIO_UPDATE;
-
-    public $deleteScenario = ActiveRecord::SCENARIO_DELETE;
-
-    public $searchScenario = ActiveRecord::SCENARIO_SEARCH;
-
-    public $basename = null;
+    public $modelName = null;
 
     public $filterModelClass = null;
 
+    public $deleteScenario = Model::SCENARIO_DEFAULT;
+
+    public $searchScenario = Model::SCENARIO_DEFAULT;
+
     public function init()
     {
-        $this->basename = StringHelper::basename(get_class($this), 'Controller');
+        if (!$this->modelName) {
+            $this->modelName = StringHelper::basename(get_class($this), 'Controller');
+        }
         if (!$this->modelClass) {
-            $modelClass = 'app\models\\' . $this->basename;
+            $modelClass = 'app\models\\' . $this->modelName;
             if (class_exists($modelClass)) {
                 $this->modelClass = $modelClass;
+            } else {
+                $modelClass = 'app\models\readonly\\' . $this->modelName;
+                if (class_exists($modelClass)) {
+                    $this->modelClass = $modelClass;
+                }
             }
         }
         if (!$this->filterModelClass) {
-            $filterModelClass = 'app\models\search\\' . $this->basename . 'Search';
+            $filterModelClass = 'app\models\search\\' . $this->modelName . 'Search';
             if (class_exists($filterModelClass)) {
                 $this->filterModelClass = $filterModelClass;
+            } else {
+                $filterModelClass = 'app\models\readonly\search\\' . $this->modelName . 'Search';
+                if (class_exists($filterModelClass)) {
+                    $this->filterModelClass = $filterModelClass;
+                }
             }
         }
         parent::init();

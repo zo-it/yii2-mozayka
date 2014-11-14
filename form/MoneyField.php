@@ -3,7 +3,10 @@
 namespace yii\mozayka\form;
 
 
-class MoneyField extends ActiveField
+class MoneyField extends DecimalField
 {
 
+    public $size = 20;
+
+    public $scale = 2;
 }

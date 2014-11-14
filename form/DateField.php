@@ -18,32 +18,27 @@ class DateField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $datePicker = [
-        'showButtonPanel' => true,
-        'numberOfMonths' => 3
+    public $pluginOptions = [
+        'numberOfMonths' => 3,
+        'showButtonPanel' => true
     ];
 
     public function init()
     {
-        if (!array_key_exists('value', $this->inputOptions)) {
-            $value = $this->model->{$this->attribute};
-            if (is_int($value)) {
-                $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
-                $this->hiddenInputOptions['value'] = date($this->altDateFormat, $value);
-            }
+        $value = $this->model->{$this->attribute};
+        if (is_int($value)) {
+            $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
+            $this->hiddenInputOptions['value'] = date($this->altDateFormat, $value);
         }
         if (!$this->readOnly) {
+            $pluginOptions = array_merge($this->pluginOptions, [
+                'dateFormat' => Text::juiDateFormat($this->dateFormat),
+                'altFormat' => Text::juiDateFormat($this->altDateFormat)
+            ]);
             $formId = $this->form->getId();
-            $datePicker = $this->datePicker;
-            if (!array_key_exists('dateFormat', $datePicker)) {
-                $datePicker['dateFormat'] = Text::juiDateFormat($this->dateFormat);
-            }
-            if (!array_key_exists('altFormat', $datePicker)) {
-                $datePicker['altFormat'] = Text::juiDateFormat($this->altDateFormat);
-            }
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $datePicker['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($datePicker) . ');';
+            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
@@ -53,8 +48,8 @@ class DateField extends ActiveField
                 $this->parts['{script}'] = Html::script($js);
             } else {
                 $view = $this->form->getView();
-                $view->registerJs($js);
                 DatePickerAsset::register($view);
+                $view->registerJs($js);
             }
         }
         parent::init();
