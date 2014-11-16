@@ -26,8 +26,8 @@ class TimeField extends ActiveField
     {
         $value = $this->model->{$this->attribute};
         if (is_int($value)) {
-            $this->inputOptions['value'] = date($this->timeFormat, $value);
-            $this->hiddenInputOptions['value'] = date($this->altTimeFormat, $value);
+            $this->inputOptions['value'] = Text::date($this->timeFormat, $value);
+            $this->hiddenInputOptions['value'] = Text::date($this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
             $pluginOptions = array_merge($this->pluginOptions, [

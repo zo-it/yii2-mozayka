@@ -2,6 +2,8 @@
 
 namespace yii\mozayka\grid;
 
+use yii\kladovka\helpers\Text;
+
 
 class TimeColumn extends DataColumn
 {
@@ -12,7 +14,7 @@ class TimeColumn extends DataColumn
     {
         $value = parent::getDataCellValue($model, $key, $index);
         if (is_int($value)) {
-            return date($this->timeFormat, $value);
+            return Text::date($this->timeFormat, $value);
         }
         return $value;
     }
