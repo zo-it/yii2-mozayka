@@ -16,8 +16,7 @@ class DecimalField extends ActiveField
     {
         parent::init();
         if (!$this->readOnly) {
-            $mask = $this->unsigned ? '' : '[m]';
-            $mask .= str_pad('', ($this->size - $this->scale) * 3, '[9]');
+            $mask = str_pad($this->unsigned ? '' : '[m]', ($this->size - $this->scale) * 3, '[9]');
             if ($this->scale) {
                 $mask .= '[.]' . str_pad('', $this->scale * 3, '[9]');
             }

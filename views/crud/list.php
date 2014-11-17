@@ -37,13 +37,12 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
-$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
+//$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
 
-$buttonGroup = Html::tag('div', ButtonGroup::widget([
+echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
-echo $buttonGroup;
 
 /*$form = $formClass::begin($formConfig);
 foreach ($filterFields as $attribute => $options) {
@@ -52,5 +51,3 @@ foreach ($filterFields as $attribute => $options) {
 $formClass::end();*/
 
 echo $gridClass::widget($gridConfig);
-
-//echo $buttonGroup;

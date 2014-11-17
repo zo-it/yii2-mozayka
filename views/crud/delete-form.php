@@ -32,11 +32,12 @@ foreach ($fields as $attribute => $options) {
     echo $form->field($model, $attribute, $options);
 }
 
+$buttons = [];
+$buttons[] = Html::submitButton(Yii::t('mozayka', 'Delete'), ['class' => 'btn btn-danger']);
+$buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+
 echo Html::tag('div', ButtonGroup::widget([
-    'buttons' => [
-        Html::submitButton(Yii::t('mozayka', 'Delete'), ['class' => 'btn btn-danger']),
-        Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default'])
-    ],
+    'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
 
