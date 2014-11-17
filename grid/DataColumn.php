@@ -46,8 +46,7 @@ class DataColumn extends YiiDataColumn
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-sm',
                 'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
-            ]);
-            $content .= Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
+            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
                 'id' => 'filter-dropdown2-' . $this->attribute,
                 'class' => 'dropdown2 dropdown2-tip'
             ]);
