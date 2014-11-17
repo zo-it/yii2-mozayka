@@ -28,7 +28,7 @@ class DateField extends ActiveField
         $value = $this->model->{$this->attribute};
         if (is_int($value) || ($value && is_string($value))) {
             $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
-            $this->hiddenInputOptions['value'] = date($this->altDateFormat, $value);
+            $this->hiddenInputOptions['value'] = Text::date($this->altDateFormat, $value);
         }
         if (!$this->readOnly) {
             $pluginOptions = array_merge($this->pluginOptions, [

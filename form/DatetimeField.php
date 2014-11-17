@@ -37,7 +37,7 @@ class DatetimeField extends ActiveField
         $value = $this->model->{$this->attribute};
         if (is_int($value) || ($value && is_string($value))) {
             $this->inputOptions['value'] = Text::date($this->dateFormat . $this->separator . $this->timeFormat, $value);
-            $this->hiddenInputOptions['value'] = date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
+            $this->hiddenInputOptions['value'] = Text::date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
             $pluginOptions = array_merge($this->pluginOptions, [
