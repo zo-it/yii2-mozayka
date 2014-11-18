@@ -11,7 +11,7 @@ class EmailField extends StringField
         parent::init();
         if (!$this->readOnly) {
             $this->widget('yii\widgets\MaskedInput', [
-                'alias' => 'email',
+                'clientOptions' => ['alias' => 'email'],
                 'options' => $this->inputOptions
             ]);
         }

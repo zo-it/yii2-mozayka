@@ -16,17 +16,11 @@ class DecimalField extends ActiveField
     {
         parent::init();
         if (!$this->readOnly) {
-            $mask = str_pad($this->unsigned ? '' : '[m]', ($this->size - $this->scale) * 3, '[9]');
-            if ($this->scale) {
-                $mask .= '[.]' . str_pad('', $this->scale * 3, '[9]');
-            }
             $this->widget('yii\widgets\MaskedInput', [
-                'mask' => $mask,
-                'definitions' => [
-                    'm' => [
-                        'validator' => '\\-',
-                        'cardinality' => 1
-                    ]
+                'clientOptions' => [
+                    'alias' => 'decimal',
+                    'allowMinus' => !$this->unsigned,
+                    'digits' => $this->scale
                 ],
                 'options' => $this->inputOptions
             ]);

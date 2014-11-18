@@ -11,7 +11,7 @@ class UrlField extends StringField
         parent::init();
         if (!$this->readOnly) {
             $this->widget('yii\widgets\MaskedInput', [
-                'alias' => 'url',
+                'clientOptions' => ['alias' => 'url'],
                 'options' => $this->inputOptions
             ]);
         }

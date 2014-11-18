@@ -15,12 +15,9 @@ class IntegerField extends ActiveField
         parent::init();
         if (!$this->readOnly) {
             $this->widget('yii\widgets\MaskedInput', [
-                'mask' => str_pad($this->unsigned ? '' : '[m]', $this->size * 3, '[9]'),
-                'definitions' => [
-                    'm' => [
-                        'validator' => '\\-',
-                        'cardinality' => 1
-                    ]
+                'clientOptions' => [
+                    'alias' => 'integer',
+                    'allowMinus' => !$this->unsigned
                 ],
                 'options' => $this->inputOptions
             ]);

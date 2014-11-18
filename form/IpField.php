@@ -11,7 +11,7 @@ class IpField extends StringField
         parent::init();
         if (!$this->readOnly) {
             $this->widget('yii\widgets\MaskedInput', [
-                'alias' => 'ip',
+                'clientOptions' => ['alias' => 'ip'],
                 'options' => $this->inputOptions
             ]);
         }

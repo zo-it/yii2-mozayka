@@ -11,7 +11,7 @@ class PhoneField extends StringField
         parent::init();
         if (!$this->readOnly) {
             $this->widget('yii\widgets\MaskedInput', [
-                'alias' => 'phone',
+                'clientOptions' => ['alias' => 'phone'],
                 'options' => $this->inputOptions
             ]);
         }
