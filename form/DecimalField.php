@@ -16,6 +16,7 @@ class DecimalField extends ActiveField
     {
         parent::init();
         if (!$this->readOnly) {
+            $this->inputOptions['maxlength'] = $this->size;
             $this->widget('yii\widgets\MaskedInput', [
                 'clientOptions' => [
                     'alias' => 'decimal',
