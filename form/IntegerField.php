@@ -19,7 +19,8 @@ class IntegerField extends ActiveField
                 'clientOptions' => [
                     'alias' => 'integer',
                     'allowPlus' => false,
-                    'allowMinus' => !$this->unsigned
+                    'allowMinus' => !$this->unsigned,
+                    'integerDigits' => $this->unsigned ? $this->size : ($this->size - 1)
                 ],
                 'options' => $this->inputOptions
             ]);
