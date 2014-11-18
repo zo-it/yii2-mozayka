@@ -46,8 +46,8 @@ class CreateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $successMessage = Yii::t('mozayka', 'Record has been successfully saved.');
                 $id = implode(',', array_values($model->getPrimaryKey(true)));
+                $successMessage = Yii::t('mozayka', 'Record has been successfully saved.');
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     return $this->controller->redirect([$this->viewAction, 'id' => $id]);
@@ -61,15 +61,14 @@ class CreateFormAction extends Action
                 return [
                     'ok' => $saved,
                     'message' => $saved ? $successMessage : $errorMessage,
-                    'id' => $saved ? $id : null
+                    'id' => $saved ? $id : false
                 ];
             }
         }
         // form config
-        $formConfig = $this->formConfig;
-        if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
-        }
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'validation' => 1]
+        ]);
         // can list?
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();

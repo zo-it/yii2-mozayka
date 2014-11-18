@@ -11,7 +11,7 @@ class ReadFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['readOnly' => true];
+    public $formConfig = [];
 
     public $view = '@yii/mozayka/views/crud/read-form';
 
@@ -27,7 +27,9 @@ class ReadFormAction extends Action
             call_user_func($this->checkAccess, $this->id, $model);
         }
         // form config
-        $formConfig = $this->formConfig;
+        $formConfig = array_merge($this->formConfig, [
+            'readOnly' => true
+        ]);
         // can list?
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();

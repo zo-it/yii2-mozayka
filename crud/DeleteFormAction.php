@@ -17,7 +17,7 @@ class DeleteFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['readOnly' => true];
+    public $formConfig = [];
 
     public $view = '@yii/mozayka/views/crud/delete-form';
 
@@ -65,10 +65,10 @@ class DeleteFormAction extends Action
             }
         }
         // form config
-        $formConfig = $this->formConfig;
-        if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
-        }
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1],
+            'readOnly' => true
+        ]);
         // can list?
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();
