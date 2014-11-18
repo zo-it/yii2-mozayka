@@ -3,7 +3,7 @@
 namespace yii\mozayka\form;
 
 
-class PhoneField extends ActiveField
+class PhoneField extends StringField
 {
 
     public function init()

@@ -3,7 +3,7 @@
 namespace yii\mozayka\form;
 
 
-class UrlField extends ActiveField
+class UrlField extends StringField
 {
 
     public function init()

@@ -3,7 +3,7 @@
 namespace yii\mozayka\form;
 
 
-class IpField extends ActiveField
+class IpField extends StringField
 {
 
     public function init()
