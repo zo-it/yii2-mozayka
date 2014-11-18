@@ -5,7 +5,7 @@ namespace yii\mozayka\crud;
 use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
-    yii\helpers\VarDumper,
+    yii\kladovka\helpers\Log,
     yii\mozayka\db\ActiveRecord,
     Yii;
 
@@ -25,6 +25,7 @@ class CreateFormAction extends Action
 
     public function run()
     {
+        $id = null;
         $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = new $modelClass(['scenario' => $this->scenario]);
@@ -53,11 +54,7 @@ class CreateFormAction extends Action
                 }
             } else {
                 $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
-                Yii::error(VarDumper::dumpAsString([
-                    'class' => get_class($model),
-                    'attributes' => $model->getAttributes(),
-                    'errors' => $model->getErrors()
-                ]));
+                Log::modelErrors($model);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

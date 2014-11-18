@@ -5,7 +5,7 @@ namespace yii\mozayka\crud;
 use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
-    yii\helpers\VarDumper,
+    yii\kladovka\helpers\Log,
     yii\mozayka\db\ActiveRecord,
     Yii;
 
@@ -26,6 +26,9 @@ class DeleteFormAction extends Action
         $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
+        if (is_null($id)) {
+            $id = implode(',', array_values($model->getPrimaryKey(true)));
+        }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
@@ -51,11 +54,7 @@ class DeleteFormAction extends Action
                 }
             } else {
                 $errorMessage = Yii::t('mozayka', 'Record has not been deleted.');
-                Yii::error(VarDumper::dumpAsString([
-                    'class' => get_class($model),
-                    'attributes' => $model->getAttributes(),
-                    'errors' => $model->getErrors()
-                ]));
+                Log::modelErrors($model);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
