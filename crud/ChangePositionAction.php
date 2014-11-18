@@ -6,7 +6,7 @@ namespace yii\mozayka\crud;
 class ChangePositionAction extends Action
 {
 
-    public function run($id)
+    public function run($id = null)
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);

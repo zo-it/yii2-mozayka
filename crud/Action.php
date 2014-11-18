@@ -8,7 +8,8 @@ use yii\rest\Action as YiiAction,
     yii\helpers\ArrayHelper,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
-    yii\kladovka\behaviors\SoftDeleteBehavior;
+    yii\kladovka\behaviors\SoftDeleteBehavior,
+    Yii;
 
 
 class Action extends YiiAction
@@ -17,6 +18,17 @@ class Action extends YiiAction
     public $columns = [];
 
     public $fields = [];
+
+    public function findModel($id = null)
+    {
+        if (is_null($id)) {
+            $modelClass = $this->modelClass;
+            $emptyPrimaryKey = array_flip($modelClass::primaryKey());
+            $primaryKey = array_merge($emptyPrimaryKey, array_intersect_key(Yii::$app->getRequest()->getQueryParams(), $emptyPrimaryKey));
+            $id = implode(',', array_values($primaryKey));
+        }
+        return parent::findModel($id);
+    }
 
     protected function prepareColumns(Model $model)
     {

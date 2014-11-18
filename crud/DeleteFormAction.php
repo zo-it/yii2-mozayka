@@ -20,7 +20,7 @@ class DeleteFormAction extends Action
 
     public $view = '@yii/mozayka/views/crud/delete-form';
 
-    public function run($id)
+    public function run($id = null)
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);

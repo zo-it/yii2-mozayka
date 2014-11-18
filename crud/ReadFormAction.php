@@ -14,7 +14,7 @@ class ReadFormAction extends Action
 
     public $view = '@yii/mozayka/views/crud/read-form';
 
-    public function run($id)
+    public function run($id = null)
     {
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
