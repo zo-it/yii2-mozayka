@@ -23,6 +23,7 @@ class UpdateFormAction extends Action
 
     public function run($id = null)
     {
+        $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         $model->setScenario($this->scenario);
@@ -58,11 +59,10 @@ class UpdateFormAction extends Action
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                if ($saved) {
-                    return ['ok' => $saved, 'message' => $successMessage];
-                } else {
-                    return ['ok' => $saved, 'message' => $errorMessage];
-                }
+                return [
+                    'ok' => $saved,
+                    'message' => $saved ? $successMessage : $errorMessage
+                ];
             }
         }
         // form config
@@ -71,7 +71,6 @@ class UpdateFormAction extends Action
             $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
         // can list?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();
         } else {

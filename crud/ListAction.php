@@ -33,6 +33,7 @@ class ListAction extends Action
 
     public function run()
     {
+        $modelClass = $this->modelClass;
         $dataProvider = null;
         $filterModel = null;
         $filterFields = [];
@@ -57,7 +58,6 @@ $filterModel->afterSave(false, []);
 }
         }
         if (!$dataProvider) {
-$modelClass = $this->modelClass;
 $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
         Yii::configure($dataProvider, $this->dataProviderConfig);
@@ -87,12 +87,11 @@ $gridConfig = array_merge($gridConfig, [
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
             //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
-            $columns = array_merge($columns, $this->prepareColumns(new $this->modelClass));
+            $columns = array_merge($columns, $this->prepareColumns(new $modelClass));
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
         // can create?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canCreate = $modelClass::canCreate();
         } else {

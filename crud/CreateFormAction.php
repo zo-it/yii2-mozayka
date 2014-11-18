@@ -25,8 +25,9 @@ class CreateFormAction extends Action
 
     public function run()
     {
+        $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
-        $model = new $this->modelClass(['scenario' => $this->scenario]);
+        $model = new $modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
         }
@@ -60,11 +61,11 @@ class CreateFormAction extends Action
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                if ($saved) {
-                    return ['ok' => $saved, 'message' => $successMessage, 'id' => $id];
-                } else {
-                    return ['ok' => $saved, 'message' => $errorMessage];
-                }
+                return [
+                    'ok' => $saved,
+                    'message' => $saved ? $successMessage : $errorMessage,
+                    'id' => $saved ? $id : null
+                ];
             }
         }
         // form config
@@ -73,7 +74,6 @@ class CreateFormAction extends Action
             $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
         }
         // can list?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();
         } else {

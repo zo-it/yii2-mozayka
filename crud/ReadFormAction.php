@@ -17,6 +17,7 @@ class ReadFormAction extends Action
 
     public function run($id = null)
     {
+        $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if ($this->checkAccess) {
@@ -25,7 +26,6 @@ class ReadFormAction extends Action
         // form config
         $formConfig = $this->formConfig;
         // can list?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();
         } else {

@@ -23,6 +23,7 @@ class DeleteFormAction extends Action
 
     public function run($id = null)
     {
+        $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         $model->setScenario($this->scenario);
@@ -58,11 +59,10 @@ class DeleteFormAction extends Action
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                if ($deleted) {
-                    return ['ok' => $deleted, 'message' => $successMessage];
-                } else {
-                    return ['ok' => $deleted, 'message' => $errorMessage];
-                }
+                return [
+                    'ok' => $deleted,
+                    'message' => $deleted ? $successMessage : $errorMessage
+                ];
             }
         }
         // form config
@@ -71,7 +71,6 @@ class DeleteFormAction extends Action
             $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
         }
         // can list?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canList = $modelClass::canList();
         } else {
