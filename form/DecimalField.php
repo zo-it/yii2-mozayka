@@ -23,7 +23,8 @@ class DecimalField extends ActiveField
                     'allowPlus' => false,
                     'allowMinus' => !$this->unsigned,
                     'integerDigits' => $this->unsigned ? ($this->size - $this->scale) : ($this->size - $this->scale - 1),
-                    'digits' => $this->scale
+                    'digits' => $this->scale,
+                    'rightAlign' => false
                 ],
                 'options' => $this->inputOptions
             ]);

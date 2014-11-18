@@ -20,7 +20,8 @@ class IntegerField extends ActiveField
                     'alias' => 'integer',
                     'allowPlus' => false,
                     'allowMinus' => !$this->unsigned,
-                    'integerDigits' => $this->unsigned ? $this->size : ($this->size - 1)
+                    'integerDigits' => $this->unsigned ? $this->size : ($this->size - 1),
+                    'rightAlign' => false
                 ],
                 'options' => $this->inputOptions
             ]);
