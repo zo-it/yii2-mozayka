@@ -18,10 +18,7 @@ class DateField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $pluginOptions = [
-        'numberOfMonths' => 3,
-        'showButtonPanel' => true
-    ];
+    public $pluginOptions = [];
 
     public function init()
     {
@@ -31,7 +28,10 @@ class DateField extends ActiveField
             $this->hiddenInputOptions['value'] = Text::date($this->altDateFormat, $value);
         }
         if (!$this->readOnly) {
-            $pluginOptions = array_merge($this->pluginOptions, [
+            $pluginOptions = array_merge([
+                'numberOfMonths' => 3,
+                'showButtonPanel' => true
+            ], $this->pluginOptions, [
                 'dateFormat' => Text::juiDateFormat($this->dateFormat),
                 'altFormat' => Text::juiDateFormat($this->altDateFormat)
             ]);

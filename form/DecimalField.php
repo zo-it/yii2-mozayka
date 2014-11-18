@@ -12,20 +12,24 @@ class DecimalField extends ActiveField
 
     public $unsigned = false;
 
+    public $pluginOptions = [];
+
     public function init()
     {
         parent::init();
         if (!$this->readOnly) {
             $this->inputOptions['maxlength'] = $this->size + 1;
+            $pluginOptions = array_merge([
+                'allowPlus' => false,
+                'rightAlign' => false
+            ], $this->pluginOptions, [
+                'alias' => 'decimal',
+                'allowMinus' => !$this->unsigned,
+                'integerDigits' => $this->unsigned ? ($this->size - $this->scale) : ($this->size - $this->scale - 1),
+                'digits' => $this->scale
+            ]);
             $this->widget('yii\widgets\MaskedInput', [
-                'clientOptions' => [
-                    'alias' => 'decimal',
-                    'allowPlus' => false,
-                    'allowMinus' => !$this->unsigned,
-                    'integerDigits' => $this->unsigned ? ($this->size - $this->scale) : ($this->size - $this->scale - 1),
-                    'digits' => $this->scale,
-                    'rightAlign' => false
-                ],
+                'clientOptions' => $pluginOptions,
                 'options' => $this->inputOptions
             ]);
         }
