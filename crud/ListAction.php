@@ -68,10 +68,9 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
         // form config
-        $formConfig = $this->formConfig;
-        if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
-        }
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'validation' => 1]
+        ]);
         // grid config
         $gridConfig = $this->gridConfig;
         $gridConfig['dataProvider'] = $dataProvider;
