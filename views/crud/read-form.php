@@ -7,6 +7,7 @@ use yii\helpers\Html,
  * @var array $formConfig
  * @var yii\db\ActiveRecord $model
  * @var array $fields
+ * @var bool $canList
  */
 
 $form = $formClass::begin($formConfig);
@@ -20,7 +21,9 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
-$buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+if ($canList) {
+    $buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+}
 
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,

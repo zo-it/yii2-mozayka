@@ -2,7 +2,8 @@
 
 namespace yii\mozayka\crud;
 
-use Yii;
+use yii\mozayka\db\ActiveRecord,
+    Yii;
 
 
 class ReadFormAction extends Action
@@ -23,12 +24,20 @@ class ReadFormAction extends Action
         }
         // form config
         $formConfig = $this->formConfig;
+        // can list?
+        $modelClass = $this->modelClass;
+        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+            $canList = $modelClass::canList();
+        } else {
+            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
+        }
         // rendering
         $viewParams = [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'model' => $model,
-            'fields' => $this->prepareFields($model)
+            'fields' => $this->prepareFields($model),
+            'canList' => $canList
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

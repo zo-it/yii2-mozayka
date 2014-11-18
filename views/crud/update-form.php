@@ -10,6 +10,7 @@ use yii\bootstrap\Alert,
  * @var array $formConfig
  * @var yii\db\ActiveRecord $model
  * @var array $fields
+ * @var bool $canList
  */
 
 if ($successMessage) {
@@ -34,7 +35,9 @@ foreach ($fields as $attribute => $options) {
 
 $buttons = [];
 $buttons[] = Html::submitButton(Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
-$buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+if ($canList) {
+    $buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+}
 
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,

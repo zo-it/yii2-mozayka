@@ -6,6 +6,7 @@ use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\helpers\VarDumper,
+    yii\mozayka\db\ActiveRecord,
     Yii;
 
 
@@ -71,6 +72,13 @@ class CreateFormAction extends Action
         if (!array_key_exists('validationUrl', $formConfig)) {
             $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
         }
+        // can list?
+        $modelClass = $this->modelClass;
+        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+            $canList = $modelClass::canList();
+        } else {
+            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
+        }
         // rendering
         $viewParams = [
             'successMessage' => $successMessage,
@@ -78,7 +86,8 @@ class CreateFormAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'model' => $model,
-            'fields' => $this->prepareFields($model)
+            'fields' => $this->prepareFields($model),
+            'canList' => $canList
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
