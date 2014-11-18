@@ -19,6 +19,7 @@ class DecimalField extends ActiveField
             $this->widget('yii\widgets\MaskedInput', [
                 'clientOptions' => [
                     'alias' => 'decimal',
+                    'allowPlus' => false,
                     'allowMinus' => !$this->unsigned,
                     'digits' => $this->scale
                 ],

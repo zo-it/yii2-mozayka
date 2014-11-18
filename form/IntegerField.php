@@ -17,6 +17,7 @@ class IntegerField extends ActiveField
             $this->widget('yii\widgets\MaskedInput', [
                 'clientOptions' => [
                     'alias' => 'integer',
+                    'allowPlus' => false,
                     'allowMinus' => !$this->unsigned
                 ],
                 'options' => $this->inputOptions
