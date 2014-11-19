@@ -1,13 +1,23 @@
 <?php
-use yii\mozayka\MozaykaAsset;
-use yii\helpers\Html;
-use yii\bootstrap\NavBar;
-use yii\bootstrap\Nav;
-use yii\widgets\Breadcrumbs;
+use yii\mozayka\MozaykaAsset,
+    yii\helpers\Html,
+    yii\bootstrap\NavBar,
+    yii\bootstrap\Nav,
+    yii\widgets\Breadcrumbs;
 /**
  * @var yii\web\View $this
  * @var string $content
  */
+
+$navItems = [
+    ['label' => Yii::t('mozayka', 'Home'), 'url' => ['default/index']]
+];
+$user = Yii::$app->getUser();
+if ($user->getIsGuest()) {
+    $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
+} else {
+    $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
+}
 
 MozaykaAsset::register($this);
 $this->beginPage();
@@ -33,18 +43,9 @@ NavBar::begin([
         'class' => 'navbar-inverse navbar-fixed-top'
     ]
 ]);
-$items = [
-    ['label' => 'Home', 'url' => ['/site/index']]
-];
-$user = Yii::$app->getUser();
-if ($user->getIsGuest()) {
-    $items[] = ['label' => 'Login', 'url' => ['/site/login']];
-} else {
-    $items[] = ['label' => 'Logout (' . $user->getIdentity()->username . ')', 'url' => ['/site/logout']];
-}
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right'],
-    'items' => $items
+    'items' => $navItems
 ]);
 NavBar::end();
 ?>

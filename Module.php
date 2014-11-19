@@ -16,7 +16,9 @@ class Module extends YiiModule implements BootstrapInterface
     {
         if ($app instanceof YiiWebApplication) {
             $app->getUrlManager()->addRules([
-                $this->id => $this->id . '/default',
+                $this->id => $this->id . '/default/index',
+                $this->id . '/login-form' => $this->id . '/default/login-form',
+                $this->id . '/logout' => $this->id . '/default/logout',
                 [
                     'class' => 'yii\mozayka\web\UrlRule',
                     'pattern' => $this->id . '/<modelId:[\w\-]+>',

@@ -12,4 +12,14 @@ class DefaultController extends Controller
     {
         return __METHOD__;
     }
+
+    public function actionLoginForm()
+    {
+        return __METHOD__;
+    }
+
+    public function actionLogout()
+    {
+        return __METHOD__;
+    }
 }
