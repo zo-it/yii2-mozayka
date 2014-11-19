@@ -9,6 +9,8 @@ class MozaykaAsset extends AssetBundle
 {
 
     public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
         'yii\mozayka\web\DropdownAsset',
         'yii\mozayka\web\IframeTransportAsset',
         'yii\mozayka\web\DatePickerAsset',
