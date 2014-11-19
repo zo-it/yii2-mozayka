@@ -10,6 +10,8 @@ use yii\base\Module as YiiModule,
 class Module extends YiiModule implements BootstrapInterface
 {
 
+    public $layout = 'main';
+
     public function bootstrap($app)
     {
         if ($app instanceof YiiWebApplication) {
