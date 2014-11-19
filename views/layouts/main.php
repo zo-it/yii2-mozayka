@@ -10,27 +10,22 @@ use yii\mozayka\MozaykaAsset,
  */
 
 MozaykaAsset::register($this);
-
-$mozayka = Yii::$app->getModule('mozayka');
 $homeUrl = Yii::$app->getHomeUrl();
-
 $navItems = array_merge([
     ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], $mozayka->navItems);
+], Yii::$app->getModule('mozayka')->navItems);
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
 } else {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
-
 $breadcrumbs = [
     ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
 ];
 if (array_key_exists('breadcrumbs', $this->params)) {
     $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
 }
-
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -47,8 +42,8 @@ $this->beginPage();
 <?php $this->beginBody(); ?>
 <div class="wrap">
 <?php
-NavBar::begin([
-    'brandLabel' => $mozayka->appName,
+$navBar = NavBar::begin([
+    'brandLabel' => Yii::$app->name,
     'brandUrl' => $homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top'
@@ -74,7 +69,7 @@ echo $content;
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?php echo $mozayka->appName; ?> <?php echo date('Y'); ?></p>
+        <p class="pull-left">&copy; <?php echo Yii::$app->name; ?> <?php echo date('Y'); ?></p>
         <p class="pull-right"><?php echo Yii::powered(); ?></p>
     </div>
 </footer>

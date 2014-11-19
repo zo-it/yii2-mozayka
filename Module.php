@@ -12,8 +12,6 @@ class Module extends YiiModule implements BootstrapInterface
 
     public $layout = 'main';
 
-    public $appName = 'Mozayka';
-
     public $navItems = [];
 
     public function bootstrap($app)
