@@ -1,9 +1,9 @@
 <?php
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use yii\mozayka\MozaykaAsset;
+use yii\helpers\Html;
+use yii\bootstrap\NavBar;
+use yii\bootstrap\Nav;
+use yii\widgets\Breadcrumbs;
 /**
  * @var yii\web\View $this
  * @var string $content
@@ -27,24 +27,24 @@ $this->beginPage();
 <div class="wrap">
 <?php
 NavBar::begin([
-'brandLabel' => 'My Company',
-'brandUrl' => Yii::$app->homeUrl,
-'options' => [
-'class' => 'navbar-inverse navbar-fixed-top',
-],
+    'brandLabel' => 'My Company',
+    'brandUrl' => Yii::$app->getHomeUrl(),
+    'options' => [
+        'class' => 'navbar-inverse navbar-fixed-top'
+    ]
 ]);
+$items = [
+    ['label' => 'Home', 'url' => ['/site/index']]
+];
+$user = Yii::$app->getUser();
+if ($user->getIsGuest()) {
+    $items[] = ['label' => 'Login', 'url' => ['/site/login']];
+} else {
+    $items[] = ['label' => 'Logout (' . $user->getIdentity()->username . ')', 'url' => ['/site/logout']];
+}
 echo Nav::widget([
-'options' => ['class' => 'navbar-nav navbar-right'],
-'items' => [
-['label' => 'Home', 'url' => ['/site/index']],
-['label' => 'About', 'url' => ['/site/about']],
-['label' => 'Contact', 'url' => ['/site/contact']],
-Yii::$app->user->isGuest ?
-['label' => 'Login', 'url' => ['/site/login']] :
-['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-'url' => ['/site/logout'],
-'linkOptions' => ['data-method' => 'post']],
-],
+    'options' => ['class' => 'navbar-nav navbar-right'],
+    'items' => $items
 ]);
 NavBar::end();
 ?>
