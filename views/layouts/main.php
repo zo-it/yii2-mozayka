@@ -10,7 +10,7 @@ use yii\mozayka\MozaykaAsset,
  */
 
 $navItems = [
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => ['default/index']]
+    ['label' => Yii::t('mozayka', 'Home'), 'url' => Yii::$app->getHomeUrl()]
 ];
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {

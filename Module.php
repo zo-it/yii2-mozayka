@@ -30,6 +30,7 @@ class Module extends YiiModule implements BootstrapInterface
                     'route' => $this->id . '/crud/<action>'
                 ]
             ]);
+            $app->setHomeUrl(['default/index']);
             $app->getI18n()->translations['mozayka'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en-US',
