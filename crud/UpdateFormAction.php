@@ -19,7 +19,7 @@ class UpdateFormAction extends Action
 
     public $formConfig = [];
 
-    public $view = '@yii/mozayka/views/crud/update-form';
+    public $view = 'update-form';
 
     public function run($id = null)
     {

@@ -10,11 +10,17 @@ use yii\base\Module as YiiModule,
 class Module extends YiiModule implements BootstrapInterface
 {
 
+    public $layout = 'main';
+
+    public $navItems = [];
+
     public function bootstrap($app)
     {
         if ($app instanceof YiiWebApplication) {
             $app->getUrlManager()->addRules([
-                $this->id => $this->id . '/default',
+                $this->id => $this->id . '/default/index',
+                $this->id . '/login-form' => $this->id . '/default/login-form',
+                $this->id . '/logout' => $this->id . '/default/logout',
                 [
                     'class' => 'yii\mozayka\web\UrlRule',
                     'pattern' => $this->id . '/<modelId:[\w\-]+>',
@@ -26,11 +32,15 @@ class Module extends YiiModule implements BootstrapInterface
                     'route' => $this->id . '/crud/<action>'
                 ]
             ]);
+            $app->setHomeUrl(['default/index']);
             $app->getI18n()->translations['mozayka'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en-US',
                 'basePath' => '@yii/mozayka/messages'
             ];
+            $view = $app->getView();
+            $view->params['navItems'] = $this->navItems;
+            $view->params['breadcrumbs'] = [];
         }
     }
 }

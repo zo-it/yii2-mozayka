@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Home' => 'Главная',
+    'Login' => 'Вход',
+    'Logout' => 'Выход',
     'Permission denied for user "{user}" to perform action "{action}".' => 'Отказано в доступе для пользователя "{user}" чтобы выполнить действие "{action}".',
     'Filter' => 'Фильтр',
     'Apply' => 'Применить',

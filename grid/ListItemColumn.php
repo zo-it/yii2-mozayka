@@ -8,6 +8,14 @@ class ListItemColumn extends DataColumn
 
     public $items = [];
 
+    public function init()
+    {
+        if (is_callable($this->items)) {
+            $this->items = $this->items();
+        }
+        parent::init();
+    }
+
     public function getDataCellValue($model, $key, $index)
     {
         $value = parent::getDataCellValue($model, $key, $index);
