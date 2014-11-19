@@ -10,12 +10,12 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        return __METHOD__;
+        return $this->render('index');
     }
 
     public function actionLoginForm()
     {
-        return __METHOD__;
+        return $this->render('login-form');
     }
 
     public function actionLogout()

@@ -29,7 +29,7 @@ class ListAction extends Action
 
     public $gridConfig = [];
 
-    public $view = '@yii/mozayka/views/crud/list';
+    public $view = 'list';
 
     public function run()
     {
