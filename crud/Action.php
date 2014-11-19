@@ -107,6 +107,13 @@ class Action extends YiiAction
                     }
                     unset($options['type']);
                 }
+                if (!array_key_exists('class', $options)) {
+                    $methodName = Inflector::variablize($attribute) . 'ListItems';
+                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                        $options['class'] = 'yii\mozayka\grid\ListItemColumn';
+                        $options['items'] = $modelClass::$methodName($model);
+                    }
+                }
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
@@ -127,13 +134,6 @@ class Action extends YiiAction
                                 $options['class'] = $fieldClass;
                             }
                         }
-                    }
-                }
-                if (!array_key_exists('class', $options)) {
-                    $methodName = Inflector::variablize($attribute) . 'ListItems';
-                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                        $options['class'] = 'yii\mozayka\grid\ListItemColumn';
-                        $options['items'] = $modelClass::$methodName();
                     }
                 }
                 if (array_key_exists($attribute, $columns)) {
@@ -234,6 +234,13 @@ class Action extends YiiAction
                     }
                     unset($options['type']);
                 }
+                if (!array_key_exists('class', $options)) {
+                    $methodName = Inflector::variablize($attribute) . 'ListItems';
+                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                        $options['class'] = 'yii\mozayka\form\DropDownListField';
+                        $options['items'] = $modelClass::$methodName($model);
+                    }
+                }
                 if ($tableSchema && !array_key_exists('class', $options)) {
                     $columnSchema = $tableSchema->getColumn($attribute);
                     if ($columnSchema) {
@@ -263,13 +270,6 @@ class Action extends YiiAction
                                 $options['class'] = $fieldClass;
                             }
                         }
-                    }
-                }
-                if (!array_key_exists('class', $options)) {
-                    $methodName = Inflector::variablize($attribute) . 'ListItems';
-                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                        $options['class'] = 'yii\mozayka\form\DropDownListField';
-                        $options['items'] = $modelClass::$methodName();
                     }
                 }
                 if (array_key_exists($attribute, $fields)) {
