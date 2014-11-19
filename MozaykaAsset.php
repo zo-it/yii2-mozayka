@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\mozayka\web;
+namespace yii\mozayka;
 
 use yii\web\AssetBundle;
 
@@ -17,4 +17,8 @@ class MozaykaAsset extends AssetBundle
         'yii\mozayka\web\TimePickerAsset',
         'yii\mozayka\web\TinymceAsset'
     ];
+
+    public $sourcePath = '@yii/mozayka/assets';
+
+    public $css = ['main.css'];
 }
