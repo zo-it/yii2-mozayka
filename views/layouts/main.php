@@ -13,19 +13,16 @@ MozaykaAsset::register($this);
 $homeUrl = Yii::$app->getHomeUrl();
 $navItems = array_merge([
     ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], Yii::$app->getModule('mozayka')->navItems);
+], $this->params['navItems']);
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
 } else {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
-$breadcrumbs = [
+$breadcrumbs = array_merge([
     ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-];
-if (array_key_exists('breadcrumbs', $this->params)) {
-    $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
-}
+], $this->params['breadcrumbs']);
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -55,7 +52,6 @@ echo Nav::widget([
 ]);
 NavBar::end();
 ?>
-
 <div class="container">
 <?php
 echo Breadcrumbs::widget([

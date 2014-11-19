@@ -38,6 +38,9 @@ class Module extends YiiModule implements BootstrapInterface
                 'sourceLanguage' => 'en-US',
                 'basePath' => '@yii/mozayka/messages'
             ];
+            $view = $app->getView();
+            $view->params['navItems'] = $this->navItems;
+            $view->params['breadcrumbs'] = [];
         }
     }
 }
