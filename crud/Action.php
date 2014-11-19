@@ -5,6 +5,7 @@ namespace yii\mozayka\crud;
 use yii\rest\Action as YiiAction,
     yii\base\Model,
     yii\db\ActiveRecord,
+    yii\helpers\Inflector,
     yii\helpers\ArrayHelper,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
@@ -32,6 +33,7 @@ class Action extends YiiAction
 
     protected function prepareColumns(Model $model)
     {
+        $modelClass = get_class($model);
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
@@ -127,6 +129,13 @@ class Action extends YiiAction
                         }
                     }
                 }
+                if (!array_key_exists('class', $options)) {
+                    $methodName = Inflector::variablize($attribute) . 'ListItems';
+                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                        $options['class'] = 'yii\mozayka\grid\ListItemColumn';
+                        $options['items'] = $modelClass::$methodName();
+                    }
+                }
                 if (array_key_exists($attribute, $columns)) {
                     $columns[$attribute] = ArrayHelper::merge($columns[$attribute], $options);
                 } else {
@@ -152,6 +161,7 @@ class Action extends YiiAction
 
     protected function prepareFields(Model $model)
     {
+        $modelClass = get_class($model);
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
@@ -253,6 +263,13 @@ class Action extends YiiAction
                                 $options['class'] = $fieldClass;
                             }
                         }
+                    }
+                }
+                if (!array_key_exists('class', $options)) {
+                    $methodName = Inflector::variablize($attribute) . 'ListItems';
+                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                        $options['class'] = 'yii\mozayka\form\DropDownListField';
+                        $options['items'] = $modelClass::$methodName();
                     }
                 }
                 if (array_key_exists($attribute, $fields)) {
