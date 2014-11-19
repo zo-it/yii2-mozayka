@@ -18,9 +18,7 @@ class TimeField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $pluginOptions = [
-        'showButtonPanel' => true
-    ];
+    public $pluginOptions = [];
 
     public function init()
     {
@@ -30,7 +28,7 @@ class TimeField extends ActiveField
             $this->hiddenInputOptions['value'] = Text::date($this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
-            $pluginOptions = array_merge($this->pluginOptions, [
+            $pluginOptions = array_merge(['showButtonPanel' => true], $this->pluginOptions, [
                 'timeFormat' => Text::juiTimeFormat($this->timeFormat),
                 'altTimeFormat' => Text::juiTimeFormat($this->altTimeFormat)
             ]);

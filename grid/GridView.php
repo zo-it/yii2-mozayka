@@ -14,9 +14,7 @@ class GridView extends YiiGridView
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['method' => 'get'];
-
-    private $_form = null;
+    public $formConfig = [];
 
     public function init()
     {
@@ -24,10 +22,7 @@ class GridView extends YiiGridView
         parent::init();
     }
 
-    public function getForm()
-    {
-        return $this->_form;
-    }
+    private $_form = null;
 
     public function renderItems()
     {
@@ -42,5 +37,10 @@ class GridView extends YiiGridView
             return $view->blocks['grid-items'];
         }
         return parent::renderItems();
+    }
+
+    public function getForm()
+    {
+        return $this->_form;
     }
 }

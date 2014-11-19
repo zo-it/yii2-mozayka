@@ -19,7 +19,7 @@ class ListAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['method' => 'get'];
+    public $formConfig = [];
 
     //public $dataProviderClass = 'yii\data\ActiveDataProvider';
 
@@ -33,6 +33,7 @@ class ListAction extends Action
 
     public function run()
     {
+        $modelClass = $this->modelClass;
         $dataProvider = null;
         $filterModel = null;
         $filterFields = [];
@@ -57,7 +58,6 @@ $filterModel->afterSave(false, []);
 }
         }
         if (!$dataProvider) {
-$modelClass = $this->modelClass;
 $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
         Yii::configure($dataProvider, $this->dataProviderConfig);
@@ -68,10 +68,10 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
         // form config
-        $formConfig = $this->formConfig;
-        if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = [$this->id, 'validation' => 1];
-        }
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'validation' => 1],
+            'method' => 'get'
+        ]);
         // grid config
         $gridConfig = $this->gridConfig;
         $gridConfig['dataProvider'] = $dataProvider;
@@ -87,12 +87,11 @@ $gridConfig = array_merge($gridConfig, [
         if (!array_key_exists('columns', $gridConfig)) {
             $columns = [];
             //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
-            $columns = array_merge($columns, $this->prepareColumns(new $this->modelClass));
+            $columns = array_merge($columns, $this->prepareColumns(new $modelClass));
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
         // can create?
-        $modelClass = $this->modelClass;
         if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
             $canCreate = $modelClass::canCreate();
         } else {

@@ -26,11 +26,7 @@ class DatetimeField extends ActiveField
 
     public $hiddenInputOptions = [];
 
-    public $pluginOptions = [
-        'numberOfMonths' => 3,
-        'showButtonPanel' => true,
-        'altFieldTimeOnly' => false
-    ];
+    public $pluginOptions = [];
 
     public function init()
     {
@@ -40,7 +36,11 @@ class DatetimeField extends ActiveField
             $this->hiddenInputOptions['value'] = Text::date($this->altDateFormat . $this->altSeparator . $this->altTimeFormat, $value);
         }
         if (!$this->readOnly) {
-            $pluginOptions = array_merge($this->pluginOptions, [
+            $pluginOptions = array_merge([
+                'numberOfMonths' => 3,
+                'showButtonPanel' => true,
+                'altFieldTimeOnly' => false
+            ], $this->pluginOptions, [
                 'dateFormat' => Text::juiDateFormat($this->dateFormat),
                 'altFormat' => Text::juiDateFormat($this->altDateFormat),
                 'separator' => $this->separator,

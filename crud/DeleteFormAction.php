@@ -5,7 +5,8 @@ namespace yii\mozayka\crud;
 use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
-    yii\helpers\VarDumper,
+    yii\kladovka\helpers\Log,
+    yii\mozayka\db\ActiveRecord,
     Yii;
 
 
@@ -16,14 +17,18 @@ class DeleteFormAction extends Action
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
-    public $formConfig = ['readOnly' => true];
+    public $formConfig = [];
 
     public $view = '@yii/mozayka/views/crud/delete-form';
 
-    public function run($id)
+    public function run($id = null)
     {
+        $modelClass = $this->modelClass;
         /* @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
+        if (is_null($id)) {
+            $id = implode(',', array_values($model->getPrimaryKey(true)));
+        }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model);
@@ -49,25 +54,26 @@ class DeleteFormAction extends Action
                 }
             } else {
                 $errorMessage = Yii::t('mozayka', 'Record has not been deleted.');
-                Yii::error(VarDumper::dumpAsString([
-                    'class' => get_class($model),
-                    'attributes' => $model->getAttributes(),
-                    'errors' => $model->getErrors()
-                ]));
+                Log::modelErrors($model);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-                if ($deleted) {
-                    return ['ok' => $deleted, 'message' => $successMessage];
-                } else {
-                    return ['ok' => $deleted, 'message' => $errorMessage];
-                }
+                return [
+                    'ok' => $deleted,
+                    'message' => $deleted ? $successMessage : $errorMessage
+                ];
             }
         }
         // form config
-        $formConfig = $this->formConfig;
-        if (!array_key_exists('validationUrl', $formConfig)) {
-            $formConfig['validationUrl'] = [$this->id, 'id' => $id, 'validation' => 1];
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1],
+            'readOnly' => true
+        ]);
+        // can list?
+        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+            $canList = $modelClass::canList();
+        } else {
+            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
         }
         // rendering
         $viewParams = [
@@ -76,7 +82,8 @@ class DeleteFormAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'model' => $model,
-            'fields' => $this->prepareFields($model)
+            'fields' => $this->prepareFields($model),
+            'canList' => $canList
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
