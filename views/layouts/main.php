@@ -9,9 +9,14 @@ use yii\mozayka\MozaykaAsset,
  * @var string $content
  */
 
-$navItems = [
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => Yii::$app->getHomeUrl()]
-];
+MozaykaAsset::register($this);
+
+$mozayka = Yii::$app->getModule('mozayka');
+$homeUrl = Yii::$app->getHomeUrl();
+
+$navItems = array_merge([
+    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
+], $mozayka->navItems);
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
@@ -19,7 +24,13 @@ if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
 
-MozaykaAsset::register($this);
+$breadcrumbs = [
+    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
+];
+if (array_key_exists('breadcrumbs', $this->params)) {
+    $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
+}
+
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -37,8 +48,8 @@ $this->beginPage();
 <div class="wrap">
 <?php
 NavBar::begin([
-    'brandLabel' => 'My Company',
-    'brandUrl' => Yii::$app->getHomeUrl(),
+    'brandLabel' => $mozayka->appName,
+    'brandUrl' => $homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top'
     ]
@@ -52,11 +63,10 @@ NavBar::end();
 
 <div class="container">
 <?php
-if (array_key_exists('breadcrumbs', $this->params)) {
-    echo Breadcrumbs::widget([
-        'links' => $this->params['breadcrumbs']
-    ]);
-}
+echo Breadcrumbs::widget([
+    'homeLink' => false,
+    'links' => $breadcrumbs
+]);
 echo $content;
 ?>
 </div>
@@ -64,7 +74,7 @@ echo $content;
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?php echo date('Y'); ?></p>
+        <p class="pull-left">&copy; <?php echo $mozayka->appName; ?> <?php echo date('Y'); ?></p>
         <p class="pull-right"><?php echo Yii::powered(); ?></p>
     </div>
 </footer>
