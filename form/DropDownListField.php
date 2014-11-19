@@ -8,14 +8,12 @@ class DropDownListField extends ActiveField
 
     public $items = [];
 
-    public $multiple = false;
-
     public function init()
     {
+        if (is_callable($this->items)) {
+            $this->items = $this->items();
+        }
         parent::init();
-        $this->dropDownList($this->items, [
-            'multiple' => $this->multiple,
-            'prompt' => ''
-        ]);
+        $this->dropDownList($this->items, ['prompt' => '']);
     }
 }
