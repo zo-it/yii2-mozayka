@@ -19,7 +19,7 @@ class DropdownAsset extends AssetBundle
     public function init()
     {
         $this->publishOptions['afterCopy'] = function ($from, $to) {
-            if (in_array(basename($to), ['jquery.dropdown.css', 'jquery.dropdown.js', 'jquery.dropdown.min.js'])) {
+            if (in_array(basename($to), ['jquery.dropdown.min.js', 'jquery.dropdown.js', 'jquery.dropdown.css'])) {
                 file_put_contents($to, str_replace('dropdown', 'dropdown2', file_get_contents($to)));
             }
         };
