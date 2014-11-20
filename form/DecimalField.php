@@ -16,9 +16,9 @@ class DecimalField extends ActiveField
 
     public function init()
     {
+        $this->inputOptions['maxlength'] = $this->size + 1;
         parent::init();
         if (!$this->readOnly) {
-            $this->inputOptions['maxlength'] = $this->size + 1;
             $pluginOptions = array_merge([
                 'allowPlus' => false,
                 'rightAlign' => false
