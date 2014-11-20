@@ -19,7 +19,7 @@ class DeleteFormAction extends Action
 
     public $formConfig = [];
 
-    public $view = '@yii/mozayka/views/crud/delete-form';
+    public $view = 'delete-form';
 
     public function run($id = null)
     {
