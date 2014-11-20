@@ -53,8 +53,8 @@ class DeleteFormAction extends Action
                     return $this->controller->redirect(['list']);
                 }
             } else {
-                $errorMessage = Yii::t('mozayka', 'Record has not been deleted.');
                 Log::modelErrors($model);
+                $errorMessage = Yii::t('mozayka', 'Record has not been deleted.');
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

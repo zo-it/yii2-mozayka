@@ -53,8 +53,8 @@ class UpdateFormAction extends Action
                     return $this->controller->redirect(['update-form', 'id' => $id]);
                 }
             } else {
-                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
                 Log::modelErrors($model);
+                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
