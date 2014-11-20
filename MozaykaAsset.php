@@ -8,6 +8,8 @@ use yii\web\AssetBundle;
 class MozaykaAsset extends AssetBundle
 {
 
+    public $sourcePath = '@yii/mozayka/assets';
+
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
@@ -17,8 +19,6 @@ class MozaykaAsset extends AssetBundle
         'yii\mozayka\web\TimePickerAsset',
         'yii\mozayka\web\TinymceAsset'
     ];
-
-    public $sourcePath = '@yii/mozayka/assets';
 
     public $css = ['main.css'];
 }
