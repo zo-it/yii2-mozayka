@@ -7,5 +7,4 @@ use yii\kladovka\db\ActiveQuery as YiiActiveQuery;
 
 class ActiveQuery extends YiiActiveQuery
 {
-
 }
