@@ -8,13 +8,13 @@ use yii\web\AssetBundle;
 class DropdownAsset extends AssetBundle
 {
 
-    public $depends = ['yii\web\JqueryAsset'];
-
     public $sourcePath = '@bower/jquery-dropdown';
 
-    public $css = ['jquery.dropdown.css'];
+    public $depends = ['yii\web\JqueryAsset'];
 
     public $js = ['jquery.dropdown.min.js'];
+
+    public $css = ['jquery.dropdown.css'];
 
     public function init()
     {
