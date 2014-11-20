@@ -65,7 +65,7 @@ echo Nav::widget([
 ]);
 NavBar::end();
 ?>
-<div class="container">
+<div class="container-fluid">
 <?php
 echo Breadcrumbs::widget([
     'homeLink' => false,
