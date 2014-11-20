@@ -56,7 +56,7 @@ $navBar = NavBar::begin([
     'brandLabel' => $appName,
     'brandUrl' => $homeUrl,
     'options' => [
-        'class' => 'navbar-inverse navbar-fixed-top'
+        'class' => 'navbar-inverse navbar-fixed-top hidden-print'
     ]
 ]);
 echo Nav::widget([
@@ -68,6 +68,7 @@ NavBar::end();
 <div class="container-fluid">
 <?php
 echo Breadcrumbs::widget([
+    'options' => ['class' => 'breadcrumb hidden-print'],
     'homeLink' => false,
     'links' => $breadcrumbs
 ]);
@@ -76,7 +77,7 @@ echo $content;
 </div>
 </div>
 
-<footer class="footer">
+<footer class="footer hidden-print">
     <div class="container">
         <p class="pull-left">&copy; <?php echo $appName; ?> <?php echo date('Y'); ?></p>
         <p class="pull-right"><?php echo Yii::powered(); ?></p>

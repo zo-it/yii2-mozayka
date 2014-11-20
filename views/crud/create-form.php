@@ -16,14 +16,14 @@ use yii\bootstrap\Alert,
 if ($successMessage) {
     echo Alert::widget([
         'body' => $successMessage,
-        'options' => ['class' => 'alert-success']
+        'options' => ['class' => 'alert-success hidden-print']
     ]);
 }
 
 if ($errorMessage) {
     echo Alert::widget([
         'body' => $errorMessage,
-        'options' => ['class' => 'alert-danger']
+        'options' => ['class' => 'alert-danger hidden-print']
     ]);
 }
 
@@ -42,6 +42,6 @@ if ($canList) {
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix']);
+]), ['class' => 'clearfix hidden-print']);
 
 $formClass::end();

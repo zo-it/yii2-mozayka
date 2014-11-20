@@ -28,6 +28,6 @@ if ($canList) {
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix']);
+]), ['class' => 'clearfix hidden-print']);
 
 $formClass::end();
