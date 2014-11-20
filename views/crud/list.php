@@ -44,8 +44,15 @@ echo Html::tag('div', ButtonGroup::widget([
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix hidden-print']);
 
-/*$form = $formClass::begin($formConfig);
-echo $form->fields($filterModel, $filterFields);
-$formClass::end();*/
+/*echo Html::beginTag('div', ['class' => 'panel panel-default']);
+echo Html::tag('div', Html::tag('h3', Yii::t('mozayka', 'Filter'), ['class' => 'panel-title']), ['class' => 'panel-heading']);
+$form = $formClass::begin($formConfig);
+echo Html::tag('div', $form->fields($filterModel, $filterFields), ['class' => 'panel-body']);
+echo Html::tag('div', ButtonGroup::widget([
+    'buttons' => [],
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'panel-footer clearfix hidden-print']);
+$formClass::end();
+echo Html::endTag('div');*/
 
 echo $gridClass::widget($gridConfig);
