@@ -23,6 +23,7 @@ if (array_key_exists('navItems', $this->params)) {
         $navItems = array_merge($navItems, $mozayka->navItems);
     }
 }
+
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
