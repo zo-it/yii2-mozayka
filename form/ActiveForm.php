@@ -28,4 +28,12 @@ class ActiveForm extends YiiActiveForm
         }
         parent::init();
     }
+
+    public function fields($model, $fields = [])
+    {
+        foreach ($fields as $attribute => $options) {
+            $fields[$attribute] = $this->field($model, $attribute, $options);
+        }
+        return implode($fields);
+    }
 }

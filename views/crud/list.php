@@ -45,9 +45,7 @@ echo Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'clearfix hidden-print']);
 
 /*$form = $formClass::begin($formConfig);
-foreach ($filterFields as $attribute => $options) {
-    echo $form->field($filterModel, $attribute, $options);
-}
+echo $form->fields($filterModel, $filterFields);
 $formClass::end();*/
 
 echo $gridClass::widget($gridConfig);

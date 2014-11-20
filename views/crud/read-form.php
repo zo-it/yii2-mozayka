@@ -12,9 +12,7 @@ use yii\helpers\Html,
 
 $form = $formClass::begin($formConfig);
 
-foreach ($fields as $attribute => $options) {
-    echo $form->field($model, $attribute, $options);
-}
+echo $form->fields($model, $fields);
 
 $buttons = [];
 $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [

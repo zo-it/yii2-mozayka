@@ -29,9 +29,7 @@ if ($errorMessage) {
 
 $form = $formClass::begin($formConfig);
 
-foreach ($fields as $attribute => $options) {
-    echo $form->field($model, $attribute, $options);
-}
+echo $form->fields($model, $fields);
 
 $buttons = [];
 $buttons[] = Html::submitButton(Yii::t('mozayka', 'Delete'), ['class' => 'btn btn-danger']);
