@@ -12,6 +12,8 @@ class GridView extends YiiGridView
 
     public $filterFields = [];
 
+    public $filterRowOptions = ['class' => 'filters hidden-print'];
+
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];

@@ -9,6 +9,14 @@ use yii\grid\ActionColumn as YiiActionColumn,
 class ActionColumn extends YiiActionColumn
 {
 
+    public $headerOptions = ['class' => 'hidden-print'];
+
+    public $contentOptions = ['class' => 'hidden-print'];
+
+    public $footerOptions = ['class' => 'hidden-print'];
+
+    public $filterOptions = ['class' => 'hidden-print'];
+
     public function createUrl($action, $model, $key, $index)
     {
         switch ($action) {
