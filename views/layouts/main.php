@@ -14,10 +14,15 @@ MozaykaAsset::register($this);
 $appName = Yii::$app->name;
 $homeUrl = Yii::$app->getHomeUrl();
 
-$navItems = array_merge([
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], $this->params['navItems']);
-
+$navItems = [['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]];
+if (array_key_exists('navItems', $this->params)) {
+    $navItems = array_merge($navItems, $this->params['navItems']);
+} else {
+    $mozayka = Yii::$app->getModule('mozayka');
+    if ($mozayka) {
+        $navItems = array_merge($navItems, $mozayka->navItems);
+    }
+}
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
@@ -25,9 +30,10 @@ if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
 
-$breadcrumbs = array_merge([
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], $this->params['breadcrumbs']);
+$breadcrumbs = [['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]];
+if (array_key_exists('breadcrumbs', $this->params)) {
+    $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
+}
 
 $this->beginPage();
 ?>
