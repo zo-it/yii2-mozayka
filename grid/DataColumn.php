@@ -18,8 +18,7 @@ class DataColumn extends YiiDataColumn
         $filterModel = $this->grid->filterModel;
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
-            $options = $filterFields[$this->attribute];
-            return $form->field($filterModel, $this->attribute, $options);
+            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]);
         }
         return parent::renderFilterCellContent();
     }
