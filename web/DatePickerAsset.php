@@ -11,7 +11,7 @@ class DatePickerAsset extends AssetBundle
 
     public $sourcePath = '@bower/jquery-ui';
 
-    public $depends = ['yii\web\JqueryAsset', 'yii\jui\JuiAsset'];
+    public $depends = ['yii\jui\JuiAsset']; // yii\web\JqueryAsset
 
     public function init()
     {
