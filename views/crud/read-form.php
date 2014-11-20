@@ -10,9 +10,11 @@ use yii\helpers\Html,
  * @var bool $canList
  */
 
+echo Html::beginTag('div', ['class' => 'panel panel-default']);
+echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);
 $form = $formClass::begin($formConfig);
 
-echo $form->fields($model, $fields);
+echo Html::tag('div', $form->fields($model, $fields), ['class' => 'panel-body']);
 
 $buttons = [];
 $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
@@ -26,6 +28,7 @@ if ($canList) {
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix hidden-print']);
+]), ['class' => 'panel-footer clearfix hidden-print']);
 
 $formClass::end();
+echo Html::endTag('div');
