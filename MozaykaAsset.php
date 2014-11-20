@@ -11,8 +11,8 @@ class MozaykaAsset extends AssetBundle
     public $sourcePath = '@yii/mozayka/assets';
 
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\widgets\MaskedInputAsset', // yii\web\YiiAsset
+        'yii\bootstrap\BootstrapPluginAsset', // yii\bootstrap\BootstrapAsset
         'yii\mozayka\web\DropdownAsset',
         'yii\mozayka\web\IframeTransportAsset',
         'yii\mozayka\web\DatePickerAsset',
