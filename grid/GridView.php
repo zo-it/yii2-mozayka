@@ -10,6 +10,8 @@ class GridView extends YiiGridView
 
     public $dataColumnClass = 'yii\mozayka\grid\DataColumn';
 
+    public $filterRowOptions = ['class' => 'filters hidden-print'];
+
     public $filterFields = [];
 
     public $formClass = 'yii\mozayka\form\ActiveForm';

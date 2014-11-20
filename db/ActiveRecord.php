@@ -49,13 +49,13 @@ class ActiveRecord extends YiiActiveRecord
         return true;
     }
 
-    public function canChangePosition($params = [])
-    {
-        return $this->canUpdate($params);
-    }
-
     public function canSelect($params = [])
     {
         return $this->canRead($params);
+    }
+
+    public function canChangePosition($params = [])
+    {
+        return $this->canUpdate($params);
     }
 }

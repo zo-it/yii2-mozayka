@@ -27,7 +27,7 @@ class CreateFormAction extends Action
     {
         $id = null;
         $modelClass = $this->modelClass;
-        /* @var yii\db\ActiveRecord $model */
+        /** @var yii\db\ActiveRecord $model */
         $model = new $modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
@@ -53,8 +53,8 @@ class CreateFormAction extends Action
                     return $this->controller->redirect([$this->viewAction, 'id' => $id]);
                 }
             } else {
-                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
                 Log::modelErrors($model);
+                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

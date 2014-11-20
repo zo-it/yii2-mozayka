@@ -10,19 +10,32 @@ use yii\mozayka\MozaykaAsset,
  */
 
 MozaykaAsset::register($this);
+
+$appName = Yii::$app->name;
 $homeUrl = Yii::$app->getHomeUrl();
-$navItems = array_merge([
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], $this->params['navItems']);
+
+$navItems = [['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]];
+if (array_key_exists('navItems', $this->params)) {
+    $navItems = array_merge($navItems, $this->params['navItems']);
+} else {
+    $mozayka = Yii::$app->getModule('mozayka');
+    if ($mozayka) {
+        $navItems = array_merge($navItems, $mozayka->navItems);
+    }
+}
+
 $user = Yii::$app->getUser();
 if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Login'), 'url' => ['default/login-form']];
 } else {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
-$breadcrumbs = array_merge([
-    ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]
-], $this->params['breadcrumbs']);
+
+$breadcrumbs = [['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]];
+if (array_key_exists('breadcrumbs', $this->params)) {
+    $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
+}
+
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -40,10 +53,10 @@ $this->beginPage();
 <div class="wrap">
 <?php
 $navBar = NavBar::begin([
-    'brandLabel' => Yii::$app->name,
+    'brandLabel' => $appName,
     'brandUrl' => $homeUrl,
     'options' => [
-        'class' => 'navbar-inverse navbar-fixed-top'
+        'class' => 'navbar-inverse navbar-fixed-top hidden-print'
     ]
 ]);
 echo Nav::widget([
@@ -52,9 +65,10 @@ echo Nav::widget([
 ]);
 NavBar::end();
 ?>
-<div class="container">
+<div class="container-fluid">
 <?php
 echo Breadcrumbs::widget([
+    'options' => ['class' => 'breadcrumb hidden-print'],
     'homeLink' => false,
     'links' => $breadcrumbs
 ]);
@@ -63,9 +77,9 @@ echo $content;
 </div>
 </div>
 
-<footer class="footer">
+<footer class="footer hidden-print">
     <div class="container">
-        <p class="pull-left">&copy; <?php echo Yii::$app->name; ?> <?php echo date('Y'); ?></p>
+        <p class="pull-left">&copy; <?php echo $appName; ?> <?php echo date('Y'); ?></p>
         <p class="pull-right"><?php echo Yii::powered(); ?></p>
     </div>
 </footer>

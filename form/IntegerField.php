@@ -14,9 +14,9 @@ class IntegerField extends ActiveField
 
     public function init()
     {
+        $this->inputOptions['maxlength'] = $this->size;
         parent::init();
         if (!$this->readOnly) {
-            $this->inputOptions['maxlength'] = $this->size;
             $pluginOptions = array_merge([
                 'allowPlus' => false,
                 'rightAlign' => false

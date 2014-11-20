@@ -16,22 +16,22 @@ use yii\bootstrap\Alert,
 if ($successMessage) {
     echo Alert::widget([
         'body' => $successMessage,
-        'options' => ['class' => 'alert-success']
+        'options' => ['class' => 'alert-success hidden-print']
     ]);
 }
 
 if ($errorMessage) {
     echo Alert::widget([
         'body' => $errorMessage,
-        'options' => ['class' => 'alert-danger']
+        'options' => ['class' => 'alert-danger hidden-print']
     ]);
 }
 
+echo Html::beginTag('div', ['class' => 'panel panel-default']);
+echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);
 $form = $formClass::begin($formConfig);
 
-foreach ($fields as $attribute => $options) {
-    echo $form->field($model, $attribute, $options);
-}
+echo Html::tag('div', $form->fields($model, $fields), ['class' => 'panel-body']);
 
 $buttons = [];
 $buttons[] = Html::submitButton(Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
@@ -42,6 +42,7 @@ if ($canList) {
 echo Html::tag('div', ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix']);
+]), ['class' => 'panel-footer clearfix hidden-print']);
 
 $formClass::end();
+echo Html::endTag('div');
