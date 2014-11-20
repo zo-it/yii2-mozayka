@@ -8,7 +8,7 @@ class ChangePositionAction extends Action
 
     public function run($id = null)
     {
-        /* @var yii\db\ActiveRecord $model */
+        /** @var yii\db\ActiveRecord $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
             $id = implode(',', array_values($model->getPrimaryKey(true)));
