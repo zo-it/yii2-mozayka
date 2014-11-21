@@ -49,7 +49,12 @@ class DeleteFormAction extends Action
                 $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully deleted.', ['caption' => ModelHelper::caption($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
-                    return $this->controller->redirect(['list']);
+                    if (ModelHelper::canList($modelClass)) {
+                        $url = ['list'];
+                    } else {
+                        $url = Yii::$app->getHomeUrl();
+                    }
+                    return $this->controller->redirect($url);
                 }
             } else {
                 ModelHelper::log($model);

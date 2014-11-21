@@ -4,7 +4,7 @@ namespace yii\mozayka\helpers;
 
 use yii\db\ActiveRecordInterface,
     yii\kladovka\helpers\Log,
-    yii\mozayka\db\ActiveRecord;
+    yii\mozayka\db\ActiveRecord as MozaykaActiveRecord;
 
 
 class BaseModelHelper
@@ -47,9 +47,45 @@ class BaseModelHelper
         }
     }
 
+    public static function canCreate($modelClass, $params = [], $newModel = null)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::canCreate($params, $newModel);
+        } else {
+            return method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : (bool)$modelClass::getTableSchema()->primaryKey;
+        }
+    }
+
+    public static function canRead(ActiveRecordInterface $model, $params = [])
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->canRead($params);
+        } else {
+            return method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead($params) : (bool)$model::primaryKey();
+        }
+    }
+
+    public static function canUpdate(ActiveRecordInterface $model, $params = [])
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->canUpdate($params);
+        } else {
+            return method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate($params) : (bool)$model::getTableSchema()->primaryKey;
+        }
+    }
+
+    public static function canDelete(ActiveRecordInterface $model, $params = [])
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->canDelete($params);
+        } else {
+            return method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete($params) : (bool)$model::getTableSchema()->primaryKey;
+        }
+    }
+
     public static function canList($modelClass, $params = [], $query = null)
     {
-        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
             return $modelClass::canList($params, $query);
         } else {
             return method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList($params, $query) : true;

@@ -14,8 +14,6 @@ class CreateFormAction extends Action
 
     public $scenario = Model::SCENARIO_DEFAULT;
 
-    public $viewAction = 'update-form';
-
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];
@@ -49,7 +47,16 @@ class CreateFormAction extends Action
                 $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully saved.', ['caption' => ModelHelper::caption($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
-                    return $this->controller->redirect([$this->viewAction, 'id' => $id]);
+                    if (ModelHelper::canUpdate($model)) {
+                        $url = ['update-form', 'id' => $id];
+                    } elseif (ModelHelper::canRead($model)) {
+                        $url = ['read-form', 'id' => $id];
+                    } elseif (ModelHelper::canList($modelClass)) {
+                        $url = ['list'];
+                    } else {
+                        $url = Yii::$app->getHomeUrl();
+                    }
+                    return $this->controller->redirect($url);
                 }
             } else {
                 ModelHelper::log($model);

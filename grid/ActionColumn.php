@@ -3,7 +3,7 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\ActionColumn as YiiActionColumn,
-    yii\mozayka\db\ActiveRecord;
+    yii\mozayka\helpers\ModelHelper;
 
 
 class ActionColumn extends YiiActionColumn
@@ -29,19 +29,11 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
-            $this->template = implode(' ', array_keys(array_filter([
-                '{view}' => $model->canRead(),
-                '{update}' => $model->canUpdate(),
-                '{delete}' => $model->canDelete()
-            ])));
-        } else {
-            $this->template = implode(' ', array_keys(array_filter([
-                '{view}' => method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead() : (bool)$model::primaryKey(),
-                '{update}' => method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate() : (bool)$model::getTableSchema()->primaryKey,
-                '{delete}' => method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete() : (bool)$model::getTableSchema()->primaryKey
-            ])));
-        }
+        $this->template = implode(' ', array_keys(array_filter([
+            '{view}' => ModelHelper::canRead($model),
+            '{update}' => ModelHelper::canUpdate($model),
+            '{delete}' => ModelHelper::canDelete($model)
+        ])));
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
