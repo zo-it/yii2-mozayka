@@ -69,13 +69,13 @@ class CreateFormAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
-            'listCaption' => $model->formName(),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, [
                 'validationUrl' => [$this->id, 'validation' => 1]
             ]),
-            'canList' => ModelHelper::canList($modelClass)
+            'canList' => ModelHelper::canList($modelClass),
+            'listCaption' => ModelHelper::listCaption($modelClass)
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

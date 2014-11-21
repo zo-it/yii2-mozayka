@@ -24,18 +24,18 @@ class ReadFormAction extends Action
             $id = ModelHelper::implodePrimaryKey($model);
         }
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
+            call_user_func($this->checkAccess, $this->id, $model, ['id' => $id]);
         }
         // rendering
         $viewParams = [
             'model' => $model,
-            'listCaption' => $model->formName(),
             'id' => $id,
             'caption' => ModelHelper::caption($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, ['readOnly' => true]),
-            'canList' => ModelHelper::canList($modelClass)
+            'canList' => ModelHelper::canList($modelClass),
+            'listCaption' => ModelHelper::listCaption($modelClass)
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

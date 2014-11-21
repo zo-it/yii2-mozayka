@@ -7,13 +7,13 @@ use yii\bootstrap\Alert,
  * @var string|null $successMessage
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
- * @var string $listCaption
  * @var string $id
  * @var string $caption
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
  * @var bool $canList
+ * @var string $listCaption
  */
 
 $this->title = Yii::t('mozayka', 'Updating record "{caption}"', ['caption' => $caption]);

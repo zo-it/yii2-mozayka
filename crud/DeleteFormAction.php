@@ -30,7 +30,7 @@ class DeleteFormAction extends Action
         }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
+            call_user_func($this->checkAccess, $this->id, $model, ['id' => $id]);
         }
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
@@ -68,7 +68,6 @@ class DeleteFormAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
-            'listCaption' => $model->formName(),
             'id' => $id,
             'caption' => ModelHelper::caption($model),
             'fields' => $this->prepareFields($model),
@@ -77,7 +76,8 @@ class DeleteFormAction extends Action
                 'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1],
                 'readOnly' => true
             ]),
-            'canList' => ModelHelper::canList($modelClass)
+            'canList' => ModelHelper::canList($modelClass),
+            'listCaption' => ModelHelper::listCaption($modelClass)
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

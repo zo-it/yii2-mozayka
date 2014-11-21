@@ -10,6 +10,11 @@ use yii\db\ActiveRecordInterface,
 class BaseModelHelper
 {
 
+    public static function listCaption($modelClass)
+    {
+        return $modelClass;
+    }
+
     public static function implodePrimaryKey(ActiveRecordInterface $model, $glue = ',')
     {
         return implode($glue, array_values($model->getPrimaryKey(true)));
