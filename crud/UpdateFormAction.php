@@ -3,10 +3,9 @@
 namespace yii\mozayka\crud;
 
 use yii\base\Model,
+    yii\mozayka\helpers\ModelHelper,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
-    yii\kladovka\helpers\Log,
-    yii\mozayka\db\ActiveRecord,
     Yii;
 
 
@@ -24,10 +23,10 @@ class UpdateFormAction extends Action
     public function run($id = null)
     {
         $modelClass = $this->modelClass;
-        /** @var yii\db\ActiveRecord $model */
+        /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
+            $id = ModelHelper::implodePrimaryKey($model);
         }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
@@ -47,14 +46,14 @@ class UpdateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $successMessage = Yii::t('mozayka', 'Record has been successfully saved.');
+                $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully saved.', ['caption' => ModelHelper::caption($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     return $this->controller->redirect(['update-form', 'id' => $id]);
                 }
             } else {
-                Log::modelErrors($model);
-                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
+                ModelHelper::log($model);
+                $errorMessage = Yii::t('mozayka', 'Record "{caption}" has not been saved.', ['caption' => ModelHelper::caption($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
@@ -65,15 +64,7 @@ class UpdateFormAction extends Action
             }
         }
         // form config
-        $formConfig = array_merge($this->formConfig, [
-            'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1]
-        ]);
-        // can list?
-        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
-            $canList = $modelClass::canList();
-        } else {
-            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
-        }
+        $formConfig = ;
         // rendering
         $viewParams = [
             'successMessage' => $successMessage,
@@ -81,11 +72,13 @@ class UpdateFormAction extends Action
             'model' => $model,
             'listCaption' => $model->formName(),
             'id' => $id,
-            'caption' => '#' . $id,
+            'caption' => ModelHelper::caption($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
-            'canList' => $canList
+            'formConfig' => array_merge($this->formConfig, [
+                'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1]
+            ]),
+            'canList' => ModelHelper::canList($modelClass)
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

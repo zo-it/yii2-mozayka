@@ -3,6 +3,6 @@
 namespace yii\mozayka\helpers;
 
 
-class ModelHelper
+class ModelHelper extends BaseModelHelper
 {
 }
