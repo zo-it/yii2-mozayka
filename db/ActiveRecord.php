@@ -26,22 +26,22 @@ class ActiveRecord extends YiiActiveRecord
 
     public static function canCreate($params = [], $newModel = null)
     {
-        return static::hasRealPrimaryKey();
+        return (bool)static::getTableSchema()->primaryKey;
     }
 
     public function canRead($params = [])
     {
-        return $this::hasPrimaryKey();
+        return (bool)$this::primaryKey();
     }
 
     public function canUpdate($params = [])
     {
-        return $this::hasRealPrimaryKey();
+        return (bool)$this::getTableSchema()->primaryKey;
     }
 
     public function canDelete($params = [])
     {
-        return $this::hasRealPrimaryKey();
+        return (bool)$this::getTableSchema()->primaryKey;
     }
 
     public static function canList($params = [], $query = null)
