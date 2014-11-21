@@ -12,7 +12,7 @@ use yii\helpers\Html,
  * @var bool $canList
  */
 
-$this->title = $caption;
+$this->title = Yii::t('mozayka', 'Record "{caption}"', ['caption' => $caption]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
 }

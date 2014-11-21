@@ -13,7 +13,7 @@ use yii\bootstrap\Alert,
  * @var bool $canList
  */
 
-$this->title = 'new';
+$this->title = Yii::t('mozayka', 'Creating record');
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
 }

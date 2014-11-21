@@ -15,7 +15,7 @@ use yii\bootstrap\Alert,
  * @var bool $canList
  */
 
-$this->title = $caption;
+$this->title = Yii::t('mozayka', 'Updating record "{caption}"', ['caption' => $caption]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
 }
