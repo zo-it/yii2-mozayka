@@ -13,12 +13,12 @@ use yii\bootstrap\Alert,
  * @var string $formClass
  * @var array $formConfig
  * @var bool $canList
- * @var string $listCaption
+ * @var string $listLabel
  */
 
 $this->title = Yii::t('mozayka', 'Updating record "{caption}"', ['caption' => $caption]);
 if ($canList) {
-    $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
+    $this->params['breadcrumbs'][] = ['label' => $listLabel, 'url' => ['list']];
 }
 $this->params['breadcrumbs'][] = $caption;
 

@@ -76,7 +76,7 @@ class UpdateFormAction extends Action
                 'validationUrl' => [$this->id, 'id' => $id, 'validation' => 1]
             ]),
             'canList' => ModelHelper::canList($modelClass),
-            'listCaption' => ModelHelper::pluralHumanName($modelClass)
+            'listLabel' => ModelHelper::pluralHumanName($modelClass)
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
