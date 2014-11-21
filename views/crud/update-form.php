@@ -8,6 +8,7 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
  * @var string $id
+ * @var string $caption
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig

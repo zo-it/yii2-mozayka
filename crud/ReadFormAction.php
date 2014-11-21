@@ -40,6 +40,7 @@ class ReadFormAction extends Action
         $viewParams = [
             'model' => $model,
             'id' => $id,
+            'caption' => '#' . $id,
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,

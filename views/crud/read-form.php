@@ -5,6 +5,7 @@ use yii\helpers\Html,
  * @var yii\web\View $this
  * @var yii\db\ActiveRecord $model
  * @var string $id
+ * @var string $caption
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
