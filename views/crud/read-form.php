@@ -12,6 +12,12 @@ use yii\helpers\Html,
  * @var bool $canList
  */
 
+$this->title = $caption;
+if ($canList) {
+    $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
+}
+$this->params['breadcrumbs'][] = $this->title;
+
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);
 $form = $formClass::begin($formConfig);

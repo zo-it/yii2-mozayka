@@ -15,6 +15,12 @@ use yii\bootstrap\Alert,
  * @var bool $canList
  */
 
+$this->title = $caption;
+if ($canList) {
+    $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
+}
+$this->params['breadcrumbs'][] = $this->title;
+
 if ($successMessage) {
     echo Alert::widget([
         'body' => $successMessage,
