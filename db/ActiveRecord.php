@@ -25,9 +25,14 @@ class ActiveRecord extends YiiActiveRecord
         return [];
     }
 
-    public static function listCaption()
+    public static function humanName()
     {
-        return ModelHelper::generateListCaption(get_called_class());
+        return ModelHelper::generateHumanName(get_called_class());
+    }
+
+    public static function pluralHumanName()
+    {
+        return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
     public function caption()

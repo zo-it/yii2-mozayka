@@ -3,6 +3,7 @@
 namespace yii\mozayka\helpers;
 
 use yii\helpers\StringHelper,
+    yii\helpers\Inflector,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
     yii\db\ActiveRecordInterface,
     yii\kladovka\helpers\Log;
@@ -11,17 +12,31 @@ use yii\helpers\StringHelper,
 class BaseModelHelper
 {
 
-    public static function generateListCaption($modelClass)
+    public static function generateHumanName($modelClass)
     {
-        return StringHelper::basename($modelClass) . ' List';
+        return Inflector::camel2words(StringHelper::basename($modelClass));
     }
 
-    public static function listCaption($modelClass)
+    public static function humanName($modelClass)
     {
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
-            return $modelClass::listCaption();
+            return $modelClass::humanName();
         } else {
-            return method_exists($modelClass, 'listCaption') && is_callable([$modelClass, 'listCaption']) ? $modelClass::listCaption() : static::generateListCaption($modelClass);
+            return method_exists($modelClass, 'humanName') && is_callable([$modelClass, 'humanName']) ? $modelClass::humanName() : static::generateHumanName($modelClass);
+        }
+    }
+
+    public static function generatePluralHumanName($modelClass)
+    {
+        return Inflector::pluralize(static::generateHumanName($modelClass));
+    }
+
+    public static function pluralHumanName($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::pluralHumanName();
+        } else {
+            return method_exists($modelClass, 'pluralHumanName') && is_callable([$modelClass, 'pluralHumanName']) ? $modelClass::pluralHumanName() : static::generatePluralHumanName($modelClass);
         }
     }
 
