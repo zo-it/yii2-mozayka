@@ -5,7 +5,7 @@ use yii\helpers\Html,
  * @var yii\web\View $this
  * @var yii\db\ActiveRecord $model
  * @var string $id
- * @var string $caption
+ * @var string $displayValue
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
@@ -13,11 +13,11 @@ use yii\helpers\Html,
  * @var string $listLabel
  */
 
-$this->title = Yii::t('mozayka', 'Record "{record}"', ['record' => $caption]);
+$this->title = Yii::t('mozayka', 'Record "{record}"', ['record' => $displayValue]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listLabel, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $caption;
+$this->params['breadcrumbs'][] = $displayValue;
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);

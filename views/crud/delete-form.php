@@ -8,7 +8,7 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
  * @var string $id
- * @var string $caption
+ * @var string $displayValue
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
@@ -16,11 +16,11 @@ use yii\bootstrap\Alert,
  * @var string $listLabel
  */
 
-$this->title = Yii::t('mozayka', 'Deleting record "{record}"', ['record' => $caption]);
+$this->title = Yii::t('mozayka', 'Deleting record "{record}"', ['record' => $displayValue]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listLabel, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $caption;
+$this->params['breadcrumbs'][] = $displayValue;
 
 if ($successMessage) {
     echo Alert::widget([

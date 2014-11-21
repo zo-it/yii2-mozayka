@@ -30,7 +30,7 @@ class ReadFormAction extends Action
         $viewParams = [
             'model' => $model,
             'id' => $id,
-            'caption' => ModelHelper::displayValue($model),
+            'displayValue' => ModelHelper::displayValue($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, ['readOnly' => true]),
