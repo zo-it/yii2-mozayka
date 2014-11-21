@@ -6,10 +6,10 @@ use yii\bootstrap\Alert,
  * @var yii\web\View $this
  * @var string|null $successMessage
  * @var string|null $errorMessage
- * @var string $formClass
- * @var array $formConfig
  * @var yii\db\ActiveRecord|null $filterModel
  * @var array $filterFields
+ * @var string $formClass
+ * @var array $formConfig
  * @var string $gridClass
  * @var array $gridConfig
  * @var bool $canCreate
