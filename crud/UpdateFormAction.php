@@ -46,14 +46,14 @@ class UpdateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully saved.', ['caption' => ModelHelper::displayValue($model)]);
+                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully saved.', ['record' => ModelHelper::displayValue($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     return $this->controller->redirect(['update-form', 'id' => $id]);
                 }
             } else {
                 ModelHelper::log($model);
-                $errorMessage = Yii::t('mozayka', 'Record "{caption}" has not been saved.', ['caption' => ModelHelper::displayValue($model)]);
+                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been saved.', ['record' => ModelHelper::displayValue($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

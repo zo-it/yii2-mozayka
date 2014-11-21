@@ -16,7 +16,7 @@ use yii\bootstrap\Alert,
  * @var string $listLabel
  */
 
-$this->title = Yii::t('mozayka', 'Deleting record "{caption}"', ['caption' => $caption]);
+$this->title = Yii::t('mozayka', 'Deleting record "{record}"', ['record' => $caption]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listLabel, 'url' => ['list']];
 }
