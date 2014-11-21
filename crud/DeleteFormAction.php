@@ -26,7 +26,7 @@ class DeleteFormAction extends Action
         /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = ModelHelper::implodePrimaryKey($model);
+            $id = ModelHelper::primaryKey($model);
         }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
@@ -46,7 +46,7 @@ class DeleteFormAction extends Action
             // processing
             $deleted = $model->validate() && $model->delete();
             if ($deleted) {
-                $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully deleted.', ['caption' => ModelHelper::caption($model)]);
+                $successMessage = Yii::t('mozayka', 'Record "{caption}" has been successfully deleted.', ['caption' => ModelHelper::displayValue($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     if (ModelHelper::canList($modelClass)) {
@@ -58,7 +58,7 @@ class DeleteFormAction extends Action
                 }
             } else {
                 ModelHelper::log($model);
-                $errorMessage = Yii::t('mozayka', 'Record "{caption}" has not been deleted.', ['caption' => ModelHelper::caption($model)]);
+                $errorMessage = Yii::t('mozayka', 'Record "{caption}" has not been deleted.', ['caption' => ModelHelper::displayValue($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

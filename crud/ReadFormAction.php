@@ -21,7 +21,7 @@ class ReadFormAction extends Action
         /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = ModelHelper::implodePrimaryKey($model);
+            $id = ModelHelper::primaryKey($model);
         }
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model, ['id' => $id]);

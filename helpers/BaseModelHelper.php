@@ -40,14 +40,14 @@ class BaseModelHelper
         }
     }
 
-    public static function implodePrimaryKey(ActiveRecordInterface $model, $glue = ',')
+    public static function primaryKey(ActiveRecordInterface $model, $glue = ',')
     {
         return implode($glue, array_values($model->getPrimaryKey(true)));
     }
 
     public static function generateDisplayValue(ActiveRecordInterface $model)
     {
-        return '#' . static::implodePrimaryKey($model);
+        return '#' . static::primaryKey($model);
     }
 
     public static function displayValue(ActiveRecordInterface $model)
