@@ -2,9 +2,10 @@
 
 namespace yii\mozayka\helpers;
 
-use yii\db\ActiveRecordInterface,
-    yii\kladovka\helpers\Log,
-    yii\mozayka\db\ActiveRecord as MozaykaActiveRecord;
+use yii\helpers\StringHelper,
+    yii\db\ActiveRecordInterface,
+    yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
+    yii\kladovka\helpers\Log;
 
 
 class BaseModelHelper
@@ -12,7 +13,7 @@ class BaseModelHelper
 
     public static function listCaption($modelClass)
     {
-        return $modelClass;
+        return StringHelper::basename($modelClass) . ' List';
     }
 
     public static function implodePrimaryKey(ActiveRecordInterface $model, $glue = ',')
@@ -23,28 +24,6 @@ class BaseModelHelper
     public static function caption(ActiveRecordInterface $model)
     {
         return '#' . static::implodePrimaryKey($model);
-    }
-
-    public static function log(ActiveRecordInterface $model, $message = null, $category = 'application')
-    {
-        if ($model->hasErrors()) {
-            if (!is_null($message)) {
-                Log::error($message, $category);
-            }
-            Log::error([
-                'class' => get_class($model),
-                'attributes' => $model->getAttributes(),
-                'errors' => $model->getErrors()
-            ], $category);
-        } else {
-            if (!is_null($message)) {
-                Log::info($message, $category);
-            }
-            Log::info([
-                'class' => get_class($model),
-                'attributes' => $model->getAttributes()
-            ], $category);
-        }
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)
@@ -89,6 +68,42 @@ class BaseModelHelper
             return $modelClass::canList($params, $query);
         } else {
             return method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList($params, $query) : true;
+        }
+    }
+
+    public static function canSelect(ActiveRecordInterface $model, $params = [])
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->canSelect($params);
+        } else {
+            return method_exists($model, 'canSelect') && is_callable([$model, 'canSelect']) ? $model->canSelect($params) : (bool)$model::primaryKey();
+        }
+    }
+
+    public static function canChangePosition(ActiveRecordInterface $model, $params = [])
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->canChangePosition($params);
+        } else {
+            return method_exists($model, 'canChangePosition') && is_callable([$model, 'canChangePosition']) ? $model->canChangePosition($params) : (bool)$model::getTableSchema()->primaryKey;
+        }
+    }
+
+    public static function log(ActiveRecordInterface $model, $message = null, $category = 'application')
+    {
+        if ($model->hasErrors()) {
+            Log::error([
+                'class' => get_class($model),
+                'message' => $message,
+                'attributes' => $model->getAttributes(),
+                'errors' => $model->getErrors()
+            ], $category);
+        } else {
+            Log::info([
+                'class' => get_class($model),
+                'message' => $message,
+                'attributes' => $model->getAttributes()
+            ], $category);
         }
     }
 }
