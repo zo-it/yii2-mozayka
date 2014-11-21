@@ -80,6 +80,7 @@ class CreateFormAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
+            'listCaption' => $model->formName(),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,

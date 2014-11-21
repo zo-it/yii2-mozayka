@@ -7,6 +7,7 @@ use yii\bootstrap\Alert,
  * @var string|null $successMessage
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
+ * @var string $listCaption
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
@@ -15,7 +16,7 @@ use yii\bootstrap\Alert,
 
 $this->title = Yii::t('mozayka', 'Creating record');
 if ($canList) {
-    $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
+    $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
 $this->params['breadcrumbs'][] = $this->title;
 

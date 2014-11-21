@@ -80,6 +80,7 @@ class DeleteFormAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
+            'listCaption' => $model->formName(),
             'id' => $id,
             'caption' => '#' . $id,
             'fields' => $this->prepareFields($model),

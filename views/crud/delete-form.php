@@ -7,6 +7,7 @@ use yii\bootstrap\Alert,
  * @var string|null $successMessage
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
+ * @var string $listCaption
  * @var string $id
  * @var string $caption
  * @var array $fields
@@ -17,7 +18,7 @@ use yii\bootstrap\Alert,
 
 $this->title = Yii::t('mozayka', 'Deleting record "{caption}"', ['caption' => $caption]);
 if ($canList) {
-    $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
+    $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
 $this->params['breadcrumbs'][] = $this->title;
 

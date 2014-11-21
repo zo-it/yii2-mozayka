@@ -4,6 +4,7 @@ use yii\helpers\Html,
 /**
  * @var yii\web\View $this
  * @var yii\db\ActiveRecord $model
+ * @var string $listCaption
  * @var string $id
  * @var string $caption
  * @var array $fields
@@ -14,7 +15,7 @@ use yii\helpers\Html,
 
 $this->title = Yii::t('mozayka', 'Record "{caption}"', ['caption' => $caption]);
 if ($canList) {
-    $this->params['breadcrumbs'][] = ['label' => $model->formName(), 'url' => ['list']];
+    $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
 $this->params['breadcrumbs'][] = $this->title;
 
