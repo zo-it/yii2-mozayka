@@ -130,7 +130,7 @@ class ActiveController extends YiiActiveController
         if (!$allowed) {
             $user = Yii::$app->getUser();
             throw new ForbiddenHttpException(Yii::t('mozayka', 'Permission denied for user "{user}" to perform action "{action}".', [
-                'user' => $user->getIsGuest() ? 'guest' : $user->getId(),
+                'user' => $user->getIsGuest() ? Yii::t('mozayka', 'Guest') : $user->getIdentity()->username,
                 'action' => $this->id . '/' . $action
             ]));
         }

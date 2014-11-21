@@ -5,6 +5,7 @@ return [
     'Login' => 'Вход',
     'Logout' => 'Выход',
     'Permission denied for user "{user}" to perform action "{action}".' => 'Отказано в доступе для пользователя "{user}" чтобы выполнить действие "{action}".',
+    'Guest' => 'Гость',
     'Filter' => 'Фильтр',
     'Apply' => 'Применить',
     'Clear' => 'Очистить',
