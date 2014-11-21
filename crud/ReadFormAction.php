@@ -39,6 +39,7 @@ class ReadFormAction extends Action
         // rendering
         $viewParams = [
             'model' => $model,
+            'id' => $id,
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,

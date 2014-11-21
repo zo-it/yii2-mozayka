@@ -79,6 +79,7 @@ class UpdateFormAction extends Action
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
+            'id' => $id,
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
