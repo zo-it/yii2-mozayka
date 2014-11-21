@@ -45,17 +45,17 @@ class BaseModelHelper
         return implode($glue, array_values($model->getPrimaryKey(true)));
     }
 
-    public static function generateCaption(ActiveRecordInterface $model)
+    public static function generateDisplayValue(ActiveRecordInterface $model)
     {
         return '#' . static::implodePrimaryKey($model);
     }
 
-    public static function caption(ActiveRecordInterface $model)
+    public static function displayValue(ActiveRecordInterface $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
-            return $model->caption();
+            return $model->getDisplayValue();
         } else {
-            return method_exists($model, 'caption') && is_callable([$model, 'caption']) ? $model->caption() : static::generateCaption($model);
+            return method_exists($model, 'getDisplayValue') && is_callable([$model, 'getDisplayValue']) ? $model->getDisplayValue() : static::generateDisplayValue($model);
         }
     }
 

@@ -74,7 +74,7 @@ class DeleteFormAction extends Action
             'errorMessage' => $errorMessage,
             'model' => $model,
             'id' => $id,
-            'caption' => ModelHelper::caption($model),
+            'caption' => ModelHelper::displayValue($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, [

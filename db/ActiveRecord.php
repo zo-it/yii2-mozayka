@@ -35,9 +35,9 @@ class ActiveRecord extends YiiActiveRecord
         return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
-    public function caption()
+    public function getDisplayValue()
     {
-        return ModelHelper::generateCaption($this);
+        return ModelHelper::generateDisplayValue($this);
     }
 
     public static function canCreate($params = [], $newModel = null)
