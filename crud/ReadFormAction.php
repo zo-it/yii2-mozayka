@@ -34,9 +34,7 @@ class ReadFormAction extends Action
             'caption' => ModelHelper::caption($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
-            'formConfig' => array_merge($this->formConfig, [
-                'readOnly' => true
-            ]),
+            'formConfig' => array_merge($this->formConfig, ['readOnly' => true]),
             'canList' => ModelHelper::canList($modelClass)
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
