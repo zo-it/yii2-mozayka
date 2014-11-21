@@ -3,6 +3,7 @@
 namespace yii\mozayka\db;
 
 use yii\kladovka\db\ActiveRecord as YiiActiveRecord,
+    yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
@@ -22,6 +23,16 @@ class ActiveRecord extends YiiActiveRecord
     public function attributeFields()
     {
         return [];
+    }
+
+    public static function listCaption()
+    {
+        return ModelHelper::generateListCaption(get_called_class());
+    }
+
+    public function caption()
+    {
+        return ModelHelper::generateCaption($this);
     }
 
     public static function canCreate($params = [], $newModel = null)

@@ -3,17 +3,26 @@
 namespace yii\mozayka\helpers;
 
 use yii\helpers\StringHelper,
-    yii\db\ActiveRecordInterface,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
+    yii\db\ActiveRecordInterface,
     yii\kladovka\helpers\Log;
 
 
 class BaseModelHelper
 {
 
-    public static function listCaption($modelClass)
+    public static function generateListCaption($modelClass)
     {
         return StringHelper::basename($modelClass) . ' List';
+    }
+
+    public static function listCaption($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::listCaption();
+        } else {
+            return method_exists($modelClass, 'listCaption') && is_callable([$modelClass, 'listCaption']) ? $modelClass::listCaption() : static::generateListCaption($modelClass);
+        }
     }
 
     public static function implodePrimaryKey(ActiveRecordInterface $model, $glue = ',')
@@ -21,9 +30,18 @@ class BaseModelHelper
         return implode($glue, array_values($model->getPrimaryKey(true)));
     }
 
-    public static function caption(ActiveRecordInterface $model)
+    public static function generateCaption(ActiveRecordInterface $model)
     {
         return '#' . static::implodePrimaryKey($model);
+    }
+
+    public static function caption(ActiveRecordInterface $model)
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->caption();
+        } else {
+            return method_exists($model, 'caption') && is_callable([$model, 'caption']) ? $model->caption() : static::generateCaption($model);
+        }
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)
