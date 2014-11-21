@@ -38,10 +38,10 @@ class ReadFormAction extends Action
         }
         // rendering
         $viewParams = [
-            'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
             'model' => $model,
             'fields' => $this->prepareFields($model),
+            'formClass' => $this->formClass,
+            'formConfig' => $formConfig,
             'canList' => $canList
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {

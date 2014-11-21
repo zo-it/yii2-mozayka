@@ -79,10 +79,10 @@ class DeleteFormAction extends Action
         $viewParams = [
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
-            'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
             'model' => $model,
             'fields' => $this->prepareFields($model),
+            'formClass' => $this->formClass,
+            'formConfig' => $formConfig,
             'canList' => $canList
         ];
         if ($request->getIsAjax()) {

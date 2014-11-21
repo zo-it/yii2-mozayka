@@ -6,10 +6,10 @@ use yii\bootstrap\Alert,
  * @var yii\web\View $this
  * @var string|null $successMessage
  * @var string|null $errorMessage
- * @var string $formClass
- * @var array $formConfig
  * @var yii\db\ActiveRecord $model
  * @var array $fields
+ * @var string $formClass
+ * @var array $formConfig
  * @var bool $canList
  */
 

@@ -3,10 +3,10 @@ use yii\helpers\Html,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
- * @var string $formClass
- * @var array $formConfig
  * @var yii\db\ActiveRecord $model
  * @var array $fields
+ * @var string $formClass
+ * @var array $formConfig
  * @var bool $canList
  */
 
