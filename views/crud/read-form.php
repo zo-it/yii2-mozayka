@@ -17,7 +17,7 @@ $this->title = Yii::t('mozayka', 'Record "{caption}"', ['caption' => $caption]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $caption;
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);

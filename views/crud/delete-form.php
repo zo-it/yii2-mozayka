@@ -20,7 +20,7 @@ $this->title = Yii::t('mozayka', 'Deleting record "{caption}"', ['caption' => $c
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $caption;
 
 if ($successMessage) {
     echo Alert::widget([

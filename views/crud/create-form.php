@@ -14,11 +14,11 @@ use yii\bootstrap\Alert,
  * @var bool $canList
  */
 
-$this->title = Yii::t('mozayka', 'Creating record');
+$this->title = Yii::t('mozayka', 'Creating new record');
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $listCaption, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = Yii::t('mozayka', 'New record');
 
 if ($successMessage) {
     echo Alert::widget([
