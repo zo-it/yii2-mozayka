@@ -43,7 +43,7 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
 ]);
 $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
     'class' => 'btn btn-default',
-    'onclick' => 'jQuery(\'.panel-body\').slideToggle();'
+    'onclick' => 'jQuery(this).toggleClass(\'active\'); jQuery(\'.panel-body\').slideToggle();'
 ]);
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
