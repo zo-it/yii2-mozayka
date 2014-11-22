@@ -93,6 +93,7 @@ $gridConfig = array_merge($gridConfig, [
         }
         // rendering
         $viewParams = [
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'filterModel' => $filterModel,

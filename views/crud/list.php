@@ -4,6 +4,7 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord|null $filterModel
@@ -14,6 +15,9 @@ use yii\bootstrap\Alert,
  * @var array $gridConfig
  * @var bool $canCreate
  */
+
+$this->title = Yii::t('mozayka', 'Record list "{list}"', ['list' => $pluralHumanName]);
+$this->params['breadcrumbs'][] = $pluralHumanName;
 
 if ($successMessage) {
     echo Alert::widget([
@@ -39,41 +43,16 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
 ]);
 //$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
 
-echo Html::tag('div', ButtonGroup::widget([
-    'buttons' => $buttons,
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix hidden-print']);
-
-/*echo Html::beginTag('div', ['class' => 'panel panel-default']);
-echo Html::tag('div', Html::tag('h3', Yii::t('mozayka', 'Filter'), ['class' => 'panel-title']), ['class' => 'panel-heading']);
-$form = $formClass::begin($formConfig);
-echo Html::tag('div', $form->fields($filterModel, $filterFields), ['class' => 'panel-body']);
-echo Html::tag('div', ButtonGroup::widget([
-    'buttons' => [],
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'panel-footer clearfix hidden-print']);
-$formClass::end();
-echo Html::endTag('div');*/
-
-
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
-echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);
-//$form = $formClass::begin($formConfig);
-
-echo Html::tag('div', /*$form->fields($model, $fields)*/'qwe', ['class' => 'panel-body']);
-
-$buttons = [];
-$buttons[] = Html::submitButton(Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
-/*if ($canList) {
-    $buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
-}*/
-
-/*echo Html::tag('div', ButtonGroup::widget([
+echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
     'buttons' => $buttons,
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'panel-footer clearfix hidden-print']);*/
+    'options' => ['class' => 'pull-right hidden-print']
+]), ['class' => 'panel-heading clearfix']);
+
+//$form = $formClass::begin($formConfig);
+echo Html::tag('div', /*$form->fields($filterModel, $filterFields)*/'qwe', ['class' => 'panel-body']);
+//$formClass::end();
 
 echo $gridClass::widget($gridConfig);
 
-//$formClass::end();
 echo Html::endTag('div');
