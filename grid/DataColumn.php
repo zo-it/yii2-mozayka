@@ -43,7 +43,7 @@ class DataColumn extends YiiDataColumn
             ]), ['class' => 'clearfix']);
             $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
                 'id' => 'filter-trigger-' . $this->attribute,
-                'class' => 'btn btn-default btn-sm',
+                'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
             ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
                 'id' => 'filter-dropdown2-' . $this->attribute,

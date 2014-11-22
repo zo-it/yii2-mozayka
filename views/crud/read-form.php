@@ -3,14 +3,14 @@ use yii\helpers\Html,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canList
+ * @var string $pluralHumanName
  * @var yii\db\ActiveRecord $model
  * @var string $id
  * @var string $displayValue
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
- * @var bool $canList
- * @var string $pluralHumanName
  */
 
 $this->title = Yii::t('mozayka', 'Record "{record}"', ['record' => $displayValue]);

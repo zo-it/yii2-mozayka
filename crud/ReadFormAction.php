@@ -28,14 +28,14 @@ class ReadFormAction extends Action
         }
         // rendering
         $viewParams = [
+            'canList' => ModelHelper::canList($modelClass),
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'model' => $model,
             'id' => $id,
             'displayValue' => ModelHelper::displayValue($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
-            'formConfig' => array_merge($this->formConfig, ['readOnly' => true]),
-            'canList' => ModelHelper::canList($modelClass),
-            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass)
+            'formConfig' => array_merge($this->formConfig, ['readOnly' => true])
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

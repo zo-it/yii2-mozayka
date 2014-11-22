@@ -73,6 +73,8 @@ class CreateFormAction extends Action
         }
         // rendering
         $viewParams = [
+            'canList' => ModelHelper::canList($modelClass),
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
             'model' => $model,
@@ -80,9 +82,7 @@ class CreateFormAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, [
                 'validationUrl' => [$this->id, 'validation' => 1]
-            ]),
-            'canList' => ModelHelper::canList($modelClass),
-            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass)
+            ])
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

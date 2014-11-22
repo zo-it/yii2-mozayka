@@ -93,6 +93,7 @@ $gridConfig = array_merge($gridConfig, [
         }
         // rendering
         $viewParams = [
+            'canCreate' => ModelHelper::canCreate($modelClass),
             'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
@@ -101,8 +102,7 @@ $gridConfig = array_merge($gridConfig, [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridConfig,
-            'canCreate' => ModelHelper::canCreate($modelClass)
+            'gridConfig' => $gridConfig
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

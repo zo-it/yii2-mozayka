@@ -4,6 +4,7 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canCreate
  * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
@@ -13,7 +14,6 @@ use yii\bootstrap\Alert,
  * @var array $formConfig
  * @var string $gridClass
  * @var array $gridConfig
- * @var bool $canCreate
  */
 
 $this->title = Yii::t('mozayka', 'Record list "{list}"', ['list' => $pluralHumanName]);
@@ -41,7 +41,10 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
-//$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
+$buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'jQuery(\'.panel-body\').slideToggle();'
+]);
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
@@ -49,9 +52,12 @@ echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pul
     'options' => ['class' => 'pull-right hidden-print']
 ]), ['class' => 'panel-heading clearfix']);
 
-//$form = $formClass::begin($formConfig);
-echo Html::tag('div', /*$form->fields($filterModel, $filterFields)*/'qwe', ['class' => 'panel-body']);
-//$formClass::end();
+$form = $formClass::begin($formConfig);
+echo Html::tag('div', $form->fields($filterModel, $filterFields), [
+    'class' => 'panel-body',
+    'style' => 'display: none;'
+]);
+$formClass::end();
 
 echo $gridClass::widget($gridConfig);
 

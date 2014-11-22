@@ -4,14 +4,14 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canList
+ * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
- * @var bool $canList
- * @var string $pluralHumanName
  */
 
 $this->title = Yii::t('mozayka', 'Creating new record');
