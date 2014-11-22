@@ -10,12 +10,12 @@ use yii\helpers\Html,
  * @var string $formClass
  * @var array $formConfig
  * @var bool $canList
- * @var string $listLabel
+ * @var string $pluralHumanName
  */
 
 $this->title = Yii::t('mozayka', 'Record "{record}"', ['record' => $displayValue]);
 if ($canList) {
-    $this->params['breadcrumbs'][] = ['label' => $listLabel, 'url' => ['list']];
+    $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
 }
 $this->params['breadcrumbs'][] = $displayValue;
 

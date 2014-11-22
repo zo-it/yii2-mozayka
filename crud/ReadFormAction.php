@@ -35,7 +35,7 @@ class ReadFormAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, ['readOnly' => true]),
             'canList' => ModelHelper::canList($modelClass),
-            'listLabel' => ModelHelper::pluralHumanName($modelClass)
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass)
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

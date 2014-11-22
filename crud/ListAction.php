@@ -67,6 +67,11 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
+//
+$formConfig = array_merge($this->formConfig, [
+                'validationUrl' => [$this->id, 'validation' => 1],
+                'method' => 'get'
+            ]);
         // grid config
         $gridConfig = $this->gridConfig;
         $gridConfig['dataProvider'] = $dataProvider;
@@ -93,10 +98,7 @@ $gridConfig = array_merge($gridConfig, [
             'filterModel' => $filterModel,
             'filterFields' => $filterFields,
             'formClass' => $this->formClass,
-            'formConfig' => array_merge($this->formConfig, [
-                'validationUrl' => [$this->id, 'validation' => 1],
-                'method' => 'get'
-            ]),
+            'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
             'gridConfig' => $gridConfig,
             'canCreate' => ModelHelper::canCreate($modelClass)

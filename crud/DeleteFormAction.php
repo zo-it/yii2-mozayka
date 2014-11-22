@@ -82,7 +82,7 @@ class DeleteFormAction extends Action
                 'readOnly' => true
             ]),
             'canList' => ModelHelper::canList($modelClass),
-            'listLabel' => ModelHelper::pluralHumanName($modelClass)
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass)
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
