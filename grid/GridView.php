@@ -10,6 +10,8 @@ class GridView extends YiiGridView
 
     public $dataColumnClass = 'yii\mozayka\grid\DataColumn';
 
+    public $tableOptions = ['class' => 'table table-striped table-bordered table-condensed'];
+
     public $filterRowOptions = ['class' => 'filters hidden-print'];
 
     public $filterFields = [];
