@@ -2,11 +2,12 @@
 
 namespace yii\mozayka\db;
 
-use yii\kladovka\db\ActiveRecord as YiiActiveRecord,
+use yii\kladovka\db\ActiveRecord as KladovkaActiveRecord,
+    yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
-class ActiveRecord extends YiiActiveRecord
+class ActiveRecord extends KladovkaActiveRecord
 {
 
     public static function find()
@@ -24,24 +25,39 @@ class ActiveRecord extends YiiActiveRecord
         return [];
     }
 
+    public static function humanName()
+    {
+        return ModelHelper::generateHumanName(get_called_class());
+    }
+
+    public static function pluralHumanName()
+    {
+        return ModelHelper::generatePluralHumanName(get_called_class());
+    }
+
+    public function getDisplayValue()
+    {
+        return ModelHelper::generateDisplayValue($this);
+    }
+
     public static function canCreate($params = [], $newModel = null)
     {
-        return static::hasRealPrimaryKey();
+        return (bool)static::getTableSchema()->primaryKey;
     }
 
     public function canRead($params = [])
     {
-        return $this::hasPrimaryKey();
+        return (bool)$this::primaryKey();
     }
 
     public function canUpdate($params = [])
     {
-        return $this::hasRealPrimaryKey();
+        return (bool)$this::getTableSchema()->primaryKey;
     }
 
     public function canDelete($params = [])
     {
-        return $this::hasRealPrimaryKey();
+        return (bool)$this::getTableSchema()->primaryKey;
     }
 
     public static function canList($params = [], $query = null)

@@ -4,16 +4,20 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canCreate
+ * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
- * @var string $formClass
- * @var array $formConfig
  * @var yii\db\ActiveRecord|null $filterModel
  * @var array $filterFields
+ * @var string $formClass
+ * @var array $formConfig
  * @var string $gridClass
  * @var array $gridConfig
- * @var bool $canCreate
  */
+
+$this->title = Yii::t('mozayka', 'Record list "{list}"', ['list' => $pluralHumanName]);
+$this->params['breadcrumbs'][] = $pluralHumanName;
 
 if ($successMessage) {
     echo Alert::widget([
@@ -37,15 +41,41 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
-//$buttons[] = Html::button(Yii::t('mozayka', 'Export'), ['class' => 'btn btn-default']);
+if ($filterModel && $filterFields) {
+    $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+        'class' => 'btn btn-default',
+        'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
+    ]);
+}
 
-echo Html::tag('div', ButtonGroup::widget([
+echo Html::beginTag('div', ['class' => 'panel panel-default']);
+echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
     'buttons' => $buttons,
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix hidden-print']);
+    'options' => ['class' => 'pull-right hidden-print']
+]), ['class' => 'panel-heading clearfix']);
 
-/*$form = $formClass::begin($formConfig);
-echo $form->fields($filterModel, $filterFields);
-$formClass::end();*/
+if ($filterModel && $filterFields) {
+    echo Html::beginTag('div', [
+        'class' => 'panel-body hidden-print',
+        'style' => 'display: none;'
+    ]);
+    $form = $formClass::begin($formConfig);
+    $form->inputIdSuffix = '-2';
+    echo $form->fields($filterModel, $filterFields);
+    echo Html::tag('div', ButtonGroup::widget([
+        'buttons' => [
+            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
+            Html::button(Yii::t('mozayka', 'Clear'), [
+                'class' => 'btn btn-default',
+                'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+            ])
+        ],
+        'options' => ['class' => 'pull-right']
+    ]), ['class' => 'clearfix']);
+    $formClass::end();
+    echo Html::endTag('div');
+}
 
 echo $gridClass::widget($gridConfig);
+
+echo Html::endTag('div');

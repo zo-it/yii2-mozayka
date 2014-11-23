@@ -4,14 +4,21 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canList
+ * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
- * @var string $formClass
- * @var array $formConfig
  * @var yii\db\ActiveRecord $model
  * @var array $fields
- * @var bool $canList
+ * @var string $formClass
+ * @var array $formConfig
  */
+
+$this->title = Yii::t('mozayka', 'Creating new record');
+if ($canList) {
+    $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
+}
+$this->params['breadcrumbs'][] = Yii::t('mozayka', 'New record');
 
 if ($successMessage) {
     echo Alert::widget([

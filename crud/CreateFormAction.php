@@ -5,8 +5,7 @@ namespace yii\mozayka\crud;
 use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
-    yii\kladovka\helpers\Log,
-    yii\mozayka\db\ActiveRecord,
+    yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
@@ -14,8 +13,6 @@ class CreateFormAction extends Action
 {
 
     public $scenario = Model::SCENARIO_DEFAULT;
-
-    public $viewAction = 'update-form';
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
@@ -27,7 +24,7 @@ class CreateFormAction extends Action
     {
         $id = null;
         $modelClass = $this->modelClass;
-        /** @var yii\db\ActiveRecord $model */
+        /** @var yii\db\ActiveRecordInterface $model */
         $model = new $modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
@@ -46,15 +43,24 @@ class CreateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $id = implode(',', array_values($model->getPrimaryKey(true)));
-                $successMessage = Yii::t('mozayka', 'Record has been successfully saved.');
+                $id = ModelHelper::primaryKey($model);
+                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully saved.', ['record' => ModelHelper::displayValue($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
-                    return $this->controller->redirect([$this->viewAction, 'id' => $id]);
+                    if (ModelHelper::canUpdate($model)) {
+                        $url = ['update-form', 'id' => $id];
+                    } elseif (ModelHelper::canRead($model)) {
+                        $url = ['read-form', 'id' => $id];
+                    } elseif (ModelHelper::canList($modelClass)) {
+                        $url = ['list'];
+                    } else {
+                        $url = Yii::$app->getHomeUrl();
+                    }
+                    return $this->controller->redirect($url);
                 }
             } else {
-                Log::modelErrors($model);
-                $errorMessage = Yii::t('mozayka', 'Record has not been saved.');
+                ModelHelper::log($model);
+                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been saved.', ['record' => ModelHelper::displayValue($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
@@ -65,25 +71,18 @@ class CreateFormAction extends Action
                 ];
             }
         }
-        // form config
-        $formConfig = array_merge($this->formConfig, [
-            'validationUrl' => [$this->id, 'validation' => 1]
-        ]);
-        // can list?
-        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
-            $canList = $modelClass::canList();
-        } else {
-            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
-        }
         // rendering
         $viewParams = [
+            'canList' => ModelHelper::canList($modelClass),
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
-            'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
             'model' => $model,
             'fields' => $this->prepareFields($model),
-            'canList' => $canList
+            'formClass' => $this->formClass,
+            'formConfig' => array_merge($this->formConfig, [
+                'validationUrl' => [$this->id, 'validation' => 1]
+            ])
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

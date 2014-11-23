@@ -6,7 +6,7 @@ use yii\base\Model,
     yii\web\Response,
     yii\mozayka\form\ActiveForm,
     yii\data\ActiveDataProvider,
-    yii\mozayka\db\ActiveRecord,
+    yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
@@ -67,11 +67,12 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
-        // form config
-        $formConfig = array_merge($this->formConfig, [
-            'validationUrl' => [$this->id, 'validation' => 1],
-            'method' => 'get'
-        ]);
+//
+$formConfig = array_merge($this->formConfig, [
+'validationUrl' => [$this->id, 'validation' => 1],
+'action' => ['list'], // no hidden fields
+'method' => 'get'
+]);
         // grid config
         $gridConfig = $this->gridConfig;
         $gridConfig['dataProvider'] = $dataProvider;
@@ -91,23 +92,18 @@ $gridConfig = array_merge($gridConfig, [
             $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
             $gridConfig['columns'] = $columns;
         }
-        // can create?
-        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
-            $canCreate = $modelClass::canCreate();
-        } else {
-            $canCreate = method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate() : (bool)$modelClass::getTableSchema()->primaryKey;
-        }
         // rendering
         $viewParams = [
+            'canCreate' => ModelHelper::canCreate($modelClass),
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
-            'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
             'filterModel' => $filterModel,
             'filterFields' => $filterFields,
+            'formClass' => $this->formClass,
+            'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridConfig,
-            'canCreate' => $canCreate
+            'gridConfig' => $gridConfig
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);

@@ -31,11 +31,6 @@ if ($user->getIsGuest()) {
     $navItems[] = ['label' => Yii::t('mozayka', 'Logout') . ' (' . $user->getIdentity()->username . ')', 'url' => ['default/logout']];
 }
 
-$breadcrumbs = [['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl]];
-if (array_key_exists('breadcrumbs', $this->params)) {
-    $breadcrumbs = array_merge($breadcrumbs, $this->params['breadcrumbs']);
-}
-
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -67,11 +62,13 @@ NavBar::end();
 ?>
 <div class="container-fluid">
 <?php
-echo Breadcrumbs::widget([
-    'options' => ['class' => 'breadcrumb hidden-print'],
-    'homeLink' => false,
-    'links' => $breadcrumbs
-]);
+if (array_key_exists('breadcrumbs', $this->params)) {
+    echo Breadcrumbs::widget([
+        'options' => ['class' => 'breadcrumb hidden-print'],
+        'homeLink' => ['label' => Yii::t('mozayka', 'Home'), 'url' => $homeUrl],
+        'links' => $this->params['breadcrumbs']
+    ]);
+}
 echo $content;
 ?>
 </div>

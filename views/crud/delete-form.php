@@ -4,14 +4,23 @@ use yii\bootstrap\Alert,
     yii\bootstrap\ButtonGroup;
 /**
  * @var yii\web\View $this
+ * @var bool $canList
+ * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
+ * @var yii\db\ActiveRecord $model
+ * @var string $id
+ * @var string $displayValue
+ * @var array $fields
  * @var string $formClass
  * @var array $formConfig
- * @var yii\db\ActiveRecord $model
- * @var array $fields
- * @var bool $canList
  */
+
+$this->title = Yii::t('mozayka', 'Deleting record "{record}"', ['record' => $displayValue]);
+if ($canList) {
+    $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
+}
+$this->params['breadcrumbs'][] = $displayValue;
 
 if ($successMessage) {
     echo Alert::widget([

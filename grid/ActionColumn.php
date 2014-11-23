@@ -3,7 +3,10 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\ActionColumn as YiiActionColumn,
-    yii\mozayka\db\ActiveRecord;
+    yii\mozayka\helpers\ModelHelper,
+    yii\helpers\Html,
+    yii\mozayka\web\DropdownAsset,
+    Yii;
 
 
 class ActionColumn extends YiiActionColumn
@@ -29,23 +32,35 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        if ($model instanceof ActiveRecord) { // yii\mozayka\db\ActiveRecord
-            $this->template = implode(' ', array_keys(array_filter([
-                '{view}' => $model->canRead(),
-                '{update}' => $model->canUpdate(),
-                '{delete}' => $model->canDelete()
-            ])));
-        } else {
-            $this->template = implode(' ', array_keys(array_filter([
-                '{view}' => method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead() : (bool)$model::primaryKey(),
-                '{update}' => method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate() : (bool)$model::getTableSchema()->primaryKey,
-                '{delete}' => method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete() : (bool)$model::getTableSchema()->primaryKey
-            ])));
-        }
+        $this->template = implode(' ', array_keys(array_filter([
+            '{view}' => ModelHelper::canRead($model),
+            '{update}' => ModelHelper::canUpdate($model),
+            '<span class="pull-right">{delete}</span>' => ModelHelper::canDelete($model)
+        ])));
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
         return preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+    }
+
+    public function renderDataCell($model, $key, $index)
+    {
+        $cellContent = $this->renderDataCellContent($model, $key, $index);
+        if ($cellContent != $this->grid->emptyCell) {
+            $content = Html::button(Yii::t('mozayka', 'Action') . ' <span class="caret"></span>', [
+                'id' => 'action-trigger',
+                'class' => 'btn btn-default btn-xs',
+                'data-dropdown2' => '#action-dropdown2'
+            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
+                'id' => 'action-dropdown2',
+                'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
+            ]);
+            if (!Yii::$app->getRequest()->getIsAjax()) {
+                DropdownAsset::register($this->grid->getView());
+            }
+            return Html::tag('td', $content, $this->contentOptions);
+        }
+        return parent::renderDataCell($model, $key, $index);
     }
 }

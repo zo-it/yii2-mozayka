@@ -2,10 +2,11 @@
 
 namespace yii\mozayka\form;
 
-use yii\bootstrap\ActiveForm as YiiActiveForm;
+use yii\bootstrap\ActiveForm as BootstrapActiveForm,
+    yii\helpers\Html;
 
 
-class ActiveForm extends YiiActiveForm
+class ActiveForm extends BootstrapActiveForm
 {
 
     public $fieldClass = 'yii\mozayka\form\ActiveField';
@@ -27,6 +28,21 @@ class ActiveForm extends YiiActiveForm
             $this->fieldConfig['readOnly'] = true;
         }
         parent::init();
+    }
+
+    public function setInputIdSuffix($inputIdSuffix)
+    {
+        if (isset(Html::$inputIdSuffix)) {
+            Html::$inputIdSuffix = $inputIdSuffix;
+        }
+    }
+
+    public function run()
+    {
+        parent::run();
+        if (isset(Html::$inputIdSuffix)) {
+            Html::$inputIdSuffix = '';
+        }
     }
 
     public function fields($model, $fields = [])

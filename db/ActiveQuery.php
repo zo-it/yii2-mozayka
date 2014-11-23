@@ -2,9 +2,9 @@
 
 namespace yii\mozayka\db;
 
-use yii\kladovka\db\ActiveQuery as YiiActiveQuery;
+use yii\kladovka\db\ActiveQuery as KladovkaActiveQuery;
 
 
-class ActiveQuery extends YiiActiveQuery
+class ActiveQuery extends KladovkaActiveQuery
 {
 }

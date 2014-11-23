@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\crud;
 
-use yii\mozayka\db\ActiveRecord,
+use yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
@@ -18,31 +18,24 @@ class ReadFormAction extends Action
     public function run($id = null)
     {
         $modelClass = $this->modelClass;
-        /** @var yii\db\ActiveRecord $model */
+        /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
+            $id = ModelHelper::primaryKey($model);
         }
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $model);
-        }
-        // form config
-        $formConfig = array_merge($this->formConfig, [
-            'readOnly' => true
-        ]);
-        // can list?
-        if (is_subclass_of($modelClass, ActiveRecord::className())) { // yii\mozayka\db\ActiveRecord
-            $canList = $modelClass::canList();
-        } else {
-            $canList = method_exists($modelClass, 'canList') && is_callable([$modelClass, 'canList']) ? $modelClass::canList() : true;
+            call_user_func($this->checkAccess, $this->id, $model, ['id' => $id]);
         }
         // rendering
         $viewParams = [
-            'formClass' => $this->formClass,
-            'formConfig' => $formConfig,
+            'canList' => ModelHelper::canList($modelClass),
+            'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'model' => $model,
+            'id' => $id,
+            'displayValue' => ModelHelper::displayValue($model),
             'fields' => $this->prepareFields($model),
-            'canList' => $canList
+            'formClass' => $this->formClass,
+            'formConfig' => array_merge($this->formConfig, ['readOnly' => true])
         ];
         if (Yii::$app->getRequest()->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
