@@ -60,7 +60,7 @@ if ($filterModel && $filterFields) {
         'style' => 'display: none;'
     ]);
     $form = $formClass::begin($formConfig);
-    $form->inputIdSuffix = '-2';
+    $form->inputIdSuffix = '-2'; // no repeated ids
     echo $form->fields($filterModel, $filterFields);
     echo Html::tag('div', ButtonGroup::widget([
         'buttons' => [
