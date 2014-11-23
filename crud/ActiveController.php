@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\crud;
 
-use yii\rest\ActiveController as YiiRestActiveController,
+use yii\rest\ActiveController as RestActiveController,
     yii\base\Model,
     yii\helpers\StringHelper,
     yii\mozayka\helpers\ModelHelper,
@@ -10,7 +10,7 @@ use yii\rest\ActiveController as YiiRestActiveController,
     Yii;
 
 
-class ActiveController extends YiiRestActiveController
+class ActiveController extends RestActiveController
 {
 
     public $modelName = null;

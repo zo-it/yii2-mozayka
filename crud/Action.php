@@ -2,7 +2,7 @@
 
 namespace yii\mozayka\crud;
 
-use yii\rest\Action as YiiRestAction,
+use yii\rest\Action as RestAction,
     yii\base\Model,
     yii\db\ActiveRecord,
     yii\helpers\Inflector,
@@ -13,7 +13,7 @@ use yii\rest\Action as YiiRestAction,
     Yii;
 
 
-class Action extends YiiRestAction
+class Action extends RestAction
 {
 
     public $columns = [];

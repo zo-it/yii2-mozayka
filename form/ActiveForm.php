@@ -2,10 +2,10 @@
 
 namespace yii\mozayka\form;
 
-use yii\bootstrap\ActiveForm as YiiActiveForm;
+use yii\bootstrap\ActiveForm as BootstrapActiveForm;
 
 
-class ActiveForm extends YiiActiveForm
+class ActiveForm extends BootstrapActiveForm
 {
 
     public $fieldClass = 'yii\mozayka\form\ActiveField';

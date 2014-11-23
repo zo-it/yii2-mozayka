@@ -2,10 +2,10 @@
 
 namespace yii\mozayka\form;
 
-use yii\bootstrap\ActiveField as YiiActiveField;
+use yii\bootstrap\ActiveField as BootstrapActiveField;
 
 
-class ActiveField extends YiiActiveField
+class ActiveField extends BootstrapActiveField
 {
 
     public $readOnly = false;
