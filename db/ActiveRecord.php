@@ -2,12 +2,12 @@
 
 namespace yii\mozayka\db;
 
-use yii\kladovka\db\ActiveRecord as YiiActiveRecord,
+use yii\kladovka\db\ActiveRecord as KladovkaActiveRecord,
     yii\mozayka\helpers\ModelHelper,
     Yii;
 
 
-class ActiveRecord extends YiiActiveRecord
+class ActiveRecord extends KladovkaActiveRecord
 {
 
     public static function find()
