@@ -44,7 +44,7 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
 if ($filterModel && $filterFields) {
     $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
         'class' => 'btn btn-default',
-        'onclick' => 'jQuery(this).toggleClass(\'active\'); jQuery(\'.panel-body\').slideToggle();'
+        'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').find(\'.panel-body\').slideToggle();'
     ]);
 }
 
