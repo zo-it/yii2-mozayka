@@ -44,7 +44,7 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
 if ($filterModel && $filterFields) {
     $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
         'class' => 'btn btn-default',
-        'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').find(\'.panel-body\').slideToggle();'
+        'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
 }
 
@@ -58,23 +58,24 @@ if ($filterModel && $filterFields) {
     if (isset(Html::$inputIdSuffix)) {
         Html::$inputIdSuffix = '-2';
     }
-    $form = $formClass::begin($formConfig);
-$formId = $form->getId();
-$buttonGroup = Html::tag('div', ButtonGroup::widget([
-    'buttons' => [
-        Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
-        Html::button(Yii::t('mozayka', 'Clear'), [
-            'class' => 'btn btn-default btn-sm',
-            'onclick' => 'jQuery(\'#' . $formId . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
-        ])
-    ],
-    'options' => ['class' => 'pull-right']
-]), ['class' => 'clearfix']);
-    echo Html::tag('div', $form->fields($filterModel, $filterFields) . $buttonGroup, [
+    echo Html::beginTag('div', [
         'class' => 'panel-body hidden-print',
         'style' => 'display: none;'
     ]);
+    $form = $formClass::begin($formConfig);
+    echo $form->fields($filterModel, $filterFields);
+    echo Html::tag('div', ButtonGroup::widget([
+        'buttons' => [
+            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
+            Html::button(Yii::t('mozayka', 'Clear'), [
+                'class' => 'btn btn-default btn-sm',
+                'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+            ])
+        ],
+        'options' => ['class' => 'pull-right']
+    ]), ['class' => 'clearfix']);
     $formClass::end();
+    echo Html::endTag('div');
     if (isset(Html::$inputIdSuffix)) {
         Html::$inputIdSuffix = '';
     }
