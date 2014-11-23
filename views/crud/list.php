@@ -60,7 +60,7 @@ if ($filterModel && $filterFields) {
     }
     $form = $formClass::begin($formConfig);
     echo Html::tag('div', $form->fields($filterModel, $filterFields), [
-        'class' => 'panel-body',
+        'class' => 'panel-body hidden-print',
         'style' => 'display: none;'
     ]);
     $formClass::end();
