@@ -55,14 +55,12 @@ echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pul
 ]), ['class' => 'panel-heading clearfix']);
 
 if ($filterModel && $filterFields) {
-    if (isset(Html::$inputIdSuffix)) {
-        Html::$inputIdSuffix = '-2';
-    }
     echo Html::beginTag('div', [
         'class' => 'panel-body hidden-print',
         'style' => 'display: none;'
     ]);
     $form = $formClass::begin($formConfig);
+    $form->inputIdSuffix = '-2';
     echo $form->fields($filterModel, $filterFields);
     echo Html::tag('div', ButtonGroup::widget([
         'buttons' => [
@@ -76,9 +74,6 @@ if ($filterModel && $filterFields) {
     ]), ['class' => 'clearfix']);
     $formClass::end();
     echo Html::endTag('div');
-    if (isset(Html::$inputIdSuffix)) {
-        Html::$inputIdSuffix = '';
-    }
 }
 
 echo $gridClass::widget($gridConfig);
