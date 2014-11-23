@@ -41,10 +41,12 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
-$buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
-    'class' => 'btn btn-default',
-    'onclick' => 'jQuery(this).toggleClass(\'active\'); jQuery(\'.panel-body\').slideToggle();'
-]);
+if ($filterModel && $filterFields) {
+    $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+        'class' => 'btn btn-default',
+        'onclick' => 'jQuery(this).toggleClass(\'active\'); jQuery(\'.panel-body\').slideToggle();'
+    ]);
+}
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
@@ -52,12 +54,20 @@ echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pul
     'options' => ['class' => 'pull-right hidden-print']
 ]), ['class' => 'panel-heading clearfix']);
 
-$form = $formClass::begin($formConfig);
-echo Html::tag('div', $form->fields($filterModel, $filterFields), [
-    'class' => 'panel-body',
-    'style' => 'display: none;'
-]);
-$formClass::end();
+if ($filterModel && $filterFields) {
+    if (isset(Html::$inputIdSuffix)) {
+        Html::$inputIdSuffix = '-f';
+    }
+    $form = $formClass::begin($formConfig);
+    echo Html::tag('div', $form->fields($filterModel, $filterFields), [
+        'class' => 'panel-body',
+        'style' => 'display: none;'
+    ]);
+    $formClass::end();
+    if (isset(Html::$inputIdSuffix)) {
+        Html::$inputIdSuffix = '';
+    }
+}
 
 echo $gridClass::widget($gridConfig);
 
