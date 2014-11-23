@@ -59,7 +59,17 @@ if ($filterModel && $filterFields) {
         Html::$inputIdSuffix = '-f';
     }
     $form = $formClass::begin($formConfig);
-    echo Html::tag('div', $form->fields($filterModel, $filterFields), [
+$buttonGroup = Html::tag('div', ButtonGroup::widget([
+    'buttons' => [
+        Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
+        /*Html::button(Yii::t('mozayka', 'Clear'), [
+            'class' => 'btn btn-default btn-sm',
+            'onclick' => 'jQuery(\'\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+        ])*/
+    ],
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'clearfix']);
+    echo Html::tag('div', $form->fields($filterModel, $filterFields) . $buttonGroup, [
         'class' => 'panel-body hidden-print',
         'style' => 'display: none;'
     ]);
