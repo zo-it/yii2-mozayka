@@ -70,7 +70,7 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
 //
 $formConfig = array_merge($this->formConfig, [
 'validationUrl' => [$this->id, 'validation' => 1],
-'action' => ['list'],
+'action' => ['list'], // no hidden fields
 'method' => 'get'
 ]);
         // grid config

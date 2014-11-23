@@ -56,15 +56,16 @@ echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pul
 
 if ($filterModel && $filterFields) {
     if (isset(Html::$inputIdSuffix)) {
-        Html::$inputIdSuffix = '-f';
+        Html::$inputIdSuffix = '-2';
     }
     $form = $formClass::begin($formConfig);
+$formId = $form->getId();
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
     'buttons' => [
         Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
         Html::button(Yii::t('mozayka', 'Clear'), [
             'class' => 'btn btn-default btn-sm',
-            'onclick' => 'jQuery(\'.panel-body\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+            'onclick' => 'jQuery(\'#' . $formId . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
         ])
     ],
     'options' => ['class' => 'pull-right']
