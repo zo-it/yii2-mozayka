@@ -35,7 +35,7 @@ class ActionColumn extends YiiActionColumn
         $this->template = implode(' ', array_keys(array_filter([
             '{view}' => ModelHelper::canRead($model),
             '{update}' => ModelHelper::canUpdate($model),
-            '{delete}' => ModelHelper::canDelete($model)
+            '<span class="pull-right">{delete}</span>' => ModelHelper::canDelete($model)
         ])));
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
