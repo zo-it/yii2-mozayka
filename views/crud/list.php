@@ -62,10 +62,10 @@ if ($filterModel && $filterFields) {
 $buttonGroup = Html::tag('div', ButtonGroup::widget([
     'buttons' => [
         Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
-        /*Html::button(Yii::t('mozayka', 'Clear'), [
+        Html::button(Yii::t('mozayka', 'Clear'), [
             'class' => 'btn btn-default btn-sm',
-            'onclick' => 'jQuery(\'\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
-        ])*/
+            'onclick' => 'jQuery(\'.panel-body\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+        ])
     ],
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'clearfix']);
