@@ -69,9 +69,10 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $errorMessage = $session->getFlash('error');
 //
 $formConfig = array_merge($this->formConfig, [
-                'validationUrl' => [$this->id, 'validation' => 1],
-                'method' => 'get'
-            ]);
+'validationUrl' => [$this->id, 'validation' => 1],
+'action' => ['list'],
+'method' => 'get'
+]);
         // grid config
         $gridConfig = $this->gridConfig;
         $gridConfig['dataProvider'] = $dataProvider;
