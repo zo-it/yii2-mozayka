@@ -18,17 +18,8 @@ class DataColumn extends YiiDataColumn
         $filterModel = $this->grid->filterModel;
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
-            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]);
-        }
-        return parent::renderFilterCellContent();
-    }
-
-    public function renderFilterCell()
-    {
-        $cellContent = $this->renderFilterCellContent();
-        if ($cellContent != $this->grid->emptyCell) {
             $gridId = $this->grid->getId();
-            $cellContent .= Html::tag('div', ButtonGroup::widget([
+            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
                     Html::button(Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
@@ -41,6 +32,14 @@ class DataColumn extends YiiDataColumn
                 ],
                 'options' => ['class' => 'pull-right']
             ]), ['class' => 'clearfix']);
+        }
+        return parent::renderFilterCellContent();
+    }
+
+    public function renderFilterCell()
+    {
+        $cellContent = $this->renderFilterCellContent();
+        if ($cellContent != $this->grid->emptyCell) {
             $content = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-xs',
