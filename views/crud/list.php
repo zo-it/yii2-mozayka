@@ -64,9 +64,9 @@ if ($filterModel && $filterFields) {
     echo $form->fields($filterModel, $filterFields);
     echo Html::tag('div', ButtonGroup::widget([
         'buttons' => [
-            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary btn-sm']),
+            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
             Html::button(Yii::t('mozayka', 'Clear'), [
-                'class' => 'btn btn-default btn-sm',
+                'class' => 'btn btn-default',
                 'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
             ])
         ],
