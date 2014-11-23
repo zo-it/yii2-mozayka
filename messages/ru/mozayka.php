@@ -12,7 +12,7 @@ return [
     'Filter' => 'Фильтр',
     'Apply' => 'Применить',
     'Clear' => 'Очистить',
-    'Actions' => 'Действия',
+    'Action' => 'Действие',
     'Create' => 'Создать',
     'Creating new record' => 'Создание новой записи',
     'New record' => 'Новая запись',

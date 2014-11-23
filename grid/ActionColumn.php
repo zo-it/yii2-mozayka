@@ -48,12 +48,12 @@ class ActionColumn extends YiiActionColumn
     {
         $cellContent = $this->renderDataCellContent($model, $key, $index);
         if ($cellContent != $this->grid->emptyCell) {
-            $content = Html::button(Yii::t('mozayka', 'Actions') . ' <span class="caret"></span>', [
-                'id' => 'actions-trigger',
+            $content = Html::button(Yii::t('mozayka', 'Action') . ' <span class="caret"></span>', [
+                'id' => 'action-trigger',
                 'class' => 'btn btn-default btn-xs',
-                'data-dropdown2' => '#actions-dropdown2'
+                'data-dropdown2' => '#action-dropdown2'
             ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
-                'id' => 'actions-dropdown2',
+                'id' => 'action-dropdown2',
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
             if (!Yii::$app->getRequest()->getIsAjax()) {
