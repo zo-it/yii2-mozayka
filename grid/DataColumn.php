@@ -25,7 +25,7 @@ class DataColumn extends YiiDataColumn
                         'class' => 'btn btn-primary btn-sm',
                         'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');'
                     ]),
-                    Html::button(Yii::t('mozayka', 'Clear'), [
+                    Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Clear'), [
                         'class' => 'btn btn-default btn-sm',
                         'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown2-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
                     ])
