@@ -52,6 +52,11 @@ if ($filterModel && $filterFields) {
     ]);
 }
 
+$footerButtons[] = Html::button(Yii::t('mozayka', 'Top'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'jQuery(document).scrollTop(0);'
+]);
+
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
 $grid = $gridClass::begin($gridConfig);
@@ -90,7 +95,7 @@ if ($filterModel && $filterFields) {
 $grid->layout = '{items}';
 $gridClass::end();
 
-echo Html::tag('div', Html::tag('div', $gridPager, ['style' => 'position: absolute;']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);
