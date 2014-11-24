@@ -46,7 +46,7 @@ $headingButtons = $buttons;
 $footerButtons = $buttons;
 
 if ($filterModel && $filterFields) {
-    $headingButtons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+    $headingButtons[] = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
