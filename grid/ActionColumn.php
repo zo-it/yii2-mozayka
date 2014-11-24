@@ -38,9 +38,10 @@ class ActionColumn extends YiiActionColumn
             '<li>{delete}</li>' => ModelHelper::canDelete($model)
         ])));
         $fix = [
-            '~(glyphicon\-eye\-open"\>)~i' => '$1 ' . Yii::t('yii', 'View'),
-            '~(glyphicon\-pencil"\>)~i' => '$1 ' . Yii::t('yii', 'Update'),
-            '~(glyphicon\-trash"\>)~i' => '$1 ' . Yii::t('yii', 'Delete'),
+            '~(glyphicon\-eye\-open"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'View') . '$2',
+            '~(glyphicon\-pencil"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'Update') . '$2',
+            '~(glyphicon\-trash"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'Delete') . '$2',
+            '~\s+title\="[^"]*"~i' => '',
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
