@@ -49,7 +49,10 @@ if ($filterModel && $filterFields) {
 }
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
-echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
+
+$grid = $gridClass::begin($gridConfig);
+
+echo Html::tag('div', Html::tag('h3', $this->title . $grid->renderSummary(), ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
     'buttons' => $buttons,
     'options' => ['class' => 'pull-right hidden-print']
 ]), ['class' => 'panel-heading clearfix']);
@@ -76,6 +79,12 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div');
 }
 
-echo $gridClass::widget($gridConfig);
+$pager = $grid->renderPager();
+$grid->layout = '{items}';
+$gridClass::end();
+
+if ($pager) {
+    echo Html::tag('div', $pager, ['class' => 'panel-footer']);
+}
 
 echo Html::endTag('div');
