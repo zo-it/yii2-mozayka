@@ -35,9 +35,9 @@ if ($errorMessage) {
 
 $buttons = [];
 if ($canCreate) {
-    $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
+    $buttons[] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
-$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+$buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
@@ -46,13 +46,13 @@ $headerButtons = $buttons;
 $footerButtons = $buttons;
 
 if ($filterModel && $filterFields) {
-    $headerButtons[] = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
+    $headerButtons[] = Html::button('<span class="glyphicon glyphicon-filter"></span> ' . Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
 }
 
-$footerButtons[] = Html::button(Yii::t('mozayka', 'Top'), [
+$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Top'), [
     'class' => 'btn btn-default',
     'onclick' => 'jQuery(document).scrollTop(0);'
 ]);
