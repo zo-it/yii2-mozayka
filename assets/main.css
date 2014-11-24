@@ -111,5 +111,5 @@ a.desc:after {
 }
 
 .panel > .panel-heading .pagination, .panel > .panel-footer .pagination {
-    margin: 0;
+    margin: 0 10px 0 0;
 }
