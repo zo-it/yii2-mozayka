@@ -72,7 +72,6 @@ if ($filterModel && $filterFields) {
     ]);
     $form = $formClass::begin($formConfig);
     $form->inputIdSuffix = '-2'; // no repeated ids
-    echo $form->fields($filterModel, $filterFields);
     echo Html::tag('div', ButtonGroup::widget([
         'buttons' => [
             Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
@@ -83,6 +82,7 @@ if ($filterModel && $filterFields) {
         ],
         'options' => ['class' => 'pull-right']
     ]), ['class' => 'clearfix']);
+    echo $form->fields($filterModel, $filterFields);
     $formClass::end();
     echo Html::endTag('div');
 }
