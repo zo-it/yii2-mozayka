@@ -132,3 +132,7 @@ a.desc:after {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+textarea.form-control {
+    resize: vertical;
+}
