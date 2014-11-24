@@ -25,7 +25,7 @@ $buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Y
     'onclick' => 'print();'
 ]);
 if ($canList) {
-    $buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+    $buttons[] = Html::a('<span class="glyphicon glyphicon-list"></span> ' . Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
 }
 
 $form = $formClass::begin($formConfig);
