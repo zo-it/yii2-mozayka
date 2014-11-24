@@ -16,7 +16,7 @@ use yii\bootstrap\Alert,
  * @var array $formConfig
  */
 
-$this->title = Yii::t('mozayka', 'Updating record "{record}"', ['record' => $displayValue]);
+$this->title = Yii::t('mozayka', 'Updating record "{record}".', ['record' => $displayValue]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
 }
@@ -37,7 +37,7 @@ if ($errorMessage) {
 }
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
-echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading']);
+echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']), ['class' => 'panel-heading hidden-print']);
 $form = $formClass::begin($formConfig);
 
 echo Html::tag('div', $form->fields($model, $fields), ['class' => 'panel-body']);
@@ -54,4 +54,4 @@ echo Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'panel-footer clearfix hidden-print']);
 
 $formClass::end();
-echo Html::endTag('div');
+echo Html::endTag('div'); // panel

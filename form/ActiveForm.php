@@ -30,18 +30,18 @@ class ActiveForm extends BootstrapActiveForm
         parent::init();
     }
 
-    public function setInputIdSuffix($inputIdSuffix)
-    {
-        if (isset(Html::$inputIdSuffix)) {
-            Html::$inputIdSuffix = $inputIdSuffix;
-        }
-    }
-
     public function run()
     {
         parent::run();
         if (isset(Html::$inputIdSuffix)) {
             Html::$inputIdSuffix = '';
+        }
+    }
+
+    public function setInputIdSuffix($inputIdSuffix)
+    {
+        if (isset(Html::$inputIdSuffix)) {
+            Html::$inputIdSuffix = $inputIdSuffix;
         }
     }
 

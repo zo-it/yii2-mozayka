@@ -109,3 +109,7 @@ a.desc:after {
 .panel > .grid-view .table-bordered > tfoot > tr > td:last-child {
     border-right-width: 0;
 }
+
+.panel > .panel-heading .pagination, .panel > .panel-footer .pagination {
+    margin: 0;
+}
