@@ -78,7 +78,7 @@ if ($filterModel && $filterFields) {
     $form = $formClass::begin($formConfig);
     $form->inputIdSuffix = '-2'; // no repeated ids
     $filterButtons = [
-        Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
+        Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
         Html::button(Yii::t('mozayka', 'Clear'), [
             'class' => 'btn btn-default',
             'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'

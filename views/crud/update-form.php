@@ -37,7 +37,7 @@ if ($errorMessage) {
 }
 
 $buttons = [];
-$buttons[] = Html::submitButton(Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
+$buttons[] = Html::submitButton('<span class="glyphicon glyphicon-ok"></span> ' . Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
 if ($canList) {
     $buttons[] = Html::a(Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
 }

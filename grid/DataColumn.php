@@ -21,7 +21,7 @@ class DataColumn extends YiiDataColumn
             $gridId = $this->grid->getId();
             return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
-                    Html::button(Yii::t('mozayka', 'Apply'), [
+                    Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
                         'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');'
                     ]),

@@ -20,7 +20,7 @@ if ($canList) {
 $this->params['breadcrumbs'][] = $displayValue;
 
 $buttons = [];
-$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+$buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
