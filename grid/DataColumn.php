@@ -47,7 +47,7 @@ class DataColumn extends YiiDataColumn
                 'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
             ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
                 'id' => 'filter-dropdown2-' . $this->attribute,
-                'class' => 'dropdown2 dropdown2-tip'
+                'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
             if (!Yii::$app->getRequest()->getIsAjax()) {
                 DropdownAsset::register($this->grid->getView());
