@@ -51,7 +51,7 @@ class ActionColumn extends YiiActionColumn
     public function renderDataCell($model, $key, $index)
     {
         $cellContent = $this->renderDataCellContent($model, $key, $index);
-        if ($cellContent != $this->grid->emptyCell) {
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
             $content = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger',
