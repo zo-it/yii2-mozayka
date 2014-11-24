@@ -118,6 +118,7 @@ a.desc:after {
 .panel > .panel-heading .pagination,
 .panel > .panel-footer .pagination {
     margin: 0 10px 0 0;
+    display: block;
 }
 
 .grid-view .table > thead > tr > th,

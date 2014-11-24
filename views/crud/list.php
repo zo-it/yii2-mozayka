@@ -35,22 +35,27 @@ if ($errorMessage) {
 
 $buttons = [];
 if ($canCreate) {
-    $buttons[] = Html::a(Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
+    $buttons[] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-primary']);
 }
-$buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
+$buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
 
-$headingButtons = $buttons;
+$headerButtons = $buttons;
 $footerButtons = $buttons;
 
 if ($filterModel && $filterFields) {
-    $headingButtons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+    $headerButtons[] = Html::button('<span class="glyphicon glyphicon-filter"></span> ' . Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
 }
+
+$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'jQuery(document).scrollTop(0);'
+]);
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
@@ -58,8 +63,8 @@ $grid = $gridClass::begin($gridConfig);
 $gridSummary = $grid->renderSummary();
 $gridPager = $grid->renderPager();
 
-echo Html::tag('div', Html::tag('div', $gridPager . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-right']), ['style' => 'position: absolute;']) . ButtonGroup::widget([
-    'buttons' => $headingButtons,
+echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
+    'buttons' => $headerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
 
@@ -72,25 +77,30 @@ if ($filterModel && $filterFields) {
     ]);
     $form = $formClass::begin($formConfig);
     $form->inputIdSuffix = '-2'; // no repeated ids
+    $filterButtons = [
+        Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Search'), ['class' => 'btn btn-primary']),
+        Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Clear'), [
+            'class' => 'btn btn-default',
+            'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+        ])
+    ];
     echo Html::tag('div', ButtonGroup::widget([
-        'buttons' => [
-            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
-            Html::button(Yii::t('mozayka', 'Clear'), [
-                'class' => 'btn btn-default',
-                'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
-            ])
-        ],
+        'buttons' => $filterButtons,
         'options' => ['class' => 'pull-right']
     ]), ['class' => 'clearfix']);
     echo $form->fields($filterModel, $filterFields);
+    echo Html::tag('div', ButtonGroup::widget([
+        'buttons' => $filterButtons,
+        'options' => ['class' => 'pull-right']
+    ]), ['class' => 'clearfix']);
     $formClass::end();
-    echo Html::endTag('div');
+    echo Html::endTag('div'); // panel-body
 }
 
 $grid->layout = '{items}';
 $gridClass::end();
 
-echo Html::tag('div', Html::tag('div', $gridPager, ['style' => 'position: absolute;']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);

@@ -33,11 +33,15 @@ class ActionColumn extends YiiActionColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $this->template = implode(' ', array_keys(array_filter([
-            '{view}' => ModelHelper::canRead($model),
-            '{update}' => ModelHelper::canUpdate($model),
-            '<span class="pull-right">{delete}</span>' => ModelHelper::canDelete($model)
+            '<li>{view}</li>' => ModelHelper::canRead($model),
+            '<li>{update}</li>' => ModelHelper::canUpdate($model),
+            '<li>{delete}</li>' => ModelHelper::canDelete($model)
         ])));
         $fix = [
+            '~(glyphicon\-eye\-open"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'View') . '$2',
+            '~(glyphicon\-pencil"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'Update') . '$2',
+            '~(glyphicon\-trash"\>\</span\>)(\</a\>)~i' => '$1 ' . Yii::t('mozayka', 'Delete') . '$2',
+            '~\s+title\="[^"]*"~i' => '',
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
@@ -53,7 +57,7 @@ class ActionColumn extends YiiActionColumn
                 'id' => 'action-trigger',
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2'
-            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
+            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2',
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
