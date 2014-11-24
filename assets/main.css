@@ -110,6 +110,6 @@ a.desc:after {
     border-right-width: 0;
 }
 
-.panel > .panel-footer .pagination {
+.panel > .panel-heading .pagination, .panel > .panel-footer .pagination {
     margin: 0;
 }

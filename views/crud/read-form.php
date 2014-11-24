@@ -40,4 +40,4 @@ echo Html::tag('div', ButtonGroup::widget([
 ]), ['class' => 'panel-footer clearfix hidden-print']);
 
 $formClass::end();
-echo Html::endTag('div');
+echo Html::endTag('div'); // panel
