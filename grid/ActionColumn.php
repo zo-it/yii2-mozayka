@@ -33,9 +33,9 @@ class ActionColumn extends YiiActionColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $this->template = implode(' ', array_keys(array_filter([
-            '{view}' => ModelHelper::canRead($model),
-            '{update}' => ModelHelper::canUpdate($model),
-            '<span class="pull-right">{delete}</span>' => ModelHelper::canDelete($model)
+            '<li>{view}</li>' => ModelHelper::canRead($model),
+            '<li>{update}</li>' => ModelHelper::canUpdate($model),
+            '<li>{delete}</li>' => ModelHelper::canDelete($model)
         ])));
         $fix = [
             '~\s+data\-confirm\="[^"]*"~i' => '',
@@ -53,7 +53,7 @@ class ActionColumn extends YiiActionColumn
                 'id' => 'action-trigger',
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2'
-            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
+            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2',
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
