@@ -55,8 +55,10 @@ if ($filterModel && $filterFields) {
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
 $grid = $gridClass::begin($gridConfig);
+$gridSummary = $grid->renderSummary();
+$gridPager = $grid->renderPager();
 
-echo Html::tag('div', Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $grid->renderSummary(), ['style' => 'position: absolute;']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['style' => 'position: absolute;']) . ButtonGroup::widget([
     'buttons' => $topButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
@@ -83,10 +85,12 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div');
 }
 
+echo Html::tag('div', $gridSummary, ['class' => 'visible-print']);
+
 $grid->layout = '{items}';
 $gridClass::end();
 
-echo Html::tag('div', Html::tag('div', $grid->renderPager(), ['style' => 'position: absolute;']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', $gridPager, ['style' => 'position: absolute;']) . ButtonGroup::widget([
     'buttons' => $bottomButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);
