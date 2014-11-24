@@ -42,11 +42,11 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'onclick' => 'print();'
 ]);
 
-$headingButtons = $buttons;
+$headerButtons = $buttons;
 $footerButtons = $buttons;
 
 if ($filterModel && $filterFields) {
-    $headingButtons[] = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
+    $headerButtons[] = Html::button(Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
@@ -64,7 +64,7 @@ $gridSummary = $grid->renderSummary();
 $gridPager = $grid->renderPager();
 
 echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
-    'buttons' => $headingButtons,
+    'buttons' => $headerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
 
@@ -77,17 +77,22 @@ if ($filterModel && $filterFields) {
     ]);
     $form = $formClass::begin($formConfig);
     $form->inputIdSuffix = '-2'; // no repeated ids
+    $filterButtons = [
+        Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
+        Html::button(Yii::t('mozayka', 'Clear'), [
+            'class' => 'btn btn-default',
+            'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+        ])
+    ];
     echo Html::tag('div', ButtonGroup::widget([
-        'buttons' => [
-            Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
-            Html::button(Yii::t('mozayka', 'Clear'), [
-                'class' => 'btn btn-default',
-                'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
-            ])
-        ],
+        'buttons' => $filterButtons,
         'options' => ['class' => 'pull-right']
     ]), ['class' => 'clearfix']);
     echo $form->fields($filterModel, $filterFields);
+    echo Html::tag('div', ButtonGroup::widget([
+        'buttons' => $filterButtons,
+        'options' => ['class' => 'pull-right']
+    ]), ['class' => 'clearfix']);
     $formClass::end();
     echo Html::endTag('div'); // panel-body
 }
