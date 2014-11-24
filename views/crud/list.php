@@ -41,8 +41,10 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
+$topButtons = $buttons;
+$bottomButtons = $buttons;
 if ($filterModel && $filterFields) {
-    $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+    $topButtons[] = Html::button(Yii::t('mozayka', 'Filter'), [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
@@ -53,7 +55,7 @@ echo Html::beginTag('div', ['class' => 'panel panel-default']);
 $grid = $gridClass::begin($gridConfig);
 
 echo Html::tag('div', Html::tag('h3', $this->title . $grid->renderSummary(), ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
-    'buttons' => $buttons,
+    'buttons' => $topButtons,
     'options' => ['class' => 'pull-right hidden-print']
 ]), ['class' => 'panel-heading clearfix']);
 
@@ -79,12 +81,12 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div');
 }
 
-$pager = $grid->renderPager();
 $grid->layout = '{items}';
 $gridClass::end();
 
-if ($pager) {
-    echo Html::tag('div', $pager, ['class' => 'panel-footer']);
-}
+echo Html::tag('div', $grid->renderPager() . ButtonGroup::widget([
+    'buttons' => $bottomButtons,
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'panel-footer clearfix hidden-print']);
 
 echo Html::endTag('div');

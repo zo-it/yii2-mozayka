@@ -8,7 +8,7 @@ use yii\grid\GridView as YiiGridView;
 class GridView extends YiiGridView
 {
 
-    public $pager = ['options' => ['class' => 'pagination pagination-sm']];
+    //public $pager = ['options' => ['class' => 'pagination pagination-sm']];
 
     public $dataColumnClass = 'yii\mozayka\grid\DataColumn';
 
