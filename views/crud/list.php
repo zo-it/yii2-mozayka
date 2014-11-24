@@ -16,7 +16,7 @@ use yii\bootstrap\Alert,
  * @var array $gridConfig
  */
 
-$this->title = Yii::t('mozayka', 'Record list "{list}"', ['list' => $pluralHumanName]);
+$this->title = Yii::t('mozayka', 'Record list "{list}".', ['list' => $pluralHumanName]);
 $this->params['breadcrumbs'][] = $pluralHumanName;
 
 if ($successMessage) {
@@ -63,6 +63,8 @@ echo Html::tag('div', Html::tag('div', Html::tag('h3', $this->title, ['class' =>
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
 
+$this->title .= ' ' . strip_tags($gridSummary);
+
 if ($filterModel && $filterFields) {
     echo Html::beginTag('div', [
         'class' => 'panel-body hidden-print',
@@ -84,8 +86,6 @@ if ($filterModel && $filterFields) {
     $formClass::end();
     echo Html::endTag('div');
 }
-
-echo Html::tag('div', $gridSummary, ['class' => 'visible-print']);
 
 $grid->layout = '{items}';
 $gridClass::end();
