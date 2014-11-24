@@ -16,7 +16,7 @@ use yii\bootstrap\Alert,
  * @var array $gridConfig
  */
 
-$this->title = Yii::t('mozayka', 'Record list "{list}"', ['list' => $pluralHumanName]);
+$this->title = Yii::t('mozayka', 'Record list "{list}".', ['list' => $pluralHumanName]);
 $this->params['breadcrumbs'][] = $pluralHumanName;
 
 if ($successMessage) {
@@ -41,18 +41,29 @@ $buttons[] = Html::button(Yii::t('mozayka', 'Print'), [
     'class' => 'btn btn-default',
     'onclick' => 'print();'
 ]);
+
+$headingButtons = $buttons;
+$footerButtons = $buttons;
+
 if ($filterModel && $filterFields) {
-    $buttons[] = Html::button(Yii::t('mozayka', 'Filter'), [
+    $headingButtons[] = Html::button(Yii::t('mozayka', 'Filter'), [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
 }
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
-echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([
-    'buttons' => $buttons,
-    'options' => ['class' => 'pull-right hidden-print']
-]), ['class' => 'panel-heading clearfix']);
+
+$grid = $gridClass::begin($gridConfig);
+$gridSummary = $grid->renderSummary();
+$gridPager = $grid->renderPager();
+
+echo Html::tag('div', Html::tag('div', $gridPager . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-right']), ['style' => 'position: absolute;']) . ButtonGroup::widget([
+    'buttons' => $headingButtons,
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'panel-heading clearfix hidden-print']);
+
+$this->title .= ' ' . strip_tags($gridSummary);
 
 if ($filterModel && $filterFields) {
     echo Html::beginTag('div', [
@@ -60,8 +71,7 @@ if ($filterModel && $filterFields) {
         'style' => 'display: none;'
     ]);
     $form = $formClass::begin($formConfig);
-    $form->inputIdSuffix = '-2';
-    echo $form->fields($filterModel, $filterFields);
+    $form->inputIdSuffix = '-2'; // no repeated ids
     echo Html::tag('div', ButtonGroup::widget([
         'buttons' => [
             Html::submitButton(Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
@@ -72,10 +82,17 @@ if ($filterModel && $filterFields) {
         ],
         'options' => ['class' => 'pull-right']
     ]), ['class' => 'clearfix']);
+    echo $form->fields($filterModel, $filterFields);
     $formClass::end();
     echo Html::endTag('div');
 }
 
-echo $gridClass::widget($gridConfig);
+$grid->layout = '{items}';
+$gridClass::end();
 
-echo Html::endTag('div');
+echo Html::tag('div', Html::tag('div', $gridPager, ['style' => 'position: absolute;']) . ButtonGroup::widget([
+    'buttons' => $footerButtons,
+    'options' => ['class' => 'pull-right']
+]), ['class' => 'panel-footer clearfix hidden-print']);
+
+echo Html::endTag('div'); // panel

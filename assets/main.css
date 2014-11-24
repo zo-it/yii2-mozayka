@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -9,7 +10,8 @@ html, body {
     padding: 0 0 60px;
 }
 
-.wrap > .container, .wrap > .container-fluid {
+.wrap > .container,
+.wrap > .container-fluid {
     padding: 70px 15px 20px;
 }
 
@@ -89,9 +91,12 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
+.panel > .grid-view .table {
+    margin-bottom: 0;
+}
 .panel > .grid-view .table-bordered {
-    border-right-width: 0;
     border-left-width: 0;
+    border-right-width: 0;
 }
 .panel > .grid-view .table-bordered > thead > tr > th:first-child,
 .panel > .grid-view .table-bordered > tbody > tr > th:first-child,
@@ -108,4 +113,21 @@ a.desc:after {
 .panel > .grid-view .table-bordered > tbody > tr > td:last-child,
 .panel > .grid-view .table-bordered > tfoot > tr > td:last-child {
     border-right-width: 0;
+}
+
+.panel > .panel-heading .pagination,
+.panel > .panel-footer .pagination {
+    margin: 0 10px 0 0;
+}
+
+.grid-view .table > thead > tr > th,
+.grid-view .table > tbody > tr > th,
+.grid-view .table > tfoot > tr > th,
+.grid-view .table > thead > tr > td,
+.grid-view .table > tbody > tr > td,
+.grid-view .table > tfoot > tr > td {
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
