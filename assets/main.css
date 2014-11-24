@@ -91,9 +91,12 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
+.panel > .grid-view .table {
+    margin-bottom: 0;
+}
 .panel > .grid-view .table-bordered {
-    border-right-width: 0;
     border-left-width: 0;
+    border-right-width: 0;
 }
 .panel > .grid-view .table-bordered > thead > tr > th:first-child,
 .panel > .grid-view .table-bordered > tbody > tr > th:first-child,
