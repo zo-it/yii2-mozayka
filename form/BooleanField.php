@@ -12,8 +12,8 @@ class BooleanField extends ActiveField
     {
         parent::init();
         $this->dropDownList([
-            1 => Yii::t('mozayka', 'Yes'),
-            0 => Yii::t('mozayka', 'No')
+            1 => Yii::t('mozayka', 'yes'),
+            0 => Yii::t('mozayka', 'no')
         ], ['prompt' => '']);
     }
 }

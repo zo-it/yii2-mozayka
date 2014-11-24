@@ -27,6 +27,6 @@ return [
     'Record "{record}" has been successfully deleted.' => 'Запись "{record}" была успешно удалена.',
     'Record "{record}" has not been deleted.' => 'Запись "{record}" не была удалена.',
     'Back' => 'Назад',
-    'Yes' => 'Да',
-    'No' => 'Нет'
+    'yes' => 'да',
+    'no' => 'нет'
 ];
