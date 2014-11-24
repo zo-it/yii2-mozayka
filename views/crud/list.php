@@ -89,7 +89,7 @@ if ($filterModel && $filterFields) {
     ]), ['class' => 'clearfix']);
     echo $form->fields($filterModel, $filterFields);
     $formClass::end();
-    echo Html::endTag('div');
+    echo Html::endTag('div'); // panel-body
 }
 
 $grid->layout = '{items}';
