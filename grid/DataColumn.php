@@ -39,7 +39,7 @@ class DataColumn extends YiiDataColumn
     public function renderFilterCell()
     {
         $cellContent = $this->renderFilterCellContent();
-        if ($cellContent != $this->grid->emptyCell) {
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
             $content = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'id' => 'filter-trigger-' . $this->attribute,
