@@ -42,22 +42,22 @@ class ActiveRecord extends KladovkaActiveRecord
 
     public static function canCreate($params = [], $newModel = null)
     {
-        return (bool)static::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_called_class());
     }
 
     public function canRead($params = [])
     {
-        return (bool)$this::primaryKey();
+        return ModelHelper::hasPrimaryKey(get_class($this));
     }
 
     public function canUpdate($params = [])
     {
-        return (bool)$this::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_class($this));
     }
 
     public function canDelete($params = [])
     {
-        return (bool)$this::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_class($this));
     }
 
     public static function canList($params = [], $query = null)
