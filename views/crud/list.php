@@ -78,8 +78,8 @@ if ($filterModel && $filterFields) {
     $form = $formClass::begin($formConfig);
     $form->inputIdSuffix = '-2'; // no repeated ids
     $filterButtons = [
-        Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Search'), ['class' => 'btn btn-primary']),
-        Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Clear'), [
+        Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
+        Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Reset'), [
             'class' => 'btn btn-default',
             'onclick' => 'jQuery(\'#' . $form->getId() . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
         ])
