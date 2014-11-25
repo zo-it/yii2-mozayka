@@ -29,11 +29,10 @@ class GridView extends YiiGridView
 
     public function renderSummary()
     {
-        if (is_null($this->summary) && $this->dataProvider->getCount()) {
+        if (is_null($this->summary) && $this->dataProvider->getCount() && extension_loaded('intl')) {
             $pagination = $this->dataProvider->getPagination();
             if ($pagination && ($pagination->getPageCount() > 1)) {
-                $this->summary = Yii::t('mozayka', 'Records <b>{begin, number}-{end, number}</b> (total <b>{totalCount, number}</b> {totalCount, plural, one{record} other{records}}).');
-                $this->summary .= ' ' . Yii::t('mozayka', 'Page <b>{page, number}</b> (total <b>{pageCount, number}</b> {pageCount, plural, one{page} other{pages}}).');
+                $this->summary = Yii::t('mozayka', 'Records <b>{begin, number}-{end, number}</b> (total <b>{totalCount, number}</b> {totalCount, plural, one{record} other{records}}).') . ' ' . Yii::t('mozayka', 'Page <b>{page, number}</b> (total <b>{pageCount, number}</b> {pageCount, plural, one{page} other{pages}}).');
             } else {
                 $this->summary = Yii::t('mozayka', 'Total <b>{totalCount, number}</b> {totalCount, plural, one{record} other{records}}.');
             }
