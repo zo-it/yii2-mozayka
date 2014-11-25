@@ -17,13 +17,11 @@ class ListAction extends Action
 
     public $searchScenario = Model::SCENARIO_DEFAULT;
 
+    public $dataProviderConfig = [];
+
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];
-
-    //public $dataProviderClass = 'yii\data\ActiveDataProvider';
-
-    public $dataProviderConfig = [];
 
     public $gridClass = 'yii\mozayka\grid\GridView';
 
