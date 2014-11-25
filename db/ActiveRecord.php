@@ -10,11 +10,6 @@ use yii\kladovka\db\ActiveRecord as KladovkaActiveRecord,
 class ActiveRecord extends KladovkaActiveRecord
 {
 
-    public static function find()
-    {
-        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
-    }
-
     public static function humanName()
     {
         return ModelHelper::generateHumanName(get_called_class());
@@ -23,6 +18,11 @@ class ActiveRecord extends KladovkaActiveRecord
     public static function pluralHumanName()
     {
         return ModelHelper::generatePluralHumanName(get_called_class());
+    }
+
+    public static function find()
+    {
+        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
     }
 
     public function getDisplayValue()
