@@ -15,7 +15,7 @@ class ListAction extends Action
 
     public $filterModelClass = null;
 
-    public $filterScenario = Model::SCENARIO_DEFAULT;
+    public $searchScenario = Model::SCENARIO_DEFAULT;
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
@@ -39,13 +39,9 @@ class ListAction extends Action
         $filterFields = [];
         $request = Yii::$app->getRequest();
         if ($this->filterModelClass) {
-            /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
-            if ($request->getIsPost()) {
-                $filterModel->load($request->getBodyParams());
-            } else {
-                $filterModel->load($request->getQueryParams());
-            }
+            /** @var yii\db\ActiveRecordInterface $filterModel */
+            $filterModel = new $this->filterModelClass(['scenario' => $this->searchScenario]);
+            $filterModel->load($request->getIsPost() ? $request->getBodyParams() : $request->getQueryParams());
             // validation
             if ($request->getIsAjax() && $request->getQueryParam('validation')) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;

@@ -82,7 +82,7 @@ class ActiveController extends RestActiveController
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'filterModelClass' => $this->filterModelClass,
-                'filterScenario' => $this->searchScenario
+                'searchScenario' => $this->searchScenario
             ],
             'change-position' => [
                 'class' => 'yii\mozayka\crud\ChangePositionAction',
