@@ -118,7 +118,7 @@ a.desc:after {
 .panel > .panel-heading .pagination,
 .panel > .panel-footer .pagination {
     margin: 0 10px 0 0;
-    display: block;
+    display: block; /* no bottom space */
 }
 
 .grid-view .table > thead > tr > th,
