@@ -15,16 +15,6 @@ class ActiveRecord extends KladovkaActiveRecord
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
     }
 
-    public function attributeColumns()
-    {
-        return [];
-    }
-
-    public function attributeFields()
-    {
-        return [];
-    }
-
     public static function humanName()
     {
         return ModelHelper::generateHumanName(get_called_class());
@@ -38,6 +28,16 @@ class ActiveRecord extends KladovkaActiveRecord
     public function getDisplayValue()
     {
         return ModelHelper::generateDisplayValue($this);
+    }
+
+    public function attributeColumns()
+    {
+        return [];
+    }
+
+    public function attributeFields()
+    {
+        return [];
     }
 
     public static function canCreate($params = [], $newModel = null)
