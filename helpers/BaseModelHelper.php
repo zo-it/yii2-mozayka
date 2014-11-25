@@ -139,7 +139,7 @@ class BaseModelHelper
         }
     }
 
-    public static function log(ActiveRecordInterface $model, $message = '', $category = 'application')
+    public static function log(ActiveRecordInterface $model, $message = null, $category = 'application')
     {
         if ($model->hasErrors()) {
             Yii::error(VarDumper::dumpAsString([
