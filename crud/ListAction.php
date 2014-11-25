@@ -31,13 +31,15 @@ class ListAction extends Action
 
     public function run()
     {
-        $dataProvider = null;
+        $filterModelClass = $this->filterModelClass;
         $filterModel = null;
         $filterFields = [];
+        $dataProvider = null;
         $request = Yii::$app->getRequest();
-        if ($this->filterModelClass) {
+        if ($filterModelClass) {
             /** @var yii\db\ActiveRecordInterface $filterModel */
-            $filterModel = new $this->filterModelClass(['scenario' => $this->searchScenario]);
+            $filterModel = new $filterModelClass(['scenario' => $this->searchScenario]);
+            $filterFields = $this->prepareFields($filterModel);
             if ($request->getIsPost()) {
                 $filterModel->load($request->getBodyParams());
             } else {
@@ -53,7 +55,6 @@ class ListAction extends Action
                 $dataProvider = $filterModel->search([$filterModel->formName() => []]);
                 $filterModel->afterSave(false, []);
             }
-            $filterFields = $this->prepareFields($filterModel);
         }
         $modelClass = $this->modelClass;
         if (!$dataProvider) {
