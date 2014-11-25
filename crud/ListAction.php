@@ -33,7 +33,6 @@ class ListAction extends Action
 
     public function run()
     {
-        $modelClass = $this->modelClass;
         $dataProvider = null;
         $filterModel = null;
         $filterFields = [];
@@ -41,20 +40,26 @@ class ListAction extends Action
         if ($this->filterModelClass) {
             /** @var yii\db\ActiveRecordInterface $filterModel */
             $filterModel = new $this->filterModelClass(['scenario' => $this->searchScenario]);
-            $filterModel->load($request->getIsPost() ? $request->getBodyParams() : $request->getQueryParams());
+            if ($request->getIsPost()) {
+                $filterModel->load($request->getBodyParams());
+            } else {
+                $filterModel->load($request->getQueryParams());
+            }
             // validation
             if ($request->getIsAjax() && $request->getQueryParam('validation')) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($filterModel);
             }
             // processing
-if ($filterModel->beforeSave(false)) {
-$dataProvider = $filterModel->search([$filterModel->formName() => []]);
-$filterModel->afterSave(false, []);
-}
+            if ($filterModel->beforeSave(false)) {
+                $dataProvider = $filterModel->search([$filterModel->formName() => []]);
+                $filterModel->afterSave(false, []);
+            }
+            $filterFields = $this->prepareFields($filterModel);
         }
+        $modelClass = $this->modelClass;
         if (!$dataProvider) {
-$dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
+            $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
         Yii::configure($dataProvider, $this->dataProviderConfig);
         if ($this->checkAccess) {
@@ -63,31 +68,12 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
-//
-$formConfig = array_merge($this->formConfig, [
-'validationUrl' => [$this->id, 'validation' => 1],
-'action' => ['list'], // no hidden fields
-'method' => 'get'
-]);
-        // grid config
-        $gridConfig = $this->gridConfig;
-        $gridConfig['dataProvider'] = $dataProvider;
-        if ($filterModel) {
-            $filterFields = $this->prepareFields($filterModel);
-$gridConfig = array_merge($gridConfig, [
-'formClass' => $this->formClass,
-'formConfig' => $formConfig,
-'filterModel' => $filterModel,
-'filterFields' => $filterFields
-]);
-        }
-        if (!array_key_exists('columns', $gridConfig)) {
-            $columns = [];
-            //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
-            $columns = array_merge($columns, $this->prepareColumns(new $modelClass));
-            $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
-            $gridConfig['columns'] = $columns;
-        }
+        //
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'validation' => 1],
+            'action' => ['list'], // no hidden fields
+            'method' => 'get'
+        ]);
         // rendering
         $viewParams = [
             'canCreate' => ModelHelper::canCreate($modelClass),
@@ -99,7 +85,14 @@ $gridConfig = array_merge($gridConfig, [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridConfig
+            'gridConfig' => array_merge($this->gridConfig, [
+                'dataProvider' => $dataProvider,
+                'columns' => $this->prepareColumns(new $modelClass),
+                'filterModel' => $filterModel,
+                'filterFields' => $filterFields,
+                'formClass' => $this->formClass,
+                'formConfig' => $formConfig
+            ])
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
