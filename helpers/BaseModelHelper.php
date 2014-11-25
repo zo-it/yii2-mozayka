@@ -6,7 +6,8 @@ use yii\helpers\StringHelper,
     yii\helpers\Inflector,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
     yii\db\ActiveRecordInterface,
-    yii\kladovka\helpers\Log;
+    yii\helpers\VarDumper,
+    Yii;
 
 
 class BaseModelHelper
@@ -122,21 +123,37 @@ class BaseModelHelper
         }
     }
 
-    public static function log(ActiveRecordInterface $model, $message = null, $category = 'application')
+    public static function dump(ActiveRecordInterface $model)
     {
         if ($model->hasErrors()) {
-            Log::error([
+            VarDumper::dump([
+                'class' => get_class($model),
+                'attributes' => $model->getAttributes(),
+                'errors' => $model->getErrors()
+            ]);
+        } else {
+            VarDumper::dump([
+                'class' => get_class($model),
+                'attributes' => $model->getAttributes()
+            ]);
+        }
+    }
+
+    public static function log(ActiveRecordInterface $model, $message = '', $category = 'application')
+    {
+        if ($model->hasErrors()) {
+            Yii::error(VarDumper::dumpAsString([
                 'class' => get_class($model),
                 'message' => $message,
                 'attributes' => $model->getAttributes(),
                 'errors' => $model->getErrors()
-            ], $category);
+            ]), $category);
         } else {
-            Log::info([
+            Yii::info(VarDumper::dumpAsString([
                 'class' => get_class($model),
                 'message' => $message,
                 'attributes' => $model->getAttributes()
-            ], $category);
+            ]), $category);
         }
     }
 }
