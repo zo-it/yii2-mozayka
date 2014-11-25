@@ -21,11 +21,11 @@ class DataColumn extends YiiDataColumn
             $gridId = $this->grid->getId();
             return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
-                    Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Search'), [
+                    Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
                         'onclick' => 'jQuery(\'#' . $gridId . ' #filter-trigger-' . $this->attribute . '\').dropdown2(\'hide\'); jQuery(\'#' . $gridId . '\').yiiGridView(\'applyFilter\');'
                     ]),
-                    Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Clear'), [
+                    Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Reset'), [
                         'class' => 'btn btn-default btn-sm',
                         'onclick' => 'jQuery(\'#' . $gridId . ' #filter-dropdown2-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
                     ])
@@ -39,7 +39,7 @@ class DataColumn extends YiiDataColumn
     public function renderFilterCell()
     {
         $cellContent = $this->renderFilterCellContent();
-        if ($cellContent != $this->grid->emptyCell) {
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
             $content = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'id' => 'filter-trigger-' . $this->attribute,
