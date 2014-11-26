@@ -10,9 +10,24 @@ use yii\kladovka\db\ActiveRecord as KladovkaActiveRecord,
 class ActiveRecord extends KladovkaActiveRecord
 {
 
+    public static function humanName()
+    {
+        return ModelHelper::generateHumanName(get_called_class());
+    }
+
+    public static function pluralHumanName()
+    {
+        return ModelHelper::generatePluralHumanName(get_called_class());
+    }
+
     public static function find()
     {
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
+    }
+
+    public function getDisplayValue()
+    {
+        return ModelHelper::generateDisplayValue($this);
     }
 
     public function attributeColumns()
@@ -25,39 +40,24 @@ class ActiveRecord extends KladovkaActiveRecord
         return [];
     }
 
-    public static function humanName()
-    {
-        return ModelHelper::generateHumanName(get_called_class());
-    }
-
-    public static function pluralHumanName()
-    {
-        return ModelHelper::generatePluralHumanName(get_called_class());
-    }
-
-    public function getDisplayValue()
-    {
-        return ModelHelper::generateDisplayValue($this);
-    }
-
     public static function canCreate($params = [], $newModel = null)
     {
-        return (bool)static::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_called_class());
     }
 
     public function canRead($params = [])
     {
-        return (bool)$this::primaryKey();
+        return ModelHelper::hasPrimaryKey(get_class($this));
     }
 
     public function canUpdate($params = [])
     {
-        return (bool)$this::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_class($this));
     }
 
     public function canDelete($params = [])
     {
-        return (bool)$this::getTableSchema()->primaryKey;
+        return ModelHelper::hasRealPrimaryKey(get_class($this));
     }
 
     public static function canList($params = [], $query = null)

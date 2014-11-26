@@ -76,7 +76,7 @@ echo $content;
 
 <footer class="footer hidden-print">
     <div class="container">
-        <p class="pull-left">&copy; <?php echo $appName; ?> <?php echo date('Y'); ?></p>
+        <p class="pull-left">&copy; <?php echo $appName . date(' Y'); ?></p>
         <p class="pull-right"><?php echo Yii::powered(); ?></p>
     </div>
 </footer>

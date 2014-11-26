@@ -15,15 +15,13 @@ class ListAction extends Action
 
     public $filterModelClass = null;
 
-    public $filterScenario = Model::SCENARIO_DEFAULT;
+    public $searchScenario = Model::SCENARIO_DEFAULT;
+
+    public $dataProviderConfig = [];
 
     public $formClass = 'yii\mozayka\form\ActiveForm';
 
     public $formConfig = [];
-
-    //public $dataProviderClass = 'yii\data\ActiveDataProvider';
-
-    public $dataProviderConfig = [];
 
     public $gridClass = 'yii\mozayka\grid\GridView';
 
@@ -33,14 +31,15 @@ class ListAction extends Action
 
     public function run()
     {
-        $modelClass = $this->modelClass;
-        $dataProvider = null;
+        $filterModelClass = $this->filterModelClass;
         $filterModel = null;
         $filterFields = [];
+        $dataProvider = null;
         $request = Yii::$app->getRequest();
-        if ($this->filterModelClass) {
-            /* @var yii\base\Model $filterModel */
-            $filterModel = new $this->filterModelClass(['scenario' => $this->filterScenario]);
+        if ($filterModelClass) {
+            /** @var yii\db\ActiveRecordInterface $filterModel */
+            $filterModel = new $filterModelClass(['scenario' => $this->searchScenario]);
+            $filterFields = $this->prepareFields($filterModel);
             if ($request->getIsPost()) {
                 $filterModel->load($request->getBodyParams());
             } else {
@@ -52,13 +51,14 @@ class ListAction extends Action
                 return ActiveForm::validate($filterModel);
             }
             // processing
-if ($filterModel->beforeSave(false)) {
-$dataProvider = $filterModel->search([$filterModel->formName() => []]);
-$filterModel->afterSave(false, []);
-}
+            if ($filterModel->beforeSave(false)) {
+                $dataProvider = $filterModel->search([$filterModel->formName() => []]);
+                $filterModel->afterSave(false, []);
+            }
         }
+        $modelClass = $this->modelClass;
         if (!$dataProvider) {
-$dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
+            $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         }
         Yii::configure($dataProvider, $this->dataProviderConfig);
         if ($this->checkAccess) {
@@ -67,31 +67,12 @@ $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
         $session = Yii::$app->getSession();
         $successMessage = $session->getFlash('success');
         $errorMessage = $session->getFlash('error');
-//
-$formConfig = array_merge($this->formConfig, [
-'validationUrl' => [$this->id, 'validation' => 1],
-'action' => ['list'], // no hidden fields
-'method' => 'get'
-]);
-        // grid config
-        $gridConfig = $this->gridConfig;
-        $gridConfig['dataProvider'] = $dataProvider;
-        if ($filterModel) {
-            $filterFields = $this->prepareFields($filterModel);
-$gridConfig = array_merge($gridConfig, [
-'formClass' => $this->formClass,
-'formConfig' => $formConfig,
-'filterModel' => $filterModel,
-'filterFields' => $filterFields
-]);
-        }
-        if (!array_key_exists('columns', $gridConfig)) {
-            $columns = [];
-            //$columns[] = ['class' => 'yii\grid\CheckboxColumn'];
-            $columns = array_merge($columns, $this->prepareColumns(new $modelClass));
-            $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
-            $gridConfig['columns'] = $columns;
-        }
+        //
+        $formConfig = array_merge($this->formConfig, [
+            'validationUrl' => [$this->id, 'validation' => 1],
+            'action' => ['list'], // no hidden fields
+            'method' => 'get'
+        ]);
         // rendering
         $viewParams = [
             'canCreate' => ModelHelper::canCreate($modelClass),
@@ -103,7 +84,14 @@ $gridConfig = array_merge($gridConfig, [
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
-            'gridConfig' => $gridConfig
+            'gridConfig' => array_merge($this->gridConfig, [
+                'dataProvider' => $dataProvider,
+                'columns' => $this->prepareColumns(new $modelClass),
+                'filterModel' => $filterModel,
+                'filterFields' => $filterFields,
+                'formClass' => $this->formClass,
+                'formConfig' => $formConfig
+            ])
         ];
         if ($request->getIsAjax()) {
             return $this->controller->renderPartial($this->view, $viewParams);
