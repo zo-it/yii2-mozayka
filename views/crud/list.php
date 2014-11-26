@@ -45,23 +45,18 @@ $buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Y
 $headerButtons = $buttons;
 $footerButtons = $buttons;
 
+echo Html::beginTag('div', ['class' => 'panel panel-default']);
+
+$grid = $gridClass::begin($gridConfig);
+$gridSummary = $grid->renderSummary();
+$gridPager = $grid->renderPager();
+
 if ($filterModel && $filterFields) {
     $headerButtons[] = Html::button('<span class="glyphicon glyphicon-filter"></span> ' . Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
         'onclick' => 'jQuery(this).toggleClass(\'active\').closest(\'.panel\').children(\'.panel-body\').slideToggle();'
     ]);
 }
-
-$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
-    'class' => 'btn btn-default',
-    'onclick' => 'jQuery(document).scrollTop(0);'
-]);
-
-echo Html::beginTag('div', ['class' => 'panel panel-default']);
-
-$grid = $gridClass::begin($gridConfig);
-$gridSummary = $grid->renderSummary();
-$gridPager = $grid->renderPager();
 
 echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $headerButtons,
@@ -99,6 +94,11 @@ if ($filterModel && $filterFields) {
 
 $grid->layout = '{items}';
 $gridClass::end();
+
+$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
+    'class' => 'btn btn-default',
+    'onclick' => 'jQuery(document).scrollTop(0);'
+]);
 
 echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
