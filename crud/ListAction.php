@@ -39,7 +39,6 @@ class ListAction extends Action
             $filterModelClass = $this->filterModelClass;
             /** @var yii\db\ActiveRecordInterface $filterModel */
             $filterModel = new $filterModelClass(['scenario' => $this->searchScenario]);
-            $filterFields = $this->prepareFields($filterModel);
             if ($request->getIsPost()) {
                 $filterModel->load($request->getBodyParams());
             } else {
@@ -51,6 +50,7 @@ class ListAction extends Action
                 return ActiveForm::validate($filterModel);
             }
             // processing
+            $filterFields = $this->prepareFields($filterModel);
             if ($filterModel->beforeSave(false)) {
                 $dataProvider = $filterModel->search([$filterModel->formName() => []]);
                 $filterModel->afterSave(false, []);
