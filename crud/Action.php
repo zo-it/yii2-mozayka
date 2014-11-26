@@ -154,6 +154,7 @@ class Action extends RestAction
                 }
             }
         }
+        $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
         }));
