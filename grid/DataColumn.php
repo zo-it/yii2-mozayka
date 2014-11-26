@@ -3,6 +3,7 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\DataColumn as YiiDataColumn,
+yii\mozayka\helpers\ModelHelper,
     yii\helpers\Html,
     yii\bootstrap\ButtonGroup,
     yii\mozayka\web\DropdownAsset,
@@ -55,5 +56,29 @@ class DataColumn extends YiiDataColumn
             return Html::tag('td', $content, $this->filterOptions);
         }
         return parent::renderFilterCell();
+    }
+
+    public function renderDataCell($model, $key, $index)
+    {
+        $savedContentOptions = $this->contentOptions;
+        if (is_callable($this->contentOptions)) {
+            $callableContentOptions = $this->contentOptions;
+            $this->contentOptions = $callableContentOptions($model, $key, $index, $this);
+        }
+        $cellOptions = ModelHelper::cellOptions($model, $this->attribute);
+        if ($cellOptions) {
+            $this->contentOptions = array_merge($this->contentOptions, $cellOptions);
+        }
+        $cellCssClass = ModelHelper::cellCssClass($model, $this->attribute);
+        if ($cellCssClass) {
+            Html::addCssClass($this->contentOptions, $cellCssClass);
+        }
+        $cellCssStyle = ModelHelper::cellCssStyle($model, $this->attribute);
+        if ($cellCssStyle) {
+            Html::addCssStyle($this->contentOptions, $cellCssStyle);
+        }
+        $dataCell = parent::renderDataCell($model, $key, $index);
+        $this->contentOptions = $savedContentOptions;
+        return $dataCell;
     }
 }
