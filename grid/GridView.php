@@ -66,7 +66,15 @@ class GridView extends YiiGridView
 
     public function renderTableRow($model, $key, $index)
     {
-        $this->rowOptions = ModelHelper::rowOptions($model);
+        $savedRowOptions = $this->rowOptions;
+        if (is_callable($this->rowOptions)) {
+            $callableRowOptions = $this->rowOptions;
+            $this->rowOptions = $callableRowOptions($model, $key, $index, $this);
+        }
+        $rowOptions = ModelHelper::rowOptions($model);
+        if ($rowOptions) {
+            $this->rowOptions = array_merge($this->rowOptions, $rowOptions);
+        }
         $rowCssClass = ModelHelper::rowCssClass($model);
         if ($rowCssClass) {
             Html::addCssClass($this->rowOptions, $rowCssClass);
@@ -75,6 +83,8 @@ class GridView extends YiiGridView
         if ($rowCssStyle) {
             Html::addCssStyle($this->rowOptions, $rowCssStyle);
         }
-        return parent::renderTableRow($model, $key, $index);
+        $tableRow = parent::renderTableRow($model, $key, $index);
+        $this->rowOptions = $savedRowOptions;
+        return $tableRow;
     }
 }
