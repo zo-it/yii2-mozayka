@@ -48,8 +48,8 @@ $footerButtons = $buttons;
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
 $grid = $gridClass::begin($gridConfig);
-$gridSummary = $grid->renderSummary();
 $gridPager = $grid->renderPager();
+$gridSummary = $grid->renderSummary();
 
 if ($filterModel && $filterFields) {
     $headerButtons[] = Html::button('<span class="glyphicon glyphicon-filter"></span> ' . Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [

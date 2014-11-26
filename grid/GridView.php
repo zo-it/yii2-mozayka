@@ -3,6 +3,8 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\GridView as YiiGridView,
+    yii\mozayka\helpers\ModelHelper,
+    yii\helpers\Html,
     Yii;
 
 
@@ -29,7 +31,7 @@ class GridView extends YiiGridView
 
     public function renderSummary()
     {
-        if (is_null($this->summary) && $this->dataProvider->getCount() && extension_loaded('intl')) {
+        if (is_null($this->summary) && extension_loaded('intl') && $this->dataProvider->getCount()) {
             $pagination = $this->dataProvider->getPagination();
             if ($pagination && ($pagination->getPageCount() > 1)) {
                 $this->summary = Yii::t('mozayka', 'Records <b>{begin, number}-{end, number}</b> (total <b>{totalCount, number}</b> {totalCount, plural, one{record} other{records}}).') . ' ' . Yii::t('mozayka', 'Page <b>{page, number}</b> (total <b>{pageCount, number}</b> {pageCount, plural, one{page} other{pages}}).');
@@ -60,5 +62,19 @@ class GridView extends YiiGridView
     public function getForm()
     {
         return $this->_form;
+    }
+
+    public function renderTableRow($model, $key, $index)
+    {
+        $this->rowOptions = ModelHelper::rowOptions($model);
+        $rowCssClass = ModelHelper::rowCssClass($model);
+        if ($rowCssClass) {
+            Html::addCssClass($this->rowOptions, $rowCssClass);
+        }
+        $rowCssStyle = ModelHelper::rowCssStyle($model);
+        if ($rowCssStyle) {
+            Html::addCssStyle($this->rowOptions, $rowCssStyle);
+        }
+        return parent::renderTableRow($model, $key, $index);
     }
 }

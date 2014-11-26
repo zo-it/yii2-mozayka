@@ -60,6 +60,33 @@ class BaseModelHelper
         }
     }
 
+    public static function rowOptions(ActiveRecordInterface $model)
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->getRowOptions();
+        } else {
+            return method_exists($model, 'getRowOptions') && is_callable([$model, 'getRowOptions']) ? $model->getRowOptions() : [];
+        }
+    }
+
+    public static function rowCssClass(ActiveRecordInterface $model)
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->getRowCssClass();
+        } else {
+            return method_exists($model, 'getRowCssClass') && is_callable([$model, 'getRowCssClass']) ? $model->getRowCssClass() : '';
+        }
+    }
+
+    public static function rowCssStyle(ActiveRecordInterface $model)
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->getRowCssStyle();
+        } else {
+            return method_exists($model, 'getRowCssStyle') && is_callable([$model, 'getRowCssStyle']) ? $model->getRowCssStyle() : '';
+        }
+    }
+
     public static function hasRealPrimaryKey($modelClass)
     {
         return (bool)$modelClass::getTableSchema()->primaryKey;

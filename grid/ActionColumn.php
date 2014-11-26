@@ -50,14 +50,14 @@ class ActionColumn extends YiiActionColumn
 
     public function renderDataCell($model, $key, $index)
     {
-        $cellContent = $this->renderDataCellContent($model, $key, $index);
-        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+        $dataCellContent = $this->renderDataCellContent($model, $key, $index);
+        if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
             $content = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2-' . $index
-            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
+            ]) . Html::tag('div', Html::tag('ul', $dataCellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2-' . $index,
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
