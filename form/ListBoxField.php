@@ -11,8 +11,8 @@ class ListBoxField extends ActiveField
     public function init()
     {
         if (is_callable($this->items)) {
-            $items = $this->items;
-            $this->items = $items();
+            $callableItems = $this->items;
+            $this->items = $callableItems();
         }
         parent::init();
         $this->listBox($this->items, ['prompt' => '']);

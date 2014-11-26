@@ -11,8 +11,8 @@ class ListItemColumn extends DataColumn
     public function init()
     {
         if (is_callable($this->items)) {
-            $items = $this->items;
-            $this->items = $items();
+            $callableItems = $this->items;
+            $this->items = $callableItems();
         }
         parent::init();
     }

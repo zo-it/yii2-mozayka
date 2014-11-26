@@ -3,9 +3,9 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\ActionColumn as YiiActionColumn,
+    yii\mozayka\web\DropdownAsset,
     yii\mozayka\helpers\ModelHelper,
     yii\helpers\Html,
-    yii\mozayka\web\DropdownAsset,
     Yii;
 
 
@@ -19,6 +19,14 @@ class ActionColumn extends YiiActionColumn
     public $footerOptions = ['class' => 'hidden-print'];
 
     public $filterOptions = ['class' => 'hidden-print'];
+
+    public function init()
+    {
+        if (!Yii::$app->getRequest()->getIsAjax()) {
+            DropdownAsset::register($this->grid->getView());
+        }
+        parent::init();
+    }
 
     public function createUrl($action, $model, $key, $index)
     {
@@ -50,20 +58,17 @@ class ActionColumn extends YiiActionColumn
 
     public function renderDataCell($model, $key, $index)
     {
-        $cellContent = $this->renderDataCellContent($model, $key, $index);
-        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+        $dataCellContent = $this->renderDataCellContent($model, $key, $index);
+        if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
             $content = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2-' . $index
-            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
+            ]) . Html::tag('div', Html::tag('ul', $dataCellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2-' . $index,
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
-            if (!Yii::$app->getRequest()->getIsAjax()) {
-                DropdownAsset::register($this->grid->getView());
-            }
             return Html::tag('td', $content, $this->contentOptions);
         }
         return parent::renderDataCell($model, $key, $index);
