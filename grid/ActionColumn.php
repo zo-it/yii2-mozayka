@@ -53,7 +53,8 @@ class ActionColumn extends YiiActionColumn
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
-        return preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+        $dataCellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+        return $dataCellContent;
     }
 
     public function renderDataCell($model, $key, $index)

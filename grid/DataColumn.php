@@ -27,7 +27,7 @@ class DataColumn extends YiiDataColumn
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
             $gridId = $this->grid->getId();
-            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
+            $filterCellContent = $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
                     Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
@@ -40,8 +40,10 @@ class DataColumn extends YiiDataColumn
                 ],
                 'options' => ['class' => 'pull-right']
             ]), ['class' => 'clearfix']);
+        } else {
+            $filterCellContent = parent::renderFilterCellContent();
         }
-        return parent::renderFilterCellContent();
+        return $filterCellContent;
     }
 
     public function renderFilterCell()
