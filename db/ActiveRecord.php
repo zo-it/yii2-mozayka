@@ -40,36 +40,6 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generateDisplayValue($this);
     }
 
-    public function getRowOptions()
-    {
-        return [];
-    }
-
-    public function getRowCssClass()
-    {
-        return '';
-    }
-
-    public function getRowCssStyle()
-    {
-        return '';
-    }
-
-    public function getCellOptions($attribute)
-    {
-        return [];
-    }
-
-    public function getCellCssClass($attribute)
-    {
-        return '';
-    }
-
-    public function getCellCssStyle($attribute)
-    {
-        return '';
-    }
-
     public static function canCreate($params = [], $newModel = null)
     {
         return ModelHelper::hasRealPrimaryKey(get_called_class());

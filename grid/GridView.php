@@ -3,8 +3,6 @@
 namespace yii\mozayka\grid;
 
 use yii\grid\GridView as YiiGridView,
-    yii\mozayka\helpers\ModelHelper,
-    yii\helpers\Html,
     Yii;
 
 
@@ -62,29 +60,5 @@ class GridView extends YiiGridView
     public function getForm()
     {
         return $this->_form;
-    }
-
-    public function renderTableRow($model, $key, $index)
-    {
-        $savedRowOptions = $this->rowOptions;
-        if (is_callable($this->rowOptions)) {
-            $callableRowOptions = $this->rowOptions;
-            $this->rowOptions = $callableRowOptions($model, $key, $index, $this);
-        }
-        $rowOptions = ModelHelper::rowOptions($model);
-        if ($rowOptions) {
-            $this->rowOptions = array_merge($this->rowOptions, $rowOptions);
-        }
-        $rowCssClass = ModelHelper::rowCssClass($model);
-        if ($rowCssClass) {
-            Html::addCssClass($this->rowOptions, $rowCssClass);
-        }
-        $rowCssStyle = ModelHelper::rowCssStyle($model);
-        if ($rowCssStyle) {
-            Html::addCssStyle($this->rowOptions, $rowCssStyle);
-        }
-        $tableRow = parent::renderTableRow($model, $key, $index);
-        $this->rowOptions = $savedRowOptions;
-        return $tableRow;
     }
 }

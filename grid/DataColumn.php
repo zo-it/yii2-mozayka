@@ -4,7 +4,6 @@ namespace yii\mozayka\grid;
 
 use yii\grid\DataColumn as YiiDataColumn,
     yii\mozayka\web\DropdownAsset,
-    yii\mozayka\helpers\ModelHelper,
     yii\helpers\Html,
     yii\bootstrap\ButtonGroup,
     Yii;
@@ -19,30 +18,6 @@ class DataColumn extends YiiDataColumn
             DropdownAsset::register($this->grid->getView());
         }
         parent::init();
-    }
-
-    public function renderDataCell($model, $key, $index)
-    {
-        $savedContentOptions = $this->contentOptions;
-        if (is_callable($this->contentOptions)) {
-            $callableContentOptions = $this->contentOptions;
-            $this->contentOptions = $callableContentOptions($model, $key, $index, $this);
-        }
-        $cellOptions = ModelHelper::cellOptions($model, $this->attribute);
-        if ($cellOptions) {
-            $this->contentOptions = array_merge($this->contentOptions, $cellOptions);
-        }
-        $cellCssClass = ModelHelper::cellCssClass($model, $this->attribute);
-        if ($cellCssClass) {
-            Html::addCssClass($this->contentOptions, $cellCssClass);
-        }
-        $cellCssStyle = ModelHelper::cellCssStyle($model, $this->attribute);
-        if ($cellCssStyle) {
-            Html::addCssStyle($this->contentOptions, $cellCssStyle);
-        }
-        $dataCell = parent::renderDataCell($model, $key, $index);
-        $this->contentOptions = $savedContentOptions;
-        return $dataCell;
     }
 
     protected function renderFilterCellContent()
