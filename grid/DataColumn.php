@@ -43,14 +43,8 @@ class DataColumn extends YiiDataColumn
         } else {
             $filterCellContent = parent::renderFilterCellContent();
         }
-        return $filterCellContent;
-    }
-
-    public function renderFilterCell()
-    {
-        $filterCellContent = $this->renderFilterCellContent();
         if ($filterCellContent && ($filterCellContent != $this->grid->emptyCell)) {
-            $content = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
+            $filterCellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-xs',
@@ -59,8 +53,7 @@ class DataColumn extends YiiDataColumn
                 'id' => 'filter-dropdown2-' . $this->attribute,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
-            return Html::tag('td', $content, $this->filterOptions);
         }
-        return parent::renderFilterCell();
+        return $filterCellContent;
     }
 }

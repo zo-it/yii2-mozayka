@@ -54,14 +54,8 @@ class ActionColumn extends YiiActionColumn
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
         $dataCellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
-        return $dataCellContent;
-    }
-
-    public function renderDataCell($model, $key, $index)
-    {
-        $dataCellContent = $this->renderDataCellContent($model, $key, $index);
         if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
-            $content = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
+            $dataCellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
@@ -70,8 +64,7 @@ class ActionColumn extends YiiActionColumn
                 'id' => 'action-dropdown2-' . $index,
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
-            return Html::tag('td', $content, $this->contentOptions);
         }
-        return parent::renderDataCell($model, $key, $index);
+        return $dataCellContent;
     }
 }
