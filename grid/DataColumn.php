@@ -27,7 +27,7 @@ class DataColumn extends YiiDataColumn
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
             $gridId = $this->grid->getId();
-            $filterCellContent = $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
+            $cellContent = $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
                     Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
@@ -41,20 +41,20 @@ class DataColumn extends YiiDataColumn
                 'options' => ['class' => 'pull-right']
             ]), ['class' => 'clearfix']);
         } else {
-            $filterCellContent = parent::renderFilterCellContent();
+            $cellContent = parent::renderFilterCellContent();
         }
         // dropdown2-panel
-        if ($filterCellContent && ($filterCellContent != $this->grid->emptyCell)) {
-            $filterCellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+            $cellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
-            ]) . Html::tag('div', Html::tag('div', $filterCellContent, ['class' => 'dropdown2-panel']), [
+            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
                 'id' => 'filter-dropdown2-' . $this->attribute,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
         }
-        return $filterCellContent;
+        return $cellContent;
     }
 }

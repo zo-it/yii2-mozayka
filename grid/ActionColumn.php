@@ -53,19 +53,19 @@ class ActionColumn extends YiiActionColumn
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
-        $dataCellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+        $cellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
         // dropdown2-menu
-        if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
-            $dataCellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+            $cellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2-' . $index
-            ]) . Html::tag('div', Html::tag('ul', $dataCellContent, ['class' => 'dropdown2-menu']), [
+            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2-' . $index,
                 'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
             ]);
         }
-        return $dataCellContent;
+        return $cellContent;
     }
 }
