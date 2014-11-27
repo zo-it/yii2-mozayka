@@ -25,12 +25,12 @@ class ActiveRecord extends KladovkaActiveRecord
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
     }
 
-    public function attributeColumns()
+    public function gridColumns()
     {
         return [];
     }
 
-    public function attributeFields()
+    public function formFields()
     {
         return [];
     }
