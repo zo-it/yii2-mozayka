@@ -46,9 +46,20 @@ class BaseModelHelper
         return implode($glue, array_values($model->getPrimaryKey(true)));
     }
 
+    public static function displayValue($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::displayValue();
+        } else {
+            return method_exists($modelClass, 'displayValue') && is_callable([$modelClass, 'displayValue']) ? $modelClass::displayValue() : $modelClass::primaryKey();
+        }
+    }
+
     public static function generateDisplayValue(ActiveRecordInterface $model)
     {
-        return '#' . static::getPrimaryKey($model);
+        $emptyDisplayValue = array_flip(static::displayValue(get_class($model)));
+        $displayValue = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
+        return implode(' ', array_values($displayValue));
     }
 
     public static function getDisplayValue(ActiveRecordInterface $model)
