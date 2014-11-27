@@ -41,9 +41,9 @@ class BaseModelHelper
         }
     }
 
-    public static function getPrimaryKey(ActiveRecordInterface $model, $glue = ',')
+    public static function getPrimaryKey(ActiveRecordInterface $model, $separator = ',')
     {
-        return implode($glue, array_values($model->getPrimaryKey(true)));
+        return implode($separator, array_values($model->getPrimaryKey(true)));
     }
 
     public static function displayValue($modelClass)
@@ -57,9 +57,15 @@ class BaseModelHelper
 
     public static function generateDisplayValue(ActiveRecordInterface $model)
     {
-        $emptyDisplayValue = array_flip(static::displayValue(get_class($model)));
+        $separator = ' ';
+        $attributes = static::displayValue(get_class($model));
+        if (array_key_exists('separator', $attributes)) {
+            $separator = $attributes['separator'];
+            unset($attributes['separator']);
+        }
+        $emptyDisplayValue = array_flip($attributes);
         $displayValue = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
-        return implode(' ', array_values($displayValue));
+        return implode($separator, array_values($displayValue));
     }
 
     public static function getDisplayValue(ActiveRecordInterface $model)
