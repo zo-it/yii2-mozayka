@@ -4,7 +4,6 @@ namespace yii\mozayka\grid;
 
 use yii\grid\DataColumn as YiiDataColumn,
     yii\mozayka\web\DropdownAsset,
-    yii\mozayka\helpers\ModelHelper,
     yii\helpers\Html,
     yii\bootstrap\ButtonGroup,
     Yii;
@@ -21,30 +20,6 @@ class DataColumn extends YiiDataColumn
         parent::init();
     }
 
-    public function renderDataCell($model, $key, $index)
-    {
-        $savedContentOptions = $this->contentOptions;
-        if (is_callable($this->contentOptions)) {
-            $callableContentOptions = $this->contentOptions;
-            $this->contentOptions = $callableContentOptions($model, $key, $index, $this);
-        }
-        $cellOptions = ModelHelper::cellOptions($model, $this->attribute);
-        if ($cellOptions) {
-            $this->contentOptions = array_merge($this->contentOptions, $cellOptions);
-        }
-        $cellCssClass = ModelHelper::cellCssClass($model, $this->attribute);
-        if ($cellCssClass) {
-            Html::addCssClass($this->contentOptions, $cellCssClass);
-        }
-        $cellCssStyle = ModelHelper::cellCssStyle($model, $this->attribute);
-        if ($cellCssStyle) {
-            Html::addCssStyle($this->contentOptions, $cellCssStyle);
-        }
-        $dataCell = parent::renderDataCell($model, $key, $index);
-        $this->contentOptions = $savedContentOptions;
-        return $dataCell;
-    }
-
     protected function renderFilterCellContent()
     {
         $form = $this->grid->getForm();
@@ -52,7 +27,7 @@ class DataColumn extends YiiDataColumn
         $filterFields = $this->grid->filterFields;
         if ($form && $filterModel && array_key_exists($this->attribute, $filterFields)) {
             $gridId = $this->grid->getId();
-            return $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
+            $cellContent = $form->field($filterModel, $this->attribute, $filterFields[$this->attribute]) . Html::tag('div', ButtonGroup::widget([
                 'buttons' => [
                     Html::button('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), [
                         'class' => 'btn btn-primary btn-sm',
@@ -65,25 +40,21 @@ class DataColumn extends YiiDataColumn
                 ],
                 'options' => ['class' => 'pull-right']
             ]), ['class' => 'clearfix']);
+        } else {
+            $cellContent = parent::renderFilterCellContent();
         }
-        return parent::renderFilterCellContent();
-    }
-
-    public function renderFilterCell()
-    {
-        $filterCellContent = $this->renderFilterCellContent();
-        if ($filterCellContent && ($filterCellContent != $this->grid->emptyCell)) {
-            $content = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
+        // dropdown2-panel
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+            $cellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'id' => 'filter-trigger-' . $this->attribute,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#filter-dropdown2-' . $this->attribute
-            ]) . Html::tag('div', Html::tag('div', $filterCellContent, ['class' => 'dropdown2-panel']), [
+            ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
                 'id' => 'filter-dropdown2-' . $this->attribute,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
-            return Html::tag('td', $content, $this->filterOptions);
         }
-        return parent::renderFilterCell();
+        return $cellContent;
     }
 }

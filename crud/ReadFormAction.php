@@ -21,7 +21,7 @@ class ReadFormAction extends Action
         /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = ModelHelper::primaryKey($model);
+            $id = ModelHelper::getPrimaryKey($model);
         }
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $model, ['id' => $id]);
@@ -32,7 +32,7 @@ class ReadFormAction extends Action
             'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'model' => $model,
             'id' => $id,
-            'displayValue' => ModelHelper::displayValue($model),
+            'displayValue' => ModelHelper::getDisplayValue($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, ['readOnly' => true])

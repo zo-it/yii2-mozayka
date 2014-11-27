@@ -39,8 +39,8 @@ class Action extends RestAction
             $attributes = $model->attributes();
         }
         $rawColumns = $this->columns;
-        if (!$rawColumns && method_exists($model, 'attributeColumns') && is_callable([$model, 'attributeColumns'])) {
-            $rawColumns = $model->attributeColumns();
+        if (!$rawColumns && method_exists($model, 'gridColumns') && is_callable([$model, 'gridColumns'])) {
+            $rawColumns = $model->gridColumns();
         }
         $offset = array_search('*', $rawColumns);
         if ($offset !== false) {
@@ -168,8 +168,8 @@ class Action extends RestAction
             $attributes = $model->attributes();
         }
         $rawFields = $this->fields;
-        if (!$rawFields && method_exists($model, 'attributeFields') && is_callable([$model, 'attributeFields'])) {
-            $rawFields = $model->attributeFields();
+        if (!$rawFields && method_exists($model, 'formFields') && is_callable([$model, 'formFields'])) {
+            $rawFields = $model->formFields();
         }
         $offset = array_search('*', $rawFields);
         if ($offset !== false) {

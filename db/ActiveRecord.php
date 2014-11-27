@@ -10,6 +10,11 @@ use yii\kladovka\db\ActiveRecord as KladovkaActiveRecord,
 class ActiveRecord extends KladovkaActiveRecord
 {
 
+    public static function find()
+    {
+        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
+    }
+
     public static function humanName()
     {
         return ModelHelper::generateHumanName(get_called_class());
@@ -20,19 +25,9 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
-    public static function find()
+    public static function displayValue()
     {
-        return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
-    }
-
-    public function attributeColumns()
-    {
-        return [];
-    }
-
-    public function attributeFields()
-    {
-        return [];
+        return static::primaryKey();
     }
 
     public function getDisplayValue()
@@ -40,34 +35,14 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generateDisplayValue($this);
     }
 
-    public function getRowOptions()
+    public function gridColumns()
     {
         return [];
     }
 
-    public function getRowCssClass()
-    {
-        return '';
-    }
-
-    public function getRowCssStyle()
-    {
-        return '';
-    }
-
-    public function getCellOptions($attribute)
+    public function formFields()
     {
         return [];
-    }
-
-    public function getCellCssClass($attribute)
-    {
-        return '';
-    }
-
-    public function getCellCssStyle($attribute)
-    {
-        return '';
     }
 
     public static function canCreate($params = [], $newModel = null)

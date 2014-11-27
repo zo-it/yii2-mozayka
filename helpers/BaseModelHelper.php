@@ -41,76 +41,39 @@ class BaseModelHelper
         }
     }
 
-    public static function primaryKey(ActiveRecordInterface $model, $glue = ',')
+    public static function getPrimaryKey(ActiveRecordInterface $model, $separator = ',')
     {
-        return implode($glue, array_values($model->getPrimaryKey(true)));
+        return implode($separator, array_values($model->getPrimaryKey(true)));
+    }
+
+    public static function displayValue($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::displayValue();
+        } else {
+            return method_exists($modelClass, 'displayValue') && is_callable([$modelClass, 'displayValue']) ? $modelClass::displayValue() : $modelClass::primaryKey();
+        }
     }
 
     public static function generateDisplayValue(ActiveRecordInterface $model)
     {
-        return '#' . static::primaryKey($model);
+        $separator = ' ';
+        $attributes = static::displayValue(get_class($model));
+        if (array_key_exists('separator', $attributes)) {
+            $separator = $attributes['separator'];
+            unset($attributes['separator']);
+        }
+        $emptyDisplayValue = array_flip($attributes);
+        $displayValue = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
+        return implode($separator, array_values($displayValue));
     }
 
-    public static function displayValue(ActiveRecordInterface $model)
+    public static function getDisplayValue(ActiveRecordInterface $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->getDisplayValue();
         } else {
             return method_exists($model, 'getDisplayValue') && is_callable([$model, 'getDisplayValue']) ? $model->getDisplayValue() : static::generateDisplayValue($model);
-        }
-    }
-
-    public static function rowOptions(ActiveRecordInterface $model)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getRowOptions();
-        } else {
-            return method_exists($model, 'getRowOptions') && is_callable([$model, 'getRowOptions']) ? $model->getRowOptions() : [];
-        }
-    }
-
-    public static function rowCssClass(ActiveRecordInterface $model)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getRowCssClass();
-        } else {
-            return method_exists($model, 'getRowCssClass') && is_callable([$model, 'getRowCssClass']) ? $model->getRowCssClass() : '';
-        }
-    }
-
-    public static function rowCssStyle(ActiveRecordInterface $model)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getRowCssStyle();
-        } else {
-            return method_exists($model, 'getRowCssStyle') && is_callable([$model, 'getRowCssStyle']) ? $model->getRowCssStyle() : '';
-        }
-    }
-
-    public static function cellOptions(ActiveRecordInterface $model, $attribute)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getCellOptions($attribute);
-        } else {
-            return method_exists($model, 'getCellOptions') && is_callable([$model, 'getCellOptions']) ? $model->getCellOptions($attribute) : [];
-        }
-    }
-
-    public static function cellCssClass(ActiveRecordInterface $model, $attribute)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getCellCssClass($attribute);
-        } else {
-            return method_exists($model, 'getCellCssClass') && is_callable([$model, 'getCellCssClass']) ? $model->getCellCssClass($attribute) : '';
-        }
-    }
-
-    public static function cellCssStyle(ActiveRecordInterface $model, $attribute)
-    {
-        if ($model instanceof MozaykaActiveRecord) {
-            return $model->getCellCssStyle($attribute);
-        } else {
-            return method_exists($model, 'getCellCssStyle') && is_callable([$model, 'getCellCssStyle']) ? $model->getCellCssStyle($attribute) : '';
         }
     }
 

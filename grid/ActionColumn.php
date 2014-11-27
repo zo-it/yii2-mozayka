@@ -53,24 +53,19 @@ class ActionColumn extends YiiActionColumn
             '~\s+data\-confirm\="[^"]*"~i' => '',
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
-        return preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
-    }
-
-    public function renderDataCell($model, $key, $index)
-    {
-        $dataCellContent = $this->renderDataCellContent($model, $key, $index);
-        if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
-            $content = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
+        $cellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+        // dropdown2-menu
+        if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
+            $cellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2-' . $index
-            ]) . Html::tag('div', Html::tag('ul', $dataCellContent, ['class' => 'dropdown2-menu']), [
+            ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2-' . $index,
-                'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
+                'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
-            return Html::tag('td', $content, $this->contentOptions);
         }
-        return parent::renderDataCell($model, $key, $index);
+        return $cellContent;
     }
 }

@@ -26,7 +26,7 @@ class DeleteFormAction extends Action
         /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = ModelHelper::primaryKey($model);
+            $id = ModelHelper::getPrimaryKey($model);
         }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
@@ -46,7 +46,7 @@ class DeleteFormAction extends Action
             // processing
             $deleted = $model->validate() && $model->delete();
             if ($deleted) {
-                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully deleted.', ['record' => ModelHelper::displayValue($model)]);
+                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully deleted.', ['record' => ModelHelper::getDisplayValue($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     if (ModelHelper::canList($modelClass)) {
@@ -58,7 +58,7 @@ class DeleteFormAction extends Action
                 }
             } else {
                 ModelHelper::log($model);
-                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been deleted.', ['record' => ModelHelper::displayValue($model)]);
+                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been deleted.', ['record' => ModelHelper::getDisplayValue($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
@@ -76,7 +76,7 @@ class DeleteFormAction extends Action
             'errorMessage' => $errorMessage,
             'model' => $model,
             'id' => $id,
-            'displayValue' => ModelHelper::displayValue($model),
+            'displayValue' => ModelHelper::getDisplayValue($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, [
