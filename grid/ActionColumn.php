@@ -63,7 +63,7 @@ class ActionColumn extends YiiActionColumn
                 'data-dropdown2' => '#action-dropdown2-' . $index
             ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
                 'id' => 'action-dropdown2-' . $index,
-                'class' => 'dropdown2 dropdown2-tip dropdown2-anchor-right'
+                'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
         }
         return $cellContent;
