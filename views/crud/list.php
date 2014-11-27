@@ -71,7 +71,7 @@ if ($filterModel && $filterFields) {
         'style' => 'display: none;'
     ]);
     $form = $formClass::begin($formConfig);
-    $form->inputIdSuffix = '-2'; // no repeated ids
+    $form->inputIdSuffix = '-ex'; // no repeated ids
     $filterButtons = [
         Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),
         Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Reset'), [

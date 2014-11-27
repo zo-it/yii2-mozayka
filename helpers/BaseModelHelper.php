@@ -46,34 +46,34 @@ class BaseModelHelper
         return implode($separator, array_values($model->getPrimaryKey(true)));
     }
 
-    public static function displayValue($modelClass)
+    public static function displayField($modelClass)
     {
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
-            return $modelClass::displayValue();
+            return $modelClass::displayField();
         } else {
-            return method_exists($modelClass, 'displayValue') && is_callable([$modelClass, 'displayValue']) ? $modelClass::displayValue() : $modelClass::primaryKey();
+            return method_exists($modelClass, 'displayField') && is_callable([$modelClass, 'displayField']) ? $modelClass::displayField() : $modelClass::primaryKey();
         }
     }
 
-    public static function generateDisplayValue(ActiveRecordInterface $model)
+    public static function generateDisplayField(ActiveRecordInterface $model)
     {
         $separator = ' ';
-        $attributes = static::displayValue(get_class($model));
+        $attributes = static::displayField(get_class($model));
         if (array_key_exists('separator', $attributes)) {
             $separator = $attributes['separator'];
             unset($attributes['separator']);
         }
         $emptyDisplayValue = array_flip($attributes);
-        $displayValue = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
-        return implode($separator, array_values($displayValue));
+        $displayField = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
+        return implode($separator, array_values($displayField));
     }
 
-    public static function getDisplayValue(ActiveRecordInterface $model)
+    public static function getDisplayField(ActiveRecordInterface $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
-            return $model->getDisplayValue();
+            return $model->getDisplayField();
         } else {
-            return method_exists($model, 'getDisplayValue') && is_callable([$model, 'getDisplayValue']) ? $model->getDisplayValue() : static::generateDisplayValue($model);
+            return method_exists($model, 'getDisplayField') && is_callable([$model, 'getDisplayField']) ? $model->getDisplayField() : static::generateDisplayField($model);
         }
     }
 

@@ -44,7 +44,7 @@ class CreateFormAction extends Action
             $saved = $model->validate() && $model->save();
             if ($saved) {
                 $id = ModelHelper::getPrimaryKey($model);
-                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully saved.', ['record' => ModelHelper::getDisplayValue($model)]);
+                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully saved.', ['record' => ModelHelper::getDisplayField($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     if (ModelHelper::canUpdate($model)) {
@@ -60,7 +60,7 @@ class CreateFormAction extends Action
                 }
             } else {
                 ModelHelper::log($model);
-                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been saved.', ['record' => ModelHelper::getDisplayValue($model)]);
+                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been saved.', ['record' => ModelHelper::getDisplayField($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
