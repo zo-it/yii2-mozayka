@@ -25,14 +25,14 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
-    public static function displayValue()
+    public static function displayField()
     {
         return static::primaryKey();
     }
 
-    public function getDisplayValue()
+    public function getDisplayField()
     {
-        return ModelHelper::generateDisplayValue($this);
+        return ModelHelper::generateDisplayField($this);
     }
 
     public function gridColumns()
