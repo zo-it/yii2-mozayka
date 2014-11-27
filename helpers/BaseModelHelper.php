@@ -51,7 +51,7 @@ class BaseModelHelper
         return '#' . static::getPrimaryKey($model);
     }
 
-    public static function displayValue(ActiveRecordInterface $model)
+    public static function getDisplayValue(ActiveRecordInterface $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->getDisplayValue();
