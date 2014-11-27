@@ -15,7 +15,7 @@ class BaseModelHelper
 
     public static function generateHumanName($modelClass)
     {
-        return Inflector::camel2words(StringHelper::basename($modelClass));
+        return Yii::t('app', Inflector::camel2words(StringHelper::basename($modelClass)));
     }
 
     public static function humanName($modelClass)
@@ -29,7 +29,7 @@ class BaseModelHelper
 
     public static function generatePluralHumanName($modelClass)
     {
-        return Inflector::pluralize(static::generateHumanName($modelClass));
+        return Yii::t('app', Inflector::pluralize(Inflector::camel2words(StringHelper::basename($modelClass))));
     }
 
     public static function pluralHumanName($modelClass)
