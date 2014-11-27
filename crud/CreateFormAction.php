@@ -43,7 +43,7 @@ class CreateFormAction extends Action
             // processing
             $saved = $model->validate() && $model->save();
             if ($saved) {
-                $id = ModelHelper::primaryKey($model);
+                $id = ModelHelper::getPrimaryKey($model);
                 $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully saved.', ['record' => ModelHelper::displayValue($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);

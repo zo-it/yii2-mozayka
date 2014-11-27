@@ -26,7 +26,7 @@ class UpdateFormAction extends Action
         /** @var yii\db\ActiveRecordInterface $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
-            $id = ModelHelper::primaryKey($model);
+            $id = ModelHelper::getPrimaryKey($model);
         }
         $model->setScenario($this->scenario);
         if ($this->checkAccess) {
