@@ -54,6 +54,7 @@ class ActionColumn extends YiiActionColumn
             '~\s+data\-method\="[^"]*"~i' => ''
         ];
         $dataCellContent = preg_replace(array_keys($fix), array_values($fix), parent::renderDataCellContent($model, $key, $index));
+        // dropdown2-menu
         if ($dataCellContent && ($dataCellContent != $this->grid->emptyCell)) {
             $dataCellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Action'),

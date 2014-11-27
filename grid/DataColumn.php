@@ -43,6 +43,7 @@ class DataColumn extends YiiDataColumn
         } else {
             $filterCellContent = parent::renderFilterCellContent();
         }
+        // dropdown2-panel
         if ($filterCellContent && ($filterCellContent != $this->grid->emptyCell)) {
             $filterCellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
