@@ -35,7 +35,12 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generateDisplayField($this);
     }
 
-    public function gridColumns()
+    public static function gridConfig()
+    {
+        return [];
+    }
+
+    public static function gridColumns()
     {
         return [];
     }
