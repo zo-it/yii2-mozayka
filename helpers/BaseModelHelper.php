@@ -41,6 +41,24 @@ class BaseModelHelper
         }
     }
 
+    public static function gridConfig($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::gridConfig();
+        } else {
+            return method_exists($modelClass, 'gridConfig') && is_callable([$modelClass, 'gridConfig']) ? $modelClass::gridConfig() : [];
+        }
+    }
+
+    public static function gridColumns($modelClass)
+    {
+        if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
+            return $modelClass::gridColumns();
+        } else {
+            return method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : [];
+        }
+    }
+
     public static function getPrimaryKey(ActiveRecordInterface $model, $separator = ',')
     {
         return implode($separator, array_values($model->getPrimaryKey(true)));
@@ -74,6 +92,15 @@ class BaseModelHelper
             return $model->getDisplayField();
         } else {
             return method_exists($model, 'getDisplayField') && is_callable([$model, 'getDisplayField']) ? $model->getDisplayField() : static::generateDisplayField($model);
+        }
+    }
+
+    public static function formFields(ActiveRecordInterface $model)
+    {
+        if ($model instanceof MozaykaActiveRecord) {
+            return $model->formFields();
+        } else {
+            return method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : [];
         }
     }
 
