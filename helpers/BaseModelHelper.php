@@ -63,8 +63,8 @@ class BaseModelHelper
             $separator = $attributes['separator'];
             unset($attributes['separator']);
         }
-        $emptyDisplayValue = array_flip($attributes);
-        $displayField = array_merge($emptyDisplayValue, array_intersect_key($model->getAttributes(), $emptyDisplayValue));
+        $emptyDisplayField = array_flip($attributes);
+        $displayField = array_merge($emptyDisplayField, array_intersect_key($model->getAttributes(), $emptyDisplayField));
         return implode($separator, array_values($displayField));
     }
 
