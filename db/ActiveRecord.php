@@ -25,16 +25,6 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
-    public static function displayField()
-    {
-        return static::primaryKey();
-    }
-
-    public function getDisplayField()
-    {
-        return ModelHelper::generateDisplayField($this);
-    }
-
     public static function gridConfig()
     {
         return [];
@@ -43,6 +33,16 @@ class ActiveRecord extends KladovkaActiveRecord
     public static function gridColumns()
     {
         return [];
+    }
+
+    public static function displayField()
+    {
+        return static::primaryKey();
+    }
+
+    public function getDisplayField()
+    {
+        return ModelHelper::generateDisplayField($this);
     }
 
     public function formFields()
