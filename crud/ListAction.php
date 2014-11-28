@@ -84,7 +84,7 @@ class ListAction extends Action
             'formClass' => $this->formClass,
             'formConfig' => $formConfig,
             'gridClass' => $this->gridClass,
-            'gridConfig' => array_merge($this->gridConfig, [
+            'gridConfig' => array_merge(ModelHelper::gridConfig($modelClass), $this->gridConfig, [
                 'dataProvider' => $dataProvider,
                 'columns' => $this->prepareColumns($modelClass),
                 'filterModel' => $filterModel,
