@@ -55,7 +55,7 @@ class BaseModelHelper
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
             return $modelClass::gridColumns();
         } else {
-            return method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : [];
+            return method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : ['*'];
         }
     }
 
@@ -100,18 +100,8 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->formFields();
         } else {
-            return method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : [];
+            return method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : ['*'];
         }
-    }
-
-    public static function hasRealPrimaryKey($modelClass)
-    {
-        return (bool)$modelClass::getTableSchema()->primaryKey;
-    }
-
-    public static function hasPrimaryKey($modelClass)
-    {
-        return (bool)$modelClass::primaryKey();
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)
@@ -119,7 +109,7 @@ class BaseModelHelper
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
             return $modelClass::canCreate($params, $newModel);
         } else {
-            return method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : static::hasRealPrimaryKey($modelClass);
+            return method_exists($modelClass, 'canCreate') && is_callable([$modelClass, 'canCreate']) ? $modelClass::canCreate($params, $newModel) : (bool)$modelClass::getTableSchema()->primaryKey;
         }
     }
 
@@ -128,7 +118,7 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canRead($params);
         } else {
-            return method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead($params) : static::hasPrimaryKey(get_class($model));
+            return method_exists($model, 'canRead') && is_callable([$model, 'canRead']) ? $model->canRead($params) : (bool)$model::primaryKey();
         }
     }
 
@@ -137,7 +127,7 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canUpdate($params);
         } else {
-            return method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate($params) : static::hasRealPrimaryKey(get_class($model));
+            return method_exists($model, 'canUpdate') && is_callable([$model, 'canUpdate']) ? $model->canUpdate($params) : (bool)$model::getTableSchema()->primaryKey;
         }
     }
 
@@ -146,7 +136,7 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canDelete($params);
         } else {
-            return method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete($params) : static::hasRealPrimaryKey(get_class($model));
+            return method_exists($model, 'canDelete') && is_callable([$model, 'canDelete']) ? $model->canDelete($params) : (bool)$model::getTableSchema()->primaryKey;
         }
     }
 
@@ -164,7 +154,7 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canSelect($params);
         } else {
-            return method_exists($model, 'canSelect') && is_callable([$model, 'canSelect']) ? $model->canSelect($params) : static::hasPrimaryKey(get_class($model));
+            return method_exists($model, 'canSelect') && is_callable([$model, 'canSelect']) ? $model->canSelect($params) : (bool)$model::primaryKey();
         }
     }
 
@@ -173,7 +163,7 @@ class BaseModelHelper
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canChangePosition($params);
         } else {
-            return method_exists($model, 'canChangePosition') && is_callable([$model, 'canChangePosition']) ? $model->canChangePosition($params) : static::hasRealPrimaryKey(get_class($model));
+            return method_exists($model, 'canChangePosition') && is_callable([$model, 'canChangePosition']) ? $model->canChangePosition($params) : (bool)$model::getTableSchema()->primaryKey;
         }
     }
 
