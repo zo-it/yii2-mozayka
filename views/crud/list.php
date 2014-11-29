@@ -87,7 +87,7 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
-Pjax::begin(['linkSelector' => '.external-grid-pager a']);
+Pjax::begin(['linkSelector' => '.external-grid-pager a, .grid-view a.sort-link']);
 
 $grid = $gridClass::begin($gridConfig);
 $gridPager = $grid->renderPager();
