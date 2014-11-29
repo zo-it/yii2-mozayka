@@ -95,8 +95,9 @@ $gridSummary = $grid->renderSummary();
 $grid->layout = '{items}';
 $gridClass::end();
 
-$js = 'jQuery(\'#' . $grid->getId() . '\').closest(\'.panel\').find(\'.external-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
-$js .= 'jQuery(\'#' . $grid->getId() . '\').closest(\'.panel\').find(\'.external-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
+$gridId = $grid->getId();
+$js = 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.external-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
+$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.external-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
 if (Yii::$app->getRequest()->getIsAjax()) {
     $js .= 'document.title = \'' . $this->title . ' ' . strip_tags($gridSummary) . '\';';
     echo Html::script($js);
