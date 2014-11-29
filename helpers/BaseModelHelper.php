@@ -125,7 +125,7 @@ class BaseModelHelper
                     if (is_int($k1) && is_int($k2) && ($k1 <= $k2) && array_key_exists($k1, $modelAttributes) && array_key_exists($k2, $modelAttributes)) {
                         $result = array_merge($result, array_slice($modelAttributes, $k1, $k2 - $k1 + 1));
                     }
-                } elseif ($value == '*') {
+                } elseif (($value == '*') || ($value == ['*'])) {
                     $result = array_merge($result, $modelAttributes);
                 } else {
                     $result[] = $value;
