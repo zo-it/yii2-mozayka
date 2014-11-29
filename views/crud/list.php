@@ -1,7 +1,8 @@
 <?php
 use yii\bootstrap\Alert,
     yii\helpers\Html,
-    yii\bootstrap\ButtonGroup;
+    yii\bootstrap\ButtonGroup,
+    yii\widgets\Pjax;
 /**
  * @var yii\web\View $this
  * @var bool $canCreate
@@ -86,6 +87,8 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
+Pjax::begin(['linkSelector' => '.external-grid-pager a']);
+
 $grid = $gridClass::begin($gridConfig);
 $gridPager = $grid->renderPager();
 $gridSummary = $grid->renderSummary();
@@ -101,6 +104,8 @@ if (Yii::$app->getRequest()->getIsAjax()) {
     $this->title .= ' ' . strip_tags($gridSummary);
     $this->registerJs($js);
 }
+
+Pjax::end();
 
 $footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
     'class' => 'btn btn-default',
