@@ -48,7 +48,6 @@ $footerButtons = $buttons;
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
 $grid = $gridClass::begin($gridConfig);
-$gridPager = $grid->renderPager();
 $gridSummary = $grid->renderSummary();
 
 if ($filterModel && $filterFields) {
@@ -58,7 +57,7 @@ if ($filterModel && $filterFields) {
     ]);
 }
 
-echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', /*$gridPager*/'', ['class' => 'external-grid-pager pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $headerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
@@ -92,15 +91,23 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
+$gridPager = $grid->renderPager();
 $grid->layout = '{items}';
 $gridClass::end();
+
+$js = 'jQuery(\'#' . $grid->getId() . '\').closest(\'.panel\').find(\'.external-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
+if (Yii::$app->getRequest()->getIsAjax()) {
+    echo Html::script($js);
+} else {
+    $this->registerJs($js);
+}
 
 $footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
     'class' => 'btn btn-default',
     'onclick' => 'jQuery(document).scrollTop(0);'
 ]);
 
-echo Html::tag('div', Html::tag('div', $gridPager, ['class' => 'pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', /*$gridPager*/'', ['class' => 'external-grid-pager pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);
