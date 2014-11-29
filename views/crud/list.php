@@ -47,9 +47,6 @@ $footerButtons = $buttons;
 
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
-$grid = $gridClass::begin($gridConfig);
-$gridSummary = $grid->renderSummary();
-
 if ($filterModel && $filterFields) {
     $headerButtons[] = Html::button('<span class="glyphicon glyphicon-filter"></span> ' . Yii::t('mozayka', 'Filter') . ' <span class="caret"></span>', [
         'class' => 'btn btn-default',
@@ -57,12 +54,10 @@ if ($filterModel && $filterFields) {
     ]);
 }
 
-echo Html::tag('div', Html::tag('div', /*$gridPager*/'', ['class' => 'external-grid-pager pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . $gridSummary, ['class' => 'pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'external-grid-pager pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . Html::tag('div', '&nbsp;', ['class' => 'external-grid-summary']), ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $headerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
-
-$this->title .= ' ' . strip_tags($gridSummary);
 
 if ($filterModel && $filterFields) {
     echo Html::beginTag('div', [
@@ -91,14 +86,19 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
+$grid = $gridClass::begin($gridConfig);
 $gridPager = $grid->renderPager();
+$gridSummary = $grid->renderSummary();
 $grid->layout = '{items}';
 $gridClass::end();
 
 $js = 'jQuery(\'#' . $grid->getId() . '\').closest(\'.panel\').find(\'.external-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
+$js .= 'jQuery(\'#' . $grid->getId() . '\').closest(\'.panel\').find(\'.external-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
 if (Yii::$app->getRequest()->getIsAjax()) {
+    $js .= 'document.title = \'' . $this->title . ' ' . strip_tags($gridSummary) . '\';';
     echo Html::script($js);
 } else {
+    $this->title .= ' ' . strip_tags($gridSummary);
     $this->registerJs($js);
 }
 
@@ -107,7 +107,7 @@ $footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></sp
     'onclick' => 'jQuery(document).scrollTop(0);'
 ]);
 
-echo Html::tag('div', Html::tag('div', /*$gridPager*/'', ['class' => 'external-grid-pager pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'external-grid-pager pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);
