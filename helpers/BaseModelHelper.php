@@ -53,10 +53,11 @@ class BaseModelHelper
     public static function gridColumns($modelClass)
     {
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
-            return $modelClass::gridColumns();
+            $gridColumns = $modelClass::gridColumns();
         } else {
-            return method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : ['*'];
+            $gridColumns = method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : ['*'];
         }
+        return static::expandBrackets($gridColumns, array_keys($modelClass::getTableSchema()->columns));
     }
 
     public static function getPrimaryKey(ActiveRecordInterface $model, $separator = ',')
@@ -98,10 +99,42 @@ class BaseModelHelper
     public static function formFields(ActiveRecordInterface $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
-            return $model->formFields();
+            $formFields = $model->formFields();
         } else {
-            return method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : ['*'];
+            $formFields = method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : ['*'];
         }
+        return static::expandBrackets($formFields, $model->attributes());
+    }
+
+    protected static function expandBrackets(array $input, array $modelAttributes)
+    {
+        $result = [];
+        foreach ($input as $key => $value) {
+            if (is_int($key)) {
+                if (is_array($value) && (count($value) == 2) && array_key_exists(0, $value) && array_key_exists(1, $value)) {
+                    if ($value[0] == '*') {
+                        $k1 = 0;
+                    } else {
+                        $k1 = array_search($value[0], $modelAttributes);
+                    }
+                    if ($value[1] == '*') {
+                        $k2 = count($modelAttributes) - 1;
+                    } else {
+                        $k2 = array_search($value[1], $modelAttributes);
+                    }
+                    if (is_int($k1) && is_int($k2) && ($k1 <= $k2) && array_key_exists($k1, $modelAttributes) && array_key_exists($k2, $modelAttributes)) {
+                        $result = array_merge($result, array_slice($modelAttributes, $k1, $k2 - $k1 + 1));
+                    }
+                } elseif ($value == '*') {
+                    $result = array_merge($result, $modelAttributes);
+                } else {
+                    $result[] = $value;
+                }
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)
