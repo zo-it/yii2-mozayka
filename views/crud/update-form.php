@@ -10,17 +10,17 @@ use yii\bootstrap\Alert,
  * @var string|null $errorMessage
  * @var yii\db\ActiveRecord $model
  * @var string $id
- * @var string $displayValue
+ * @var string $displayField
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
  */
 
-$this->title = Yii::t('mozayka', 'Updating record "{record}".', ['record' => $displayValue]);
+$this->title = Yii::t('mozayka', 'Updating record "{record}".', ['record' => $displayField]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $displayValue;
+$this->params['breadcrumbs'][] = $displayField;
 
 if ($successMessage) {
     echo Alert::widget([

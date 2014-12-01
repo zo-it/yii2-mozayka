@@ -46,13 +46,13 @@ class GridView extends YiiGridView
     {
         if ($this->filterModel && $this->filterFields) {
             $view = $this->getView();
-            $view->beginBlock('grid-items');
+            $view->beginBlock('__ITEMS__');
             $formClass = $this->formClass;
             $this->_form = $formClass::begin($this->formConfig);
             echo parent::renderItems();
             $formClass::end();
             $view->endBlock();
-            return $view->blocks['grid-items'];
+            return $view->blocks['__ITEMS__'];
         }
         return parent::renderItems();
     }

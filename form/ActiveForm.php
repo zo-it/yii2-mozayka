@@ -30,11 +30,10 @@ class ActiveForm extends BootstrapActiveForm
         parent::init();
     }
 
-    public function run()
+    public function setInputIdPrefix($inputIdPrefix)
     {
-        parent::run();
-        if (isset(Html::$inputIdSuffix)) {
-            Html::$inputIdSuffix = '';
+        if (isset(Html::$inputIdPrefix)) {
+            Html::$inputIdPrefix = $inputIdPrefix;
         }
     }
 
@@ -45,7 +44,18 @@ class ActiveForm extends BootstrapActiveForm
         }
     }
 
-    public function fields($model, $fields = [])
+    public function run()
+    {
+        parent::run();
+        if (isset(Html::$inputIdPrefix)) {
+            Html::$inputIdPrefix = '';
+        }
+        if (isset(Html::$inputIdSuffix)) {
+            Html::$inputIdSuffix = '';
+        }
+    }
+
+    public function fields($model, array $fields)
     {
         foreach ($fields as $attribute => $options) {
             $fields[$attribute] = $this->field($model, $attribute, $options);

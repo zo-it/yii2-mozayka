@@ -46,7 +46,7 @@ class DeleteFormAction extends Action
             // processing
             $deleted = $model->validate() && $model->delete();
             if ($deleted) {
-                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully deleted.', ['record' => ModelHelper::getDisplayValue($model)]);
+                $successMessage = Yii::t('mozayka', 'Record "{record}" has been successfully deleted.', ['record' => ModelHelper::getDisplayField($model)]);
                 if (!$request->getIsAjax()) {
                     $session->setFlash('success', $successMessage);
                     if (ModelHelper::canList($modelClass)) {
@@ -58,7 +58,7 @@ class DeleteFormAction extends Action
                 }
             } else {
                 ModelHelper::log($model);
-                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been deleted.', ['record' => ModelHelper::getDisplayValue($model)]);
+                $errorMessage = Yii::t('mozayka', 'Record "{record}" has not been deleted.', ['record' => ModelHelper::getDisplayField($model)]);
             }
             if ($request->getIsAjax()) {
                 Yii::$app->getResponse()->format = Response::FORMAT_JSON;
@@ -76,7 +76,7 @@ class DeleteFormAction extends Action
             'errorMessage' => $errorMessage,
             'model' => $model,
             'id' => $id,
-            'displayValue' => ModelHelper::getDisplayValue($model),
+            'displayField' => ModelHelper::getDisplayField($model),
             'fields' => $this->prepareFields($model),
             'formClass' => $this->formClass,
             'formConfig' => array_merge($this->formConfig, [

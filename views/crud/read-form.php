@@ -7,17 +7,17 @@ use yii\helpers\Html,
  * @var string $pluralHumanName
  * @var yii\db\ActiveRecord $model
  * @var string $id
- * @var string $displayValue
+ * @var string $displayField
  * @var array $fields
  * @var string $formClass
  * @var array $formConfig
  */
 
-$this->title = Yii::t('mozayka', 'Record "{record}".', ['record' => $displayValue]);
+$this->title = Yii::t('mozayka', 'Record "{record}".', ['record' => $displayField]);
 if ($canList) {
     $this->params['breadcrumbs'][] = ['label' => $pluralHumanName, 'url' => ['list']];
 }
-$this->params['breadcrumbs'][] = $displayValue;
+$this->params['breadcrumbs'][] = $displayField;
 
 $buttons = [];
 $buttons[] = Html::button('<span class="glyphicon glyphicon-print"></span> ' . Yii::t('mozayka', 'Print'), [

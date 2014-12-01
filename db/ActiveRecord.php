@@ -25,44 +25,49 @@ class ActiveRecord extends KladovkaActiveRecord
         return ModelHelper::generatePluralHumanName(get_called_class());
     }
 
-    public static function displayValue()
+    public static function gridConfig()
+    {
+        return [];
+    }
+
+    public static function gridColumns()
+    {
+        return ['*'];
+    }
+
+    public static function displayField()
     {
         return static::primaryKey();
     }
 
-    public function getDisplayValue()
+    public function getDisplayField()
     {
-        return ModelHelper::generateDisplayValue($this);
-    }
-
-    public function gridColumns()
-    {
-        return [];
+        return ModelHelper::generateDisplayField($this);
     }
 
     public function formFields()
     {
-        return [];
+        return ['*'];
     }
 
     public static function canCreate($params = [], $newModel = null)
     {
-        return ModelHelper::hasRealPrimaryKey(get_called_class());
+        return (bool)static::getTableSchema()->primaryKey;
     }
 
     public function canRead($params = [])
     {
-        return ModelHelper::hasPrimaryKey(get_class($this));
+        return (bool)static::primaryKey();
     }
 
     public function canUpdate($params = [])
     {
-        return ModelHelper::hasRealPrimaryKey(get_class($this));
+        return (bool)static::getTableSchema()->primaryKey;
     }
 
     public function canDelete($params = [])
     {
-        return ModelHelper::hasRealPrimaryKey(get_class($this));
+        return (bool)static::getTableSchema()->primaryKey;
     }
 
     public static function canList($params = [], $query = null)

@@ -31,16 +31,16 @@ class Action extends RestAction
         return parent::findModel($id);
     }
 
-    protected function prepareColumns(Model $model)
+    protected function prepareColumns($modelClass)
     {
-        $modelClass = get_class($model);
+        $model = new $modelClass;
         $attributes = array_keys($model->attributeLabels());
         if (!$attributes) {
             $attributes = $model->attributes();
         }
         $rawColumns = $this->columns;
-        if (!$rawColumns && method_exists($model, 'gridColumns') && is_callable([$model, 'gridColumns'])) {
-            $rawColumns = $model->gridColumns();
+        if (!$rawColumns && method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns'])) {
+            $rawColumns = $modelClass::gridColumns();
         }
         $offset = array_search('*', $rawColumns);
         if ($offset !== false) {

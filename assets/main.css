@@ -121,13 +121,16 @@ a.desc:after {
     display: block; /* no bottom space */
 }
 
+.grid-view {
+    overflow-x: scroll;
+}
 .grid-view .table > thead > tr > th,
 .grid-view .table > tbody > tr > th,
 .grid-view .table > tfoot > tr > th,
 .grid-view .table > thead > tr > td,
 .grid-view .table > tbody > tr > td,
 .grid-view .table > tfoot > tr > td {
-    max-width: 50px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
