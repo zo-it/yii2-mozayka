@@ -124,6 +124,9 @@ a.desc:after {
 .grid-view {
     overflow-x: scroll;
 }
+.grid-view .table > tbody > tr:hover {
+    outline: #000 solid 1px;
+}
 .grid-view .table > thead > tr > th,
 .grid-view .table > tbody > tr > th,
 .grid-view .table > tfoot > tr > th,
