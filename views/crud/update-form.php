@@ -8,6 +8,7 @@ use yii\bootstrap\Alert,
  * @var string $pluralHumanName
  * @var string|null $successMessage
  * @var string|null $errorMessage
+ * @var bool $canCreate
  * @var yii\db\ActiveRecord $model
  * @var string $id
  * @var string $displayField
@@ -40,6 +41,9 @@ $buttons = [];
 $buttons[] = Html::submitButton('<span class="glyphicon glyphicon-ok"></span> ' . Yii::t('mozayka', 'Save'), ['class' => 'btn btn-primary']);
 if ($canList) {
     $buttons[] = Html::a('<span class="glyphicon glyphicon-list"></span> ' . Yii::t('mozayka', 'Back'), ['list'], ['class' => 'btn btn-default']);
+}
+if ($canCreate) {
+    $buttons[] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('mozayka', 'Create'), ['create-form'], ['class' => 'btn btn-default']);
 }
 
 $form = $formClass::begin($formConfig);

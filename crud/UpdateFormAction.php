@@ -69,6 +69,7 @@ class UpdateFormAction extends Action
             'pluralHumanName' => ModelHelper::pluralHumanName($modelClass),
             'successMessage' => $successMessage,
             'errorMessage' => $errorMessage,
+            'canCreate' => ModelHelper::canCreate($modelClass),
             'model' => $model,
             'id' => $id,
             'displayField' => ModelHelper::getDisplayField($model),
