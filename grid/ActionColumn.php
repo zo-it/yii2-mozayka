@@ -14,7 +14,7 @@ class ActionColumn extends YiiActionColumn
 
     public $headerOptions = ['class' => 'hidden-print'];
 
-    public $contentOptions = ['class' => 'hidden-print'];
+    public $contentOptions = ['class' => 'actions hidden-print'];
 
     public $footerOptions = ['class' => 'hidden-print'];
 
@@ -57,7 +57,7 @@ class ActionColumn extends YiiActionColumn
         // dropdown2-menu
         if ($cellContent && ($cellContent != $this->grid->emptyCell)) {
             $cellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
-                'title' => Yii::t('mozayka', 'Action'),
+                'title' => Yii::t('mozayka', 'Actions'),
                 'id' => 'action-trigger-' . $index,
                 'class' => 'btn btn-default btn-xs',
                 'data-dropdown2' => '#action-dropdown2-' . $index

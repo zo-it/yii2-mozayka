@@ -20,5 +20,7 @@ class MozaykaAsset extends AssetBundle
         'yii\mozayka\web\TinymceAsset'
     ];
 
+    public $js = ['main.js'];
+
     public $css = ['main.css'];
 }
