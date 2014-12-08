@@ -108,10 +108,10 @@ if (Yii::$app->getRequest()->getIsAjax()) {
 
 Pjax::end();
 
-$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
+/*$footerButtons[] = Html::button('<span class="glyphicon glyphicon-arrow-up"></span> ' . Yii::t('mozayka', 'Up'), [
     'class' => 'btn btn-default',
     'onclick' => 'jQuery(document).scrollTop(0);'
-]);
+]);*/
 
 echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'external-grid-pager pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,

@@ -91,27 +91,27 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-.panel > .grid-view .table {
+.panel .grid-view .table {
     margin-bottom: 0;
 }
-.panel > .grid-view .table-bordered {
+.panel .grid-view .table-bordered {
     border-left-width: 0;
     border-right-width: 0;
 }
-.panel > .grid-view .table-bordered > thead > tr > th:first-child,
-.panel > .grid-view .table-bordered > tbody > tr > th:first-child,
-.panel > .grid-view .table-bordered > tfoot > tr > th:first-child,
-.panel > .grid-view .table-bordered > thead > tr > td:first-child,
-.panel > .grid-view .table-bordered > tbody > tr > td:first-child,
-.panel > .grid-view .table-bordered > tfoot > tr > td:first-child {
+.panel .grid-view .table-bordered > thead > tr > th:first-child,
+.panel .grid-view .table-bordered > tbody > tr > th:first-child,
+.panel .grid-view .table-bordered > tfoot > tr > th:first-child,
+.panel .grid-view .table-bordered > thead > tr > td:first-child,
+.panel .grid-view .table-bordered > tbody > tr > td:first-child,
+.panel .grid-view .table-bordered > tfoot > tr > td:first-child {
     border-left-width: 0;
 }
-.panel > .grid-view .table-bordered > thead > tr > th:last-child,
-.panel > .grid-view .table-bordered > tbody > tr > th:last-child,
-.panel > .grid-view .table-bordered > tfoot > tr > th:last-child,
-.panel > .grid-view .table-bordered > thead > tr > td:last-child,
-.panel > .grid-view .table-bordered > tbody > tr > td:last-child,
-.panel > .grid-view .table-bordered > tfoot > tr > td:last-child {
+.panel .grid-view .table-bordered > thead > tr > th:last-child,
+.panel .grid-view .table-bordered > tbody > tr > th:last-child,
+.panel .grid-view .table-bordered > tfoot > tr > th:last-child,
+.panel .grid-view .table-bordered > thead > tr > td:last-child,
+.panel .grid-view .table-bordered > tbody > tr > td:last-child,
+.panel .grid-view .table-bordered > tfoot > tr > td:last-child {
     border-right-width: 0;
 }
 
@@ -123,6 +123,9 @@ a.desc:after {
 
 .grid-view {
     overflow-x: scroll;
+}
+.grid-view .table > tbody > tr:hover {
+    outline: #000 solid 1px;
 }
 .grid-view .table > thead > tr > th,
 .grid-view .table > tbody > tr > th,
