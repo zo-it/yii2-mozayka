@@ -15,6 +15,7 @@ class MozaykaAsset extends AssetBundle
         'yii\bootstrap\BootstrapPluginAsset', // yii\bootstrap\BootstrapAsset
         'yii\mozayka\web\DropdownAsset',
         'yii\mozayka\web\IframeTransportAsset',
+        'yii\mozayka\web\PepAsset',
         'yii\mozayka\web\DatePickerAsset',
         'yii\mozayka\web\TimePickerAsset',
         'yii\mozayka\web\TinymceAsset'
