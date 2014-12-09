@@ -55,7 +55,7 @@ if ($filterModel && $filterFields) {
     ]);
 }
 
-echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'external-grid-pager pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . Html::tag('div', '&nbsp;', ['class' => 'external-grid-summary']), ['class' => 'pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'panel-grid-pager pull-left']) . Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title']) . Html::tag('div', '&nbsp;', ['class' => 'panel-grid-summary']), ['class' => 'pull-left']) . ButtonGroup::widget([
     'buttons' => $headerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-heading clearfix hidden-print']);
@@ -87,7 +87,7 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
-Pjax::begin(['linkSelector' => '.external-grid-pager a, .grid-view a.sort-link']);
+Pjax::begin(['linkSelector' => '.panel-grid-pager a, .grid-view a.sort-link']);
 
 $grid = $gridClass::begin($gridConfig);
 $gridPager = $grid->renderPager();
@@ -96,8 +96,8 @@ $grid->layout = '{items}';
 $gridClass::end();
 
 $gridId = $grid->getId();
-$js = 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.external-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
-$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.external-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
+$js = 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
+$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
 if (Yii::$app->getRequest()->getIsAjax()) {
     $js .= 'document.title = \'' . $this->title . ' ' . strip_tags($gridSummary) . '\';';
     echo Html::script($js);
@@ -113,7 +113,7 @@ Pjax::end();
     'onclick' => 'jQuery(document).scrollTop(0);'
 ]);*/
 
-echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'external-grid-pager pull-left']) . ButtonGroup::widget([
+echo Html::tag('div', Html::tag('div', '&nbsp;', ['class' => 'panel-grid-pager pull-left']) . ButtonGroup::widget([
     'buttons' => $footerButtons,
     'options' => ['class' => 'pull-right']
 ]), ['class' => 'panel-footer clearfix hidden-print']);
