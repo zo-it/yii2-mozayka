@@ -8,10 +8,10 @@ jQuery(document).on('contextmenu', '.grid-view tbody > tr > td', function (event
             'position': 'absolute',
             'width': 30,
             'height': 1
-        }).offset({
+        }).attr('data-dropdown2', '#' + dropdown.attr('id')).offset({
             'left': event.pageX - 15,
             'top': event.pageY
-        }).prependTo(this).attr('data-dropdown2', '#' + dropdown.attr('id')).dropdown2('show');
+        }).prependTo(this).dropdown2('show');
     }
 });
 
