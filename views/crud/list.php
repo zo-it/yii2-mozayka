@@ -2,7 +2,8 @@
 use yii\bootstrap\Alert,
     yii\helpers\Html,
     yii\bootstrap\ButtonGroup,
-    yii\widgets\Pjax;
+    yii\widgets\Pjax,
+    yii\helpers\Json;
 /**
  * @var yii\web\View $this
  * @var bool $canCreate
@@ -96,13 +97,18 @@ $grid->layout = '{items}';
 $gridClass::end();
 
 $gridId = $grid->getId();
-$js = 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridPager)) . '\');';
-$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(\'' . preg_replace('~([\r\n]+)~', '\'+$1\'', addslashes($gridSummary)) . '\');';
+$js = 'jQuery(\'#' . $gridId . '\').kinetic({\'cursor\': false, \'filterTarget\': function (target, event) { if (event.which != 2) { return false; } }});';
+if ($gridPager) {
+    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(' . Json::encode($gridPager) . ');';
+}
+if ($gridSummary) {
+    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(' . Json::encode($gridSummary) . ');';
+    $this->title .= ' ' . strip_tags($gridSummary);
+}
 if (Yii::$app->getRequest()->getIsAjax()) {
-    $js .= 'document.title = \'' . $this->title . ' ' . strip_tags($gridSummary) . '\';';
+    $js .= 'document.title = ' . Json::encode($this->title) . ';';
     echo Html::script($js);
 } else {
-    $this->title .= ' ' . strip_tags($gridSummary);
     $this->registerJs($js);
 }
 
