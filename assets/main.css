@@ -121,7 +121,7 @@ a.desc:after {
     display: block; /* no bottom space */
 }
 
-.grid-view {
+.panel > .panel-grid-view {
     overflow-x: scroll;
 }
 .grid-view .table > tbody > tr:hover {
