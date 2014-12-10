@@ -98,11 +98,9 @@ $gridClass::end();
 
 $gridId = $grid->getId();
 $js = 'jQuery(\'#' . $gridId . '\').kinetic({\'cursor\': false, \'filterTarget\': function (target, event) { if (event.which != 2) { return false; } }});';
-if ($gridPager) {
-    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(' . Json::encode($gridPager) . ');';
-}
+$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(' . Json::encode($gridPager) . ');';
+$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(' . Json::encode($gridSummary) . ');';
 if ($gridSummary) {
-    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(' . Json::encode($gridSummary) . ');';
     $this->title .= ' ' . strip_tags($gridSummary);
 }
 if (Yii::$app->getRequest()->getIsAjax()) {
