@@ -15,8 +15,6 @@ class GridView extends YiiGridView
 
     public $headerRowOptions = ['class' => 'gv-headers'];
 
-    //public $filterSelector = 'textarea';
-
     public $filterRowOptions = ['class' => 'filters hidden-print'];
 
     public $filterFields = [];
@@ -29,6 +27,7 @@ class GridView extends YiiGridView
     {
         $this->setId(uniqid($this->getId()));
         parent::init();
+        $this->filterSelector = '#' . $this->filterRowOptions['id'] . ' textarea';
     }
 
     public function renderSummary()
