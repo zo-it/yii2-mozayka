@@ -67,6 +67,7 @@ if ($filterModel && $filterFields) {
         'style' => 'display: none;'
     ]);
     $form = $formClass::begin($formConfig);
+    $form->inputIdPrefix = $form->getId();
     $form->inputIdSuffix = '-ex'; // no repeated ids
     $filterButtons = [
         Html::submitButton('<span class="glyphicon glyphicon-search"></span> ' . Yii::t('mozayka', 'Apply'), ['class' => 'btn btn-primary']),

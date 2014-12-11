@@ -25,10 +25,9 @@ class TinymceField extends TextField
         } else {
             $pluginOptions = $this->pluginOptions;
         }
-        $formId = $this->form->getId();
         $inputId = Html::getInputId($this->model, $this->attribute);
-        $pluginOptions['selector'] = '#' . $formId . ' #' . $inputId;
-        $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').tinymce(' . Json::encode($pluginOptions) . ');';
+        $pluginOptions['selector'] = '#' . $inputId;
+        $js = 'jQuery(\'#' . $inputId . '\').tinymce(' . Json::encode($pluginOptions) . ');';
         if (Yii::$app->getRequest()->getIsAjax()) {
             $this->template .= "\n{script}";
             $this->parts['{script}'] = Html::script($js);
