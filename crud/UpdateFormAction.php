@@ -23,7 +23,7 @@ class UpdateFormAction extends Action
     public function run($id = null)
     {
         $modelClass = $this->modelClass;
-        /** @var yii\db\ActiveRecordInterface $model */
+        /** @var yii\db\BaseActiveRecord $model */
         $model = $this->findModel($id);
         if (is_null($id)) {
             $id = ModelHelper::getPrimaryKey($model);

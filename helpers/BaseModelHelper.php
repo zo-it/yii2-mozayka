@@ -5,7 +5,7 @@ namespace yii\mozayka\helpers;
 use yii\helpers\StringHelper,
     yii\helpers\Inflector,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
-    yii\db\ActiveRecordInterface,
+    yii\db\BaseActiveRecord,
     yii\helpers\VarDumper,
     Yii;
 
@@ -60,7 +60,7 @@ class BaseModelHelper
         return static::expandBrackets($gridColumns, array_keys($modelClass::getTableSchema()->columns));
     }
 
-    public static function getPrimaryKey(ActiveRecordInterface $model, $separator = ',')
+    public static function getPrimaryKey(BaseActiveRecord $model, $separator = ',')
     {
         return implode($separator, array_values($model->getPrimaryKey(true)));
     }
@@ -74,7 +74,7 @@ class BaseModelHelper
         }
     }
 
-    public static function generateDisplayField(ActiveRecordInterface $model)
+    public static function generateDisplayField(BaseActiveRecord $model)
     {
         $separator = ' ';
         $attributes = static::displayField(get_class($model));
@@ -87,7 +87,7 @@ class BaseModelHelper
         return implode($separator, array_values($displayField));
     }
 
-    public static function getDisplayField(ActiveRecordInterface $model)
+    public static function getDisplayField(BaseActiveRecord $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->getDisplayField();
@@ -96,7 +96,7 @@ class BaseModelHelper
         }
     }
 
-    public static function formFields(ActiveRecordInterface $model)
+    public static function formFields(BaseActiveRecord $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
             $formFields = $model->formFields();
@@ -146,7 +146,7 @@ class BaseModelHelper
         }
     }
 
-    public static function canRead(ActiveRecordInterface $model, $params = [])
+    public static function canRead(BaseActiveRecord $model, $params = [])
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canRead($params);
@@ -155,7 +155,7 @@ class BaseModelHelper
         }
     }
 
-    public static function canUpdate(ActiveRecordInterface $model, $params = [])
+    public static function canUpdate(BaseActiveRecord $model, $params = [])
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canUpdate($params);
@@ -164,7 +164,7 @@ class BaseModelHelper
         }
     }
 
-    public static function canDelete(ActiveRecordInterface $model, $params = [])
+    public static function canDelete(BaseActiveRecord $model, $params = [])
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canDelete($params);
@@ -182,7 +182,7 @@ class BaseModelHelper
         }
     }
 
-    public static function canSelect(ActiveRecordInterface $model, $params = [])
+    public static function canSelect(BaseActiveRecord $model, $params = [])
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canSelect($params);
@@ -191,7 +191,7 @@ class BaseModelHelper
         }
     }
 
-    public static function canChangePosition(ActiveRecordInterface $model, $params = [])
+    public static function canChangePosition(BaseActiveRecord $model, $params = [])
     {
         if ($model instanceof MozaykaActiveRecord) {
             return $model->canChangePosition($params);
@@ -200,7 +200,7 @@ class BaseModelHelper
         }
     }
 
-    public static function dump(ActiveRecordInterface $model)
+    public static function dump(BaseActiveRecord $model)
     {
         if ($model->hasErrors()) {
             VarDumper::dump([
@@ -216,7 +216,7 @@ class BaseModelHelper
         }
     }
 
-    public static function log(ActiveRecordInterface $model, $message = null, $category = 'application')
+    public static function log(BaseActiveRecord $model, $message = null, $category = 'application')
     {
         if ($model->hasErrors()) {
             Yii::error(VarDumper::dumpAsString([

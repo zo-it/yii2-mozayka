@@ -24,7 +24,7 @@ class CreateFormAction extends Action
     {
         $id = null;
         $modelClass = $this->modelClass;
-        /** @var yii\db\ActiveRecordInterface $model */
+        /** @var yii\db\BaseActiveRecord $model */
         $model = new $modelClass(['scenario' => $this->scenario]);
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, null, ['newModel' => $model]);
