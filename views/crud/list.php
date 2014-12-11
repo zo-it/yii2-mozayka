@@ -88,7 +88,10 @@ if ($filterModel && $filterFields) {
     echo Html::endTag('div'); // panel-body
 }
 
-Pjax::begin(['linkSelector' => '.panel-grid-pager a, .grid-view a.sort-link']);
+$pjax = Pjax::begin([
+    'options' => ['class' => 'panel-grid-view'],
+    'linkSelector' => '.panel-grid-pager a, .grid-view a.sort-link'
+]);
 
 $grid = $gridClass::begin($gridConfig);
 $gridPager = $grid->renderPager();
@@ -97,18 +100,16 @@ $grid->layout = '{items}';
 $gridClass::end();
 
 $gridId = $grid->getId();
-$js = 'jQuery(\'#' . $gridId . '\').kinetic({\'cursor\': false, \'filterTarget\': function (target, event) { if (event.which != 2) { return false; } }});';
-if ($gridPager) {
-    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(' . Json::encode($gridPager) . ');';
-}
+$js = 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-pager\').html(' . Json::encode($gridPager) . ');';
+$js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(' . Json::encode($gridSummary) . ');';
 if ($gridSummary) {
-    $js .= 'jQuery(\'#' . $gridId . '\').closest(\'.panel\').find(\'.panel-grid-summary\').html(' . Json::encode($gridSummary) . ');';
     $this->title .= ' ' . strip_tags($gridSummary);
 }
 if (Yii::$app->getRequest()->getIsAjax()) {
     $js .= 'document.title = ' . Json::encode($this->title) . ';';
     echo Html::script($js);
 } else {
+    $js .= 'jQuery(\'#' . $pjax->getId() . '\').kinetic({\'cursor\': false, \'filterTarget\': function (target, event) { if (event.which != 2) { return false; } }});';
     $this->registerJs($js);
 }
 
