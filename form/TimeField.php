@@ -32,10 +32,9 @@ class TimeField extends ActiveField
                 'timeFormat' => Text::juiTimeFormat($this->timeFormat),
                 'altTimeFormat' => Text::juiTimeFormat($this->altTimeFormat)
             ]);
-            $formId = $this->form->getId();
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').timepicker(' . Json::encode($pluginOptions) . ');';
+            $pluginOptions['altField'] = '#' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $inputId . '\').timepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";

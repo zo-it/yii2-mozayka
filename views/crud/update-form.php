@@ -47,6 +47,7 @@ if ($canCreate) {
 }
 
 $form = $formClass::begin($formConfig);
+$form->inputIdPrefix = $form->getId();
 echo Html::beginTag('div', ['class' => 'panel panel-default']);
 
 echo Html::tag('div', Html::tag('h3', $this->title, ['class' => 'panel-title pull-left']) . ButtonGroup::widget([

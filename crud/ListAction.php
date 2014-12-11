@@ -37,7 +37,7 @@ class ListAction extends Action
         $request = Yii::$app->getRequest();
         if ($this->filterModelClass) {
             $filterModelClass = $this->filterModelClass;
-            /** @var yii\db\ActiveRecordInterface $filterModel */
+            /** @var yii\db\BaseActiveRecord $filterModel */
             $filterModel = new $filterModelClass(['scenario' => $this->searchScenario]);
             if ($request->getIsPost()) {
                 $filterModel->load($request->getBodyParams());

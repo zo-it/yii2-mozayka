@@ -35,10 +35,9 @@ class DateField extends ActiveField
                 'dateFormat' => Text::juiDateFormat($this->dateFormat),
                 'altFormat' => Text::juiDateFormat($this->altDateFormat)
             ]);
-            $formId = $this->form->getId();
             $inputId = Html::getInputId($this->model, $this->attribute);
-            $pluginOptions['altField'] = '#' . $formId . ' #' . $inputId . '-alt';
-            $js = 'jQuery(\'#' . $formId . ' #' . $inputId . '\').datepicker(' . Json::encode($pluginOptions) . ');';
+            $pluginOptions['altField'] = '#' . $inputId . '-alt';
+            $js = 'jQuery(\'#' . $inputId . '\').datepicker(' . Json::encode($pluginOptions) . ');';
             $this->inputOptions['name'] = false;
             $this->hiddenInputOptions['id'] = $inputId . '-alt';
             $this->template .= "\n{hiddenInput}";
