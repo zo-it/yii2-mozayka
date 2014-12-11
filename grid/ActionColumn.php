@@ -14,7 +14,7 @@ class ActionColumn extends YiiActionColumn
 
     public $headerOptions = ['class' => 'hidden-print'];
 
-    public $contentOptions = ['class' => 'actions hidden-print'];
+    public $contentOptions = ['class' => 'gv-actions hidden-print'];
 
     public $footerOptions = ['class' => 'hidden-print'];
 

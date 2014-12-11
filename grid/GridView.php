@@ -13,6 +13,10 @@ class GridView extends YiiGridView
 
     public $tableOptions = ['class' => 'table table-striped table-bordered table-condensed'];
 
+    public $headerRowOptions = ['class' => 'gv-headers'];
+
+    //public $filterSelector = 'textarea';
+
     public $filterRowOptions = ['class' => 'filters hidden-print'];
 
     public $filterFields = [];

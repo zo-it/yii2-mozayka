@@ -12,7 +12,7 @@ use yii\grid\DataColumn as YiiDataColumn,
 class DataColumn extends YiiDataColumn
 {
 
-    public $sortLinkOptions = ['class' => 'sort-link'];
+    public $sortLinkOptions = ['class' => 'gv-sort-link'];
 
     public function init()
     {

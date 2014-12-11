@@ -90,7 +90,7 @@ if ($filterModel && $filterFields) {
 
 $pjax = Pjax::begin([
     'options' => ['class' => 'panel-grid-view'],
-    'linkSelector' => '.panel-grid-pager a, .grid-view a.sort-link'
+    'linkSelector' => '.panel-grid-pager a, .grid-view .gv-headers a'
 ]);
 
 $grid = $gridClass::begin($gridConfig);
