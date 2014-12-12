@@ -60,9 +60,9 @@ class ActionColumn extends YiiActionColumn
             $cellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Actions'),
                 'class' => 'btn btn-default btn-xs',
-                'data-dropdown2' => '#' . $gridId . '-actions-dropdown2-' . $index
+                'data-dropdown2' => '#' . $gridId . '-dropdown2-actions-' . $index
             ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
-                'id' => $gridId . '-actions-dropdown2-' . $index,
+                'id' => $gridId . '-dropdown2-actions-' . $index,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
         }
