@@ -108,7 +108,7 @@ class BaseModelHelper
 
     protected static function expandBrackets(array $input, array $modelAttributes)
     {
-        $result = [];
+        $output = [];
         foreach ($input as $key => $value) {
             if (is_int($key)) {
                 if (is_array($value) && (count($value) == 2) && array_key_exists(0, $value) && array_key_exists(1, $value)) {
@@ -123,18 +123,18 @@ class BaseModelHelper
                         $k2 = array_search($value[1], $modelAttributes);
                     }
                     if (is_int($k1) && is_int($k2) && ($k1 <= $k2) && array_key_exists($k1, $modelAttributes) && array_key_exists($k2, $modelAttributes)) {
-                        $result = array_merge($result, array_slice($modelAttributes, $k1, $k2 - $k1 + 1));
+                        $output = array_merge($output, array_slice($modelAttributes, $k1, $k2 - $k1 + 1));
                     }
                 } elseif (($value == '*') || ($value == ['*'])) {
-                    $result = array_merge($result, $modelAttributes);
+                    $output = array_merge($output, $modelAttributes);
                 } else {
-                    $result[] = $value;
+                    $output[] = $value;
                 }
             } else {
-                $result[$key] = $value;
+                $output[$key] = $value;
             }
         }
-        return $result;
+        return $output;
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)
