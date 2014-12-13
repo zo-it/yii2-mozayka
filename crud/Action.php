@@ -57,15 +57,6 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
 $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
-            if (!array_key_exists('type', $options)) {
-                foreach ($model->getBehaviors() as $behavior) {
-                    if ($behavior instanceof DatetimeBehavior) {
-                        if (in_array($attribute, $behavior->attributes)) {
-                            $options['type'] = 'datetime';
-                        }
-                    }
-                }
-            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
@@ -151,15 +142,6 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
         }
 $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
-            if (!array_key_exists('type', $options)) {
-                foreach ($model->getBehaviors() as $behavior) {
-                    if ($behavior instanceof DatetimeBehavior) {
-                        if (in_array($attribute, $behavior->attributes)) {
-                            $options['type'] = 'datetime';
-                        }
-                    }
-                }
-            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
