@@ -37,6 +37,23 @@ class Action extends RestAction
 $columns = $this->columns ?: ModelHelper::gridColumns($modelClass);
 $attributes = $model->attributes();
 $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, $attributes), $attributes);
+        foreach ($model->getBehaviors() as $behavior) {
+            if ($behavior instanceof DatetimeBehavior) {
+                foreach ($behavior->attributes as $datetimeAttribute) {
+                    if (array_key_exists($datetimeAttribute, $columns)) {
+                        $columns[$datetimeAttribute]['type'] = 'datetime';
+                    }
+                }
+            } elseif ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $columns)) {
+                    $columns[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
+                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            }
+        }
 $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
@@ -93,17 +110,6 @@ $tableSchema = $modelClass::getTableSchema();
             }
             $columns[$attribute] = $options;
         }
-        foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof SoftDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAttribute, $columns)) {
-                    $columns[$behavior->deletedAttribute]['visible'] = false;
-                }
-            } elseif ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $columns)) {
-                    $columns[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            }
-        }
         $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
@@ -116,6 +122,33 @@ $tableSchema = $modelClass::getTableSchema();
 $fields = $this->fields ?: ModelHelper::formFields($model);
 $attributes = $model->attributes();
 $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $attributes), $attributes);
+        foreach ($model->getBehaviors() as $behavior) {
+            if ($behavior instanceof DatetimeBehavior) {
+                foreach ($behavior->attributes as $datetimeAttribute) {
+                    if (array_key_exists($datetimeAttribute, $fields)) {
+                        $fields[$datetimeAttribute]['type'] = 'datetime';
+                    }
+                }
+            } elseif ($behavior instanceof SoftDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAttribute, $fields)) {
+                    $fields[$behavior->deletedAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimeDeleteBehavior) {
+                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
+                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
+                }
+            } elseif ($behavior instanceof TimestampBehavior) {
+                if (array_key_exists($behavior->createdAtAttribute, $fields)) {
+                    $fields[$behavior->createdAtAttribute]['readOnly'] = true;
+                }
+                if (array_key_exists($behavior->updatedAtAttribute, $fields)) {
+                    $fields[$behavior->updatedAtAttribute]['readOnly'] = true;
+                }
+                if (array_key_exists($behavior->timestampAttribute, $fields)) {
+                    $fields[$behavior->timestampAttribute]['readOnly'] = true;
+                }
+            }
+        }
 $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
             if (!array_key_exists('type', $options)) {
@@ -179,27 +212,6 @@ $tableSchema = $modelClass::getTableSchema();
                 }
             }
             $fields[$attribute] = $options;
-        }
-        foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof SoftDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAttribute, $fields)) {
-                    $fields[$behavior->deletedAttribute]['visible'] = false;
-                }
-            } elseif ($behavior instanceof TimeDeleteBehavior) {
-                if (array_key_exists($behavior->deletedAtAttribute, $fields)) {
-                    $fields[$behavior->deletedAtAttribute]['visible'] = false;
-                }
-            } elseif ($behavior instanceof TimestampBehavior) {
-                if (array_key_exists($behavior->createdAtAttribute, $fields)) {
-                    $fields[$behavior->createdAtAttribute]['readOnly'] = true;
-                }
-                if (array_key_exists($behavior->updatedAtAttribute, $fields)) {
-                    $fields[$behavior->updatedAtAttribute]['readOnly'] = true;
-                }
-                if (array_key_exists($behavior->timestampAttribute, $fields)) {
-                    $fields[$behavior->timestampAttribute]['readOnly'] = true;
-                }
-            }
         }
         return array_filter($fields, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
