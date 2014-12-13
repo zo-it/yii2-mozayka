@@ -14,6 +14,8 @@ class DataColumn extends YiiDataColumn
 
     public $sortLinkOptions = ['class' => 'gv-sort-link'];
 
+    public $readOnly = false;
+
     public function init()
     {
         if (!Yii::$app->getRequest()->getIsAjax()) {
