@@ -57,12 +57,12 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
         $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
-            if (!array_key_exists('type', $options)) {
-                $columnSchema = $tableSchema->getColumn($attribute);
-                if ($columnSchema) {
-                    /*if ($columnSchema->isPrimaryKey) {
-                        $options['readOnly'] = true;
-                    }*/
+            $columnSchema = $tableSchema->getColumn($attribute);
+            if ($columnSchema) {
+                /*if ($columnSchema->isPrimaryKey) {
+                    $options['readOnly'] = true;
+                }*/
+                if (!array_key_exists('type', $options)) {
                     if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
                         if (($columnSchema->size == 1) && $columnSchema->unsigned) {
                             $options['type'] = 'boolean';
@@ -139,16 +139,16 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
         }
         $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
-            if (!array_key_exists('type', $options)) {
-                $columnSchema = $tableSchema->getColumn($attribute);
-                if ($columnSchema) {
-                    if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
-                        if (!$model->getIsNewRecord()) {
-                            $options['readOnly'] = true;
-                        } elseif ($columnSchema->autoIncrement) {
-                            $options['visible'] = false;
-                        }
+            $columnSchema = $tableSchema->getColumn($attribute);
+            if ($columnSchema) {
+                if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
+                    if (!$model->getIsNewRecord()) {
+                        $options['readOnly'] = true;
+                    } elseif ($columnSchema->autoIncrement) {
+                        $options['visible'] = false;
                     }
+                }
+                if (!array_key_exists('type', $options)) {
                     if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
                         if (($columnSchema->size == 1) && $columnSchema->unsigned) {
                             $options['type'] = 'boolean';
