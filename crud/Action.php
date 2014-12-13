@@ -3,8 +3,8 @@
 namespace yii\mozayka\crud;
 
 use yii\rest\Action as RestAction,
-    yii\base\Model,
-    yii\db\ActiveRecord,
+    yii\mozayka\helpers\ModelHelper,
+    yii\db\BaseActiveRecord,
     yii\helpers\Inflector,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
@@ -33,22 +33,10 @@ class Action extends RestAction
     protected function prepareColumns($modelClass)
     {
         $model = new $modelClass;
-        $attributes = array_keys($model->attributeLabels());
-        if (!$attributes) {
-            $attributes = $model->attributes();
-        }
-        $rawColumns = $this->columns;
-        if (!$rawColumns && method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns'])) {
-            $rawColumns = $modelClass::gridColumns();
-        }
-        $offset = array_search('*', $rawColumns);
-        if ($offset !== false) {
-            array_splice($rawColumns, $offset, 1, $attributes);
-        } elseif (!$rawColumns) {
-            $rawColumns = $attributes;
-        }
-        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
-$columns = [];
+$columns = $this->columns ?: ModelHelper::gridColumns($modelClass);
+$attributes = $model->attributes();
+$columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, $attributes), $attributes);
+$tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
             if (array_key_exists('type', $options)) {
@@ -71,7 +59,7 @@ $columns = [];
                     $options['items'] = $modelClass::$methodName($model);
                 }
             }
-            if ($tableSchema && !array_key_exists('class', $options)) {
+            if (!array_key_exists('class', $options)) {
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     /*if ($columnSchema->isPrimaryKey) {
@@ -112,25 +100,13 @@ $columns = [];
         }));
     }
 
-    protected function prepareFields(Model $model)
+    protected function prepareFields(BaseActiveRecord $model)
     {
         $modelClass = get_class($model);
-        $attributes = array_keys($model->attributeLabels());
-        if (!$attributes) {
-            $attributes = $model->attributes();
-        }
-        $rawFields = $this->fields;
-        if (!$rawFields && method_exists($model, 'formFields') && is_callable([$model, 'formFields'])) {
-            $rawFields = $model->formFields();
-        }
-        $offset = array_search('*', $rawFields);
-        if ($offset !== false) {
-            array_splice($rawFields, $offset, 1, $attributes);
-        } elseif (!$rawFields) {
-            $rawFields = $attributes;
-        }
-        $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
-$fields = [];
+$fields = $this->fields ?: ModelHelper::formFields($model);
+$attributes = $model->attributes();
+$fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $attributes), $attributes);
+$tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
@@ -152,7 +128,7 @@ $fields = [];
                     $options['items'] = $modelClass::$methodName($model);
                 }
             }
-            if ($tableSchema && !array_key_exists('class', $options)) {
+            if (!array_key_exists('class', $options)) {
                 $columnSchema = $tableSchema->getColumn($attribute);
                 if ($columnSchema) {
                     if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {

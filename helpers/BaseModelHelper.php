@@ -6,6 +6,7 @@ use yii\helpers\StringHelper,
     yii\helpers\Inflector,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
     yii\db\BaseActiveRecord,
+    yii\base\Object,
     yii\helpers\ArrayHelper,
     yii\helpers\VarDumper,
     Yii;
@@ -105,27 +106,27 @@ class BaseModelHelper
         }
     }
 
-    public static function expandBrackets(array $input, array $modelAttributes)
+    public static function expandBrackets(array $input, array $validKeys)
     {
         $output = [];
         foreach ($input as $key => $value) {
             if (is_int($key)) {
                 if (is_array($value) && (count($value) == 2) && array_key_exists(0, $value) && array_key_exists(1, $value)) {
                     if ($value[0] == '*') {
-                        $k1 = 0;
+                        $start = 0;
                     } else {
-                        $k1 = array_search($value[0], $modelAttributes);
+                        $start = array_search($value[0], $validKeys);
                     }
                     if ($value[1] == '*') {
-                        $k2 = count($modelAttributes) - 1;
+                        $end = count($validKeys) - 1;
                     } else {
-                        $k2 = array_search($value[1], $modelAttributes);
+                        $end = array_search($value[1], $validKeys);
                     }
-                    if (is_int($k1) && is_int($k2) && ($k1 <= $k2) && array_key_exists($k1, $modelAttributes) && array_key_exists($k2, $modelAttributes)) {
-                        $output = array_merge($output, array_slice($modelAttributes, $k1, $k2 - $k1 + 1));
+                    if (is_int($start) && is_int($end) && ($start <= $end) && array_key_exists($start, $validKeys) && array_key_exists($end, $validKeys)) {
+                        $output = array_merge($output, array_slice($validKeys, $start, $end - $start + 1));
                     }
                 } elseif (($value == '*') || ($value == ['*'])) {
-                    $output = array_merge($output, $modelAttributes);
+                    $output = array_merge($output, $validKeys);
                 } else {
                     $output[] = $value;
                 }
@@ -136,7 +137,7 @@ class BaseModelHelper
         return $output;
     }
 
-    public static function normalizeBrackets(array $input, array $modelAttributes)
+    public static function normalizeBrackets(array $input, array $validKeys)
     {
         $output = [];
         foreach ($input as $key => $value) {
@@ -144,27 +145,27 @@ class BaseModelHelper
             $options = [];
             if (is_int($key)) {
                 if ($value) {
-                    if (is_string($value) && in_array($value, $modelAttributes)) {
+                    if (is_string($value) && in_array($value, $validKeys)) {
                         $attribute = $value;
                     } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $modelAttributes)) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $validKeys)) {
                             $attribute = $value[0];
                             $options = $value;
                             unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $modelAttributes)) {
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $validKeys)) {
                             $attribute = $value['attribute'];
                             $options = $value;
                             unset($options['attribute']);
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && in_array($key, $modelAttributes)) {
+            } elseif ($key && is_string($key) && in_array($key, $validKeys)) {
                 $attribute = $key;
                 if ($value) {
                     if (is_string($value)) {
                         if ($value == 'invisible') {
                             $options['visible'] = false;
-                        } elseif (class_exists($value)) {
+                        } elseif (class_exists($value) && is_subclass_of($value, Object::className())) {
                             $options['class'] = $value;
                         } else {
                             $options['type'] = $value;
