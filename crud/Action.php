@@ -6,6 +6,7 @@ use yii\rest\Action as RestAction,
     yii\mozayka\helpers\ModelHelper,
     yii\db\BaseActiveRecord,
     yii\helpers\Inflector,
+yii\kladovka\behaviors\DatetimeBehavior,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
@@ -39,6 +40,15 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
 $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
+            if (!array_key_exists('type', $options)) {
+                foreach ($model->getBehaviors() as $behavior) {
+                    if ($behavior instanceof DatetimeBehavior) {
+                        if (in_array($attribute, $behavior->attributes)) {
+                            $options['type'] = 'datetime';
+                        }
+                    }
+                }
+            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
@@ -108,6 +118,15 @@ $attributes = $model->attributes();
 $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $attributes), $attributes);
 $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
+            if (!array_key_exists('type', $options)) {
+                foreach ($model->getBehaviors() as $behavior) {
+                    if ($behavior instanceof DatetimeBehavior) {
+                        if (in_array($attribute, $behavior->attributes)) {
+                            $options['type'] = 'datetime';
+                        }
+                    }
+                }
+            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
