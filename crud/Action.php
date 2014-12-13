@@ -54,9 +54,28 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
                 }
             }
         }
-$tableSchema = $modelClass::getTableSchema();
+        $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
+            if (!array_key_exists('type', $options)) {
+                $columnSchema = $tableSchema->getColumn($attribute);
+                if ($columnSchema) {
+                    /*if ($columnSchema->isPrimaryKey) {
+                        $options['readOnly'] = true;
+                    }*/
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['type'] = 'boolean';
+                        } else {
+                            $options['type'] = $columnSchema->type;
+                            $options['size'] = $columnSchema->size;
+                            $options['unsigned'] = $columnSchema->unsigned;
+                        }
+                    } else {
+                        $options['type'] = $columnSchema->type;
+                    }
+                }
+            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
@@ -75,28 +94,6 @@ $tableSchema = $modelClass::getTableSchema();
                 if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
                     $options['class'] = 'yii\mozayka\grid\ListItemColumn';
                     $options['items'] = $modelClass::$methodName($model);
-                }
-            }
-            if (!array_key_exists('class', $options)) {
-                $columnSchema = $tableSchema->getColumn($attribute);
-                if ($columnSchema) {
-                    /*if ($columnSchema->isPrimaryKey) {
-                        $options['readOnly'] = true;
-                    }*/
-                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                            $options['class'] = 'yii\mozayka\grid\BooleanColumn';
-                        } else {
-                            $options['class'] = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
-                            $options['size'] = $columnSchema->size;
-                            $options['unsigned'] = $columnSchema->unsigned;
-                        }
-                    } else {
-                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
-                        }
-                    }
                 }
             }
             $columns[$attribute] = $options;
@@ -140,8 +137,36 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
                 }
             }
         }
-$tableSchema = $modelClass::getTableSchema();
+        $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
+            if (!array_key_exists('type', $options)) {
+                $columnSchema = $tableSchema->getColumn($attribute);
+                if ($columnSchema) {
+                    if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
+                        if (!$model->getIsNewRecord()) {
+                            $options['readOnly'] = true;
+                        } elseif ($columnSchema->autoIncrement) {
+                            $options['visible'] = false;
+                        }
+                    }
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['type'] = 'boolean';
+                        } else {
+                            $options['type'] = $columnSchema->type;
+                            $options['size'] = $columnSchema->size;
+                            $options['unsigned'] = $columnSchema->unsigned;
+                        }
+                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                        $options['type'] = $columnSchema->type;
+                        $options['size'] = $columnSchema->size;
+                        $options['scale'] = $columnSchema->scale;
+                        $options['unsigned'] = $columnSchema->unsigned;
+                    } else {
+                        $options['type'] = $columnSchema->type;
+                    }
+                }
+            }
             if (array_key_exists('type', $options)) {
                 if ($options['type'] && is_string($options['type'])) {
                     if ($options['type'] == 'invisible') {
@@ -160,37 +185,6 @@ $tableSchema = $modelClass::getTableSchema();
                 if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
                     $options['class'] = 'yii\mozayka\form\DropDownListField';
                     $options['items'] = $modelClass::$methodName($model);
-                }
-            }
-            if (!array_key_exists('class', $options)) {
-                $columnSchema = $tableSchema->getColumn($attribute);
-                if ($columnSchema) {
-                    if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
-                        if (!$model->getIsNewRecord()) {
-                            $options['readOnly'] = true;
-                        } elseif ($columnSchema->autoIncrement) {
-                            $options['visible'] = false;
-                        }
-                    }
-                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                            $options['class'] = 'yii\mozayka\form\BooleanField';
-                        } else {
-                            $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                            $options['size'] = $columnSchema->size;
-                            $options['unsigned'] = $columnSchema->unsigned;
-                        }
-                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
-                        $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                        $options['size'] = $columnSchema->size;
-                        $options['scale'] = $columnSchema->scale;
-                        $options['unsigned'] = $columnSchema->unsigned;
-                    } else {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                        if (class_exists($fieldClass)) {
-                            $options['class'] = $fieldClass;
-                        }
-                    }
                 }
             }
             $fields[$attribute] = $options;
