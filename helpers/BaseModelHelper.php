@@ -6,6 +6,7 @@ use yii\helpers\StringHelper,
     yii\helpers\Inflector,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
     yii\db\BaseActiveRecord,
+    yii\helpers\ArrayHelper,
     yii\helpers\VarDumper,
     Yii;
 
@@ -53,11 +54,10 @@ class BaseModelHelper
     public static function gridColumns($modelClass)
     {
         if (is_subclass_of($modelClass, MozaykaActiveRecord::className())) {
-            $gridColumns = $modelClass::gridColumns();
+            return $modelClass::gridColumns();
         } else {
-            $gridColumns = method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : ['*'];
+            return method_exists($modelClass, 'gridColumns') && is_callable([$modelClass, 'gridColumns']) ? $modelClass::gridColumns() : ['*'];
         }
-        return static::expandBrackets($gridColumns, array_keys($modelClass::getTableSchema()->columns));
     }
 
     public static function getPrimaryKey(BaseActiveRecord $model, $separator = ',')
@@ -99,14 +99,13 @@ class BaseModelHelper
     public static function formFields(BaseActiveRecord $model)
     {
         if ($model instanceof MozaykaActiveRecord) {
-            $formFields = $model->formFields();
+            return $model->formFields();
         } else {
-            $formFields = method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : ['*'];
+            return method_exists($model, 'formFields') && is_callable([$model, 'formFields']) ? $model->formFields() : ['*'];
         }
-        return static::expandBrackets($formFields, $model->attributes());
     }
 
-    protected static function expandBrackets(array $input, array $modelAttributes)
+    public static function expandBrackets(array $input, array $modelAttributes)
     {
         $output = [];
         foreach ($input as $key => $value) {
@@ -132,6 +131,55 @@ class BaseModelHelper
                 }
             } else {
                 $output[$key] = $value;
+            }
+        }
+        return $output;
+    }
+
+    public static function normalizeBrackets(array $input, array $modelAttributes)
+    {
+        $output = [];
+        foreach ($input as $key => $value) {
+            $attribute = null;
+            $options = [];
+            if (is_int($key)) {
+                if ($value) {
+                    if (is_string($value) && in_array($value, $modelAttributes)) {
+                        $attribute = $value;
+                    } elseif (is_array($value)) {
+                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $modelAttributes)) {
+                            $attribute = $value[0];
+                            $options = $value;
+                            unset($options[0]);
+                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $modelAttributes)) {
+                            $attribute = $value['attribute'];
+                            $options = $value;
+                            unset($options['attribute']);
+                        }
+                    }
+                }
+            } elseif ($key && is_string($key) && in_array($key, $modelAttributes)) {
+                $attribute = $key;
+                if ($value) {
+                    if (is_string($value)) {
+                        if ($value == 'invisible') {
+                            $options['visible'] = false;
+                        } elseif (class_exists($value)) {
+                            $options['class'] = $value;
+                        } else {
+                            $options['type'] = $value;
+                        }
+                    } elseif (is_array($value)) {
+                        $options = $value;
+                    }
+                } elseif ($value === false) {
+                    $options['visible'] = false;
+                }
+            }
+            if (array_key_exists($attribute, $output)) {
+                $output[$attribute] = ArrayHelper::merge($output[$attribute], $options);
+            } else {
+                $output[$attribute] = $options;
             }
         }
         return $output;
@@ -210,6 +258,22 @@ class BaseModelHelper
             ]);
         } else {
             VarDumper::dump([
+                'class' => get_class($model),
+                'attributes' => $model->getAttributes()
+            ]);
+        }
+    }
+
+    public static function dumpAsString(BaseActiveRecord $model)
+    {
+        if ($model->hasErrors()) {
+            VarDumper::dumpAsString([
+                'class' => get_class($model),
+                'attributes' => $model->getAttributes(),
+                'errors' => $model->getErrors()
+            ]);
+        } else {
+            VarDumper::dumpAsString([
                 'class' => get_class($model),
                 'attributes' => $model->getAttributes()
             ]);

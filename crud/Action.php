@@ -6,7 +6,6 @@ use yii\rest\Action as RestAction,
     yii\base\Model,
     yii\db\ActiveRecord,
     yii\helpers\Inflector,
-    yii\helpers\ArrayHelper,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
@@ -49,99 +48,52 @@ class Action extends RestAction
             $rawColumns = $attributes;
         }
         $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
-        $columns = [];
-        foreach ($rawColumns as $key => $value) {
-            $attribute = null;
-            $options = [];
-            if (is_int($key)) {
-                if ($value) {
-                    if (is_string($value) && in_array($value, $attributes)) {
-                        $attribute = $value;
-                    } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
-                            $attribute = $value[0];
-                            $options = $value;
-                            unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
-                            $attribute = $value['attribute'];
-                            $options = $value;
-                            unset($options['attribute']);
+$columns = [];
+        foreach ($columns as $attribute => $options) {
+            $options['attribute'] = $attribute;
+            if (array_key_exists('type', $options)) {
+                if ($options['type'] && is_string($options['type'])) {
+                    if ($options['type'] == 'invisible') {
+                        $options['visible'] = false;
+                    } elseif (!array_key_exists('class', $options)) {
+                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
-                $attribute = $key;
-                if ($value) {
-                    if (is_string($value)) {
-                        if ($value == 'invisible') {
-                            $options['visible'] = false;
-                        } elseif (class_exists($value)) {
-                            $options['class'] = $value;
-                        } else {
-                            $fieldClass = 'yii\mozayka\grid\\' . ucfirst($value) . 'Column';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            } else {
-                                $options['type'] = $value;
-                            }
-                        }
-                    } elseif (is_array($value)) {
-                        $options = $value;
-                    }
-                } elseif ($value === false) {
-                    $options['visible'] = false;
+                unset($options['type']);
+            }
+            if (!array_key_exists('class', $options)) {
+                $methodName = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                    $options['class'] = 'yii\mozayka\grid\ListItemColumn';
+                    $options['items'] = $modelClass::$methodName($model);
                 }
             }
-            if ($attribute) {
-                $options['attribute'] = $attribute;
-                if (array_key_exists('type', $options)) {
-                    if ($options['type'] && is_string($options['type'])) {
-                        if ($options['type'] == 'invisible') {
-                            $options['visible'] = false;
-                        } elseif (!array_key_exists('class', $options)) {
-                            $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            }
-                        }
-                    }
-                    unset($options['type']);
-                }
-                if (!array_key_exists('class', $options)) {
-                    $methodName = Inflector::variablize($attribute) . 'ListItems';
-                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                        $options['class'] = 'yii\mozayka\grid\ListItemColumn';
-                        $options['items'] = $modelClass::$methodName($model);
-                    }
-                }
-                if ($tableSchema && !array_key_exists('class', $options)) {
-                    $columnSchema = $tableSchema->getColumn($attribute);
-                    if ($columnSchema) {
-                        /*if ($columnSchema->isPrimaryKey) {
-                            $options['readOnly'] = true;
-                        }*/
-                        if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                            if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                                $options['class'] = 'yii\mozayka\grid\BooleanColumn';
-                            } else {
-                                $options['class'] = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
-                                $options['size'] = $columnSchema->size;
-                                $options['unsigned'] = $columnSchema->unsigned;
-                            }
+            if ($tableSchema && !array_key_exists('class', $options)) {
+                $columnSchema = $tableSchema->getColumn($attribute);
+                if ($columnSchema) {
+                    /*if ($columnSchema->isPrimaryKey) {
+                        $options['readOnly'] = true;
+                    }*/
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['class'] = 'yii\mozayka\grid\BooleanColumn';
                         } else {
-                            $fieldClass = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            }
+                            $options['class'] = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
+                            $options['size'] = $columnSchema->size;
+                            $options['unsigned'] = $columnSchema->unsigned;
+                        }
+                    } else {
+                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($columnSchema->type) . 'Column';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
                         }
                     }
-                }
-                if (array_key_exists($attribute, $columns)) {
-                    $columns[$attribute] = ArrayHelper::merge($columns[$attribute], $options);
-                } else {
-                    $columns[$attribute] = $options;
                 }
             }
+            $columns[$attribute] = $options;
         }
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof SoftDeleteBehavior) {
@@ -178,107 +130,60 @@ class Action extends RestAction
             $rawFields = $attributes;
         }
         $tableSchema = ($model instanceof ActiveRecord) ? $model->getTableSchema() : null;
-        $fields = [];
-        foreach ($rawFields as $key => $value) {
-            $attribute = null;
-            $options = [];
-            if (is_int($key)) {
-                if ($value) {
-                    if (is_string($value) && in_array($value, $attributes)) {
-                        $attribute = $value;
-                    } elseif (is_array($value)) {
-                        if (array_key_exists(0, $value) && $value[0] && is_string($value[0]) && in_array($value[0], $attributes)) {
-                            $attribute = $value[0];
-                            $options = $value;
-                            unset($options[0]);
-                        } elseif (array_key_exists('attribute', $value) && $value['attribute'] && is_string($value['attribute']) && in_array($value['attribute'], $attributes)) {
-                            $attribute = $value['attribute'];
-                            $options = $value;
-                            unset($options['attribute']);
+$fields = [];
+        foreach ($fields as $attribute => $options) {
+            if (array_key_exists('type', $options)) {
+                if ($options['type'] && is_string($options['type'])) {
+                    if ($options['type'] == 'invisible') {
+                        $options['visible'] = false;
+                    } elseif (!array_key_exists('class', $options)) {
+                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
                         }
                     }
                 }
-            } elseif ($key && is_string($key) && in_array($key, $attributes)) {
-                $attribute = $key;
-                if ($value) {
-                    if (is_string($value)) {
-                        if ($value == 'invisible') {
-                            $options['visible'] = false;
-                        } elseif (class_exists($value)) {
-                            $options['class'] = $value;
-                        } else {
-                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($value) . 'Field';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            } else {
-                                $options['type'] = $value;
-                            }
-                        }
-                    } elseif (is_array($value)) {
-                        $options = $value;
-                    }
-                } elseif ($value === false) {
-                    $options['visible'] = false;
+                unset($options['type']);
+            }
+            if (!array_key_exists('class', $options)) {
+                $methodName = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                    $options['class'] = 'yii\mozayka\form\DropDownListField';
+                    $options['items'] = $modelClass::$methodName($model);
                 }
             }
-            if ($attribute) {
-                if (array_key_exists('type', $options)) {
-                    if ($options['type'] && is_string($options['type'])) {
-                        if ($options['type'] == 'invisible') {
+            if ($tableSchema && !array_key_exists('class', $options)) {
+                $columnSchema = $tableSchema->getColumn($attribute);
+                if ($columnSchema) {
+                    if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
+                        if (!$model->getIsNewRecord()) {
+                            $options['readOnly'] = true;
+                        } elseif ($columnSchema->autoIncrement) {
                             $options['visible'] = false;
-                        } elseif (!array_key_exists('class', $options)) {
-                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            }
                         }
                     }
-                    unset($options['type']);
-                }
-                if (!array_key_exists('class', $options)) {
-                    $methodName = Inflector::variablize($attribute) . 'ListItems';
-                    if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                        $options['class'] = 'yii\mozayka\form\DropDownListField';
-                        $options['items'] = $modelClass::$methodName($model);
-                    }
-                }
-                if ($tableSchema && !array_key_exists('class', $options)) {
-                    $columnSchema = $tableSchema->getColumn($attribute);
-                    if ($columnSchema) {
-                        if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
-                            if (!$model->getIsNewRecord()) {
-                                $options['readOnly'] = true;
-                            } elseif ($columnSchema->autoIncrement) {
-                                $options['visible'] = false;
-                            }
-                        }
-                        if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                            if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                                $options['class'] = 'yii\mozayka\form\BooleanField';
-                            } else {
-                                $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                                $options['size'] = $columnSchema->size;
-                                $options['unsigned'] = $columnSchema->unsigned;
-                            }
-                        } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['class'] = 'yii\mozayka\form\BooleanField';
+                        } else {
                             $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
                             $options['size'] = $columnSchema->size;
-                            $options['scale'] = $columnSchema->scale;
                             $options['unsigned'] = $columnSchema->unsigned;
-                        } else {
-                            $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
-                            if (class_exists($fieldClass)) {
-                                $options['class'] = $fieldClass;
-                            }
+                        }
+                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                        $options['class'] = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                        $options['size'] = $columnSchema->size;
+                        $options['scale'] = $columnSchema->scale;
+                        $options['unsigned'] = $columnSchema->unsigned;
+                    } else {
+                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($columnSchema->type) . 'Field';
+                        if (class_exists($fieldClass)) {
+                            $options['class'] = $fieldClass;
                         }
                     }
                 }
-                if (array_key_exists($attribute, $fields)) {
-                    $fields[$attribute] = ArrayHelper::merge($fields[$attribute], $options);
-                } else {
-                    $fields[$attribute] = $options;
-                }
             }
+            $fields[$attribute] = $options;
         }
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof SoftDeleteBehavior) {
