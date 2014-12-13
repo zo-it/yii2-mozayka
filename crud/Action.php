@@ -63,25 +63,21 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
                     $options['readOnly'] = true;
                 }
                 if (!array_key_exists('type', $options)) {
-                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                            $options['type'] = 'boolean';
-                        } else {
-                            $options['type'] = $columnSchema->type;
-                            $options['size'] = $columnSchema->size;
-                            $options['unsigned'] = $columnSchema->unsigned;
-                        }
-                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
-                        $options['type'] = $columnSchema->type;
-                        $options['size'] = $columnSchema->size;
-                        $options['scale'] = $columnSchema->scale;
-                        $options['unsigned'] = $columnSchema->unsigned;
-                    } elseif ($columnSchema->type == 'string') {
-                        $options['type'] = $columnSchema->type;
-                        $options['size'] = $columnSchema->size;
+                    $options['type'] = $columnSchema->type;
+                }
+                if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                    if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                        $options['type'] = 'boolean';
                     } else {
-                        $options['type'] = $columnSchema->type;
+                        $options['size'] = $columnSchema->size;
+                        $options['unsigned'] = $columnSchema->unsigned;
                     }
+                } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                    $options['size'] = $columnSchema->size;
+                    $options['scale'] = $columnSchema->scale;
+                    $options['unsigned'] = $columnSchema->unsigned;
+                } elseif ($columnSchema->type == 'string') {
+                    $options['size'] = $columnSchema->size;
                 }
             }
             if (array_key_exists('type', $options)) {
@@ -157,25 +153,21 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
                     }
                 }
                 if (!array_key_exists('type', $options)) {
-                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                            $options['type'] = 'boolean';
-                        } else {
-                            $options['type'] = $columnSchema->type;
-                            $options['size'] = $columnSchema->size;
-                            $options['unsigned'] = $columnSchema->unsigned;
-                        }
-                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
-                        $options['type'] = $columnSchema->type;
-                        $options['size'] = $columnSchema->size;
-                        $options['scale'] = $columnSchema->scale;
-                        $options['unsigned'] = $columnSchema->unsigned;
-                    } elseif ($columnSchema->type == 'string') {
-                        $options['type'] = $columnSchema->type;
-                        $options['size'] = $columnSchema->size;
+                    $options['type'] = $columnSchema->type;
+                }
+                if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                    if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                        $options['type'] = 'boolean';
                     } else {
-                        $options['type'] = $columnSchema->type;
+                        $options['size'] = $columnSchema->size;
+                        $options['unsigned'] = $columnSchema->unsigned;
                     }
+                } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
+                    $options['size'] = $columnSchema->size;
+                    $options['scale'] = $columnSchema->scale;
+                    $options['unsigned'] = $columnSchema->unsigned;
+                } elseif ($columnSchema->type == 'string') {
+                    $options['size'] = $columnSchema->size;
                 }
             }
             if (array_key_exists('type', $options)) {
