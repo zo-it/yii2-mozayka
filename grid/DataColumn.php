@@ -25,6 +25,7 @@ class DataColumn extends YiiDataColumn
     protected function renderFilterCellContent()
     {
         $gridId = $this->grid->getId();
+        $dropdownId = $gridId . '-dropdown2-filter-' . $this->attribute;
         $form = $this->grid->getForm();
         $filterModel = $this->grid->filterModel;
         $filterFields = $this->grid->filterFields;
@@ -37,7 +38,7 @@ class DataColumn extends YiiDataColumn
                     ]),
                     Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Yii::t('mozayka', 'Reset'), [
                         'class' => 'btn btn-default btn-sm',
-                        'onclick' => 'jQuery(\'#' . $gridId . '-dropdown2-filter-' . $this->attribute . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
+                        'onclick' => 'jQuery(\'#' . $dropdownId . '\').find(\'input[type="text"], input[type="hidden"], textarea, select\').val(\'\');'
                     ])
                 ],
                 'options' => ['class' => 'pull-right']
@@ -50,9 +51,9 @@ class DataColumn extends YiiDataColumn
             $cellContent = Html::button('<span class="glyphicon glyphicon-filter"></span>', [
                 'title' => Yii::t('mozayka', 'Filter'),
                 'class' => 'btn btn-default btn-xs',
-                'data-dropdown2' => '#' . $gridId . '-dropdown2-filter-' . $this->attribute
+                'data-dropdown2' => '#' . $dropdownId
             ]) . Html::tag('div', Html::tag('div', $cellContent, ['class' => 'dropdown2-panel']), [
-                'id' => $gridId . '-dropdown2-filter-' . $this->attribute,
+                'id' => $dropdownId,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
         }

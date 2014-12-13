@@ -40,7 +40,7 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        $gridId = $this->grid->getId();
+        $dropdownId = $this->grid->getId() . '-dropdown2-actions-' . $index;
         $this->template = implode(' ', array_keys(array_filter([
             '<li>{view}</li>' => ModelHelper::canRead($model),
             '<li>{update}</li>' => ModelHelper::canUpdate($model),
@@ -60,9 +60,9 @@ class ActionColumn extends YiiActionColumn
             $cellContent = Html::button('<span class="glyphicon glyphicon-cog"></span>', [
                 'title' => Yii::t('mozayka', 'Actions'),
                 'class' => 'btn btn-default btn-xs',
-                'data-dropdown2' => '#' . $gridId . '-dropdown2-actions-' . $index
+                'data-dropdown2' => '#' . $dropdownId
             ]) . Html::tag('div', Html::tag('ul', $cellContent, ['class' => 'dropdown2-menu']), [
-                'id' => $gridId . '-dropdown2-actions-' . $index,
+                'id' => $dropdownId,
                 'class' => 'dropdown2 dropdown2-tip' . ((array_search($this, $this->grid->columns) + 1 > count($this->grid->columns) / 2) ? ' dropdown2-anchor-right' : '')
             ]);
         }
