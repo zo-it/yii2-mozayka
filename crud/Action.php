@@ -40,7 +40,7 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
-                    if (array_key_exists($datetimeAttribute, $columns)) {
+                    if (array_key_exists($datetimeAttribute, $columns) && !array_key_exists('type', $columns[$datetimeAttribute])) {
                         $columns[$datetimeAttribute]['type'] = 'datetime';
                     }
                 }
@@ -125,7 +125,7 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
-                    if (array_key_exists($datetimeAttribute, $fields)) {
+                    if (array_key_exists($datetimeAttribute, $fields) && !array_key_exists('type', $fields[$datetimeAttribute])) {
                         $fields[$datetimeAttribute]['type'] = 'datetime';
                     }
                 }
