@@ -10,6 +10,7 @@ yii\kladovka\behaviors\DatetimeBehavior,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
+yii\helpers\ArrayHelper,
     Yii;
 
 
@@ -55,6 +56,18 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
             }
         }
         $tableSchema = $modelClass::getTableSchema();
+foreach ($tableSchema->foreignKeys as $foreignKey) {
+$methodName = 'get' . Inflector::classify($foreignKey[0]);
+$foreignKeyAttribute = array_keys($foreignKey)[1];
+if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
+$columns[$foreignKeyAttribute]['type'] = 'listItem';
+$query = $model->$methodName();
+$query->primaryModel = null;
+$query->link = null;
+$query->multiple = null;
+$columns[$foreignKeyAttribute]['items'] = ArrayHelper::map($query->asArray()->all(), 'id', 'email');
+}
+}
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
 if (!array_key_exists('type', $options)) {
@@ -142,6 +155,18 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
             }
         }
         $tableSchema = $modelClass::getTableSchema();
+foreach ($tableSchema->foreignKeys as $foreignKey) {
+$methodName = 'get' . Inflector::classify($foreignKey[0]);
+$foreignKeyAttribute = array_keys($foreignKey)[1];
+if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
+$fields[$foreignKeyAttribute]['type'] = 'dropDownList';
+$query = $model->$methodName();
+$query->primaryModel = null;
+$query->link = null;
+$query->multiple = null;
+$fields[$foreignKeyAttribute]['items'] = ArrayHelper::map($query->asArray()->all(), 'id', 'email');
+}
+}
         foreach ($fields as $attribute => $options) {
 if (!array_key_exists('type', $options)) {
 $methodName = Inflector::variablize($attribute) . 'ListItems';
