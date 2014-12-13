@@ -57,6 +57,13 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
         $tableSchema = $modelClass::getTableSchema();
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
+if (!array_key_exists('type', $options)) {
+$methodName = Inflector::variablize($attribute) . 'ListItems';
+if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+$options['type'] = 'listItem';
+$options['items'] = $modelClass::$methodName($model);
+}
+}
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey) {
@@ -64,20 +71,20 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
                 }
                 if (!array_key_exists('type', $options)) {
                     $options['type'] = $columnSchema->type;
-                }
-                if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                    if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                        $options['type'] = 'boolean';
-                    } else {
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['type'] = 'boolean';
+                        } else {
+                            $options['size'] = $columnSchema->size;
+                            $options['unsigned'] = $columnSchema->unsigned;
+                        }
+                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
                         $options['size'] = $columnSchema->size;
+                        $options['scale'] = $columnSchema->scale;
                         $options['unsigned'] = $columnSchema->unsigned;
+                    } elseif ($columnSchema->type == 'string') {
+                        $options['size'] = $columnSchema->size;
                     }
-                } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
-                    $options['size'] = $columnSchema->size;
-                    $options['scale'] = $columnSchema->scale;
-                    $options['unsigned'] = $columnSchema->unsigned;
-                } elseif ($columnSchema->type == 'string') {
-                    $options['size'] = $columnSchema->size;
                 }
             }
             if (array_key_exists('type', $options)) {
@@ -92,13 +99,6 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
                     }
                 }
                 unset($options['type']);
-            }
-            if (!array_key_exists('class', $options)) {
-                $methodName = Inflector::variablize($attribute) . 'ListItems';
-                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                    $options['class'] = 'yii\mozayka\grid\ListItemColumn';
-                    $options['items'] = $modelClass::$methodName($model);
-                }
             }
             $columns[$attribute] = $options;
         }
@@ -143,6 +143,13 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
         }
         $tableSchema = $modelClass::getTableSchema();
         foreach ($fields as $attribute => $options) {
+if (!array_key_exists('type', $options)) {
+$methodName = Inflector::variablize($attribute) . 'ListItems';
+if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+$options['type'] = 'dropDownList';
+$options['items'] = $modelClass::$methodName($model);
+}
+}
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
@@ -154,20 +161,20 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
                 }
                 if (!array_key_exists('type', $options)) {
                     $options['type'] = $columnSchema->type;
-                }
-                if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
-                    if (($columnSchema->size == 1) && $columnSchema->unsigned) {
-                        $options['type'] = 'boolean';
-                    } else {
+                    if (in_array($columnSchema->type, ['tinyint', 'smallint', 'integer', 'bigint'])) {
+                        if (($columnSchema->size == 1) && $columnSchema->unsigned) {
+                            $options['type'] = 'boolean';
+                        } else {
+                            $options['size'] = $columnSchema->size;
+                            $options['unsigned'] = $columnSchema->unsigned;
+                        }
+                    } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
                         $options['size'] = $columnSchema->size;
+                        $options['scale'] = $columnSchema->scale;
                         $options['unsigned'] = $columnSchema->unsigned;
+                    } elseif ($columnSchema->type == 'string') {
+                        $options['size'] = $columnSchema->size;
                     }
-                } elseif (in_array($columnSchema->type, ['decimal', 'numeric', 'money'])) {
-                    $options['size'] = $columnSchema->size;
-                    $options['scale'] = $columnSchema->scale;
-                    $options['unsigned'] = $columnSchema->unsigned;
-                } elseif ($columnSchema->type == 'string') {
-                    $options['size'] = $columnSchema->size;
                 }
             }
             if (array_key_exists('type', $options)) {
@@ -182,13 +189,6 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
                     }
                 }
                 unset($options['type']);
-            }
-            if (!array_key_exists('class', $options)) {
-                $methodName = Inflector::variablize($attribute) . 'ListItems';
-                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-                    $options['class'] = 'yii\mozayka\form\DropDownListField';
-                    $options['items'] = $modelClass::$methodName($model);
-                }
             }
             $fields[$attribute] = $options;
         }
