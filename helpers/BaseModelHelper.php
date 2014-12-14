@@ -7,6 +7,7 @@ use yii\helpers\StringHelper,
     yii\mozayka\db\ActiveRecord as MozaykaActiveRecord,
     yii\db\BaseActiveRecord,
     yii\base\Object,
+    yii\db\ActiveQuery,
     yii\helpers\ArrayHelper,
     yii\helpers\VarDumper,
     Yii;
@@ -77,15 +78,24 @@ class BaseModelHelper
 
     public static function generateDisplayField(BaseActiveRecord $model)
     {
-        $separator = ' ';
         $attributes = static::displayField(get_class($model));
+        $format = null;
+        if (array_key_exists('format', $attributes)) {
+            $format = $attributes['format'];
+            unset($attributes['format']);
+        }
+        $separator = ' ';
         if (array_key_exists('separator', $attributes)) {
             $separator = $attributes['separator'];
             unset($attributes['separator']);
         }
         $emptyDisplayField = array_flip($attributes);
         $displayField = array_merge($emptyDisplayField, array_intersect_key($model->getAttributes(), $emptyDisplayField));
-        return implode($separator, array_values($displayField));
+        if ($format) {
+            return vsprintf($format, array_values($displayField));
+        } else {
+            return implode($separator, array_values($displayField));
+        }
     }
 
     public static function getDisplayField(BaseActiveRecord $model)
@@ -184,6 +194,42 @@ class BaseModelHelper
             }
         }
         return $output;
+    }
+
+    public static function listItems(ActiveQuery $query)
+    {
+        $listItems = [];
+        $query->primaryModel = null;
+        $query->link = null;
+        $query->multiple = null;
+        $modelClass = $query->modelClass;
+        if (!static::canList($modelClass, [], $query)) {
+            return [];
+        }
+        $emptyPrimaryKey = array_flip($modelClass::primaryKey());
+        $attributes = static::displayField($modelClass);
+        $format = null;
+        if (array_key_exists('format', $attributes)) {
+            $format = $attributes['format'];
+            unset($attributes['format']);
+        }
+        $separator = ' ';
+        if (array_key_exists('separator', $attributes)) {
+            $separator = $attributes['separator'];
+            unset($attributes['separator']);
+        }
+        $emptyDisplayField = array_flip($attributes);
+        foreach ($query->asArray()->all() as $modelAttributes) {
+            $primaryKey = array_merge($emptyPrimaryKey, array_intersect_key($modelAttributes, $emptyPrimaryKey));
+            $id = implode(',', array_values($primaryKey));
+            $displayField = array_merge($emptyDisplayField, array_intersect_key($modelAttributes, $emptyDisplayField));
+            if ($format) {
+                $listItems[$id] = vsprintf($format, array_values($displayField));
+            } else {
+                $listItems[$id] = implode($separator, array_values($displayField));
+            }
+        }
+        return $listItems;
     }
 
     public static function canCreate($modelClass, $params = [], $newModel = null)

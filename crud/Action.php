@@ -6,11 +6,10 @@ use yii\rest\Action as RestAction,
     yii\mozayka\helpers\ModelHelper,
     yii\db\BaseActiveRecord,
     yii\helpers\Inflector,
-yii\kladovka\behaviors\DatetimeBehavior,
+    yii\kladovka\behaviors\DatetimeBehavior,
     yii\kladovka\behaviors\TimestampBehavior,
     yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
-yii\helpers\ArrayHelper,
     Yii;
 
 
@@ -61,11 +60,7 @@ $methodName = 'get' . Inflector::classify($foreignKey[0]);
 $foreignKeyAttribute = array_keys($foreignKey)[1];
 if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
 $columns[$foreignKeyAttribute]['type'] = 'listItem';
-$query = $model->$methodName();
-$query->primaryModel = null;
-$query->link = null;
-$query->multiple = null;
-$columns[$foreignKeyAttribute]['items'] = ArrayHelper::map($query->asArray()->all(), 'id', 'email');
+$columns[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
 }
 }
         foreach ($columns as $attribute => $options) {
@@ -160,11 +155,7 @@ $methodName = 'get' . Inflector::classify($foreignKey[0]);
 $foreignKeyAttribute = array_keys($foreignKey)[1];
 if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
 $fields[$foreignKeyAttribute]['type'] = 'dropDownList';
-$query = $model->$methodName();
-$query->primaryModel = null;
-$query->link = null;
-$query->multiple = null;
-$fields[$foreignKeyAttribute]['items'] = ArrayHelper::map($query->asArray()->all(), 'id', 'email');
+$fields[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
 }
 }
         foreach ($fields as $attribute => $options) {
