@@ -13,7 +13,7 @@ class TimeColumn extends DataColumn
     public function getDataCellValue($model, $key, $index)
     {
         $value = parent::getDataCellValue($model, $key, $index);
-        if (is_int($value) || ($value && is_string($value))) {
+        if (is_int($value) || is_float($value) || ($value && is_string($value))) {
             return Text::date($this->timeFormat, $value);
         }
         return $value;
