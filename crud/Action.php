@@ -34,8 +34,8 @@ class Action extends RestAction
     protected function prepareColumns($modelClass)
     {
         $model = new $modelClass;
-        $attributes = $model->attributes();
-        $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->columns ?: ModelHelper::gridColumns($modelClass), $attributes), $attributes);
+        $validKeys = $model->attributes();
+        $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->columns ?: ModelHelper::gridColumns($modelClass), $validKeys), array_merge($validKeys, ['action-column']));
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
@@ -64,8 +64,8 @@ class Action extends RestAction
                 }
             }
         }
-        if (!array_key_exists('_action_', $columns)) {
-            $columns['_action_'] = ['type' => 'action'];
+        if (!array_key_exists('action-column', $columns)) {
+            $columns['action-column'] = ['type' => 'action'];
         }
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
@@ -114,7 +114,7 @@ class Action extends RestAction
             }
             $columns[$attribute] = $options;
         }
-        unset($columns['_action_']['attribute']);
+        unset($columns['action-column']['attribute']);
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
         }));
@@ -123,8 +123,8 @@ class Action extends RestAction
     protected function prepareFields(BaseActiveRecord $model)
     {
         $modelClass = get_class($model);
-        $attributes = $model->attributes();
-        $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->fields ?: ModelHelper::formFields($model), $attributes), $attributes);
+        $validKeys = $model->attributes();
+        $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->fields ?: ModelHelper::formFields($model), $validKeys), $validKeys);
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
