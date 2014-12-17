@@ -4,12 +4,12 @@ namespace yii\mozayka\crud;
 
 use yii\rest\Action as RestAction,
     yii\mozayka\helpers\ModelHelper,
-    yii\db\BaseActiveRecord,
-    yii\helpers\Inflector,
     yii\kladovka\behaviors\DatetimeBehavior,
-    yii\kladovka\behaviors\TimestampBehavior,
-    yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
+    yii\kladovka\behaviors\TimeDeleteBehavior,
+    yii\helpers\Inflector,
+    yii\db\BaseActiveRecord,
+    yii\kladovka\behaviors\TimestampBehavior,
     Yii;
 
 
@@ -34,9 +34,8 @@ class Action extends RestAction
     protected function prepareColumns($modelClass)
     {
         $model = new $modelClass;
-$columns = $this->columns ?: ModelHelper::gridColumns($modelClass);
-$attributes = $model->attributes();
-$columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, $attributes), $attributes);
+        $attributes = $model->attributes();
+        $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->columns ?: ModelHelper::gridColumns($modelClass), $attributes), $attributes);
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
@@ -55,23 +54,26 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
             }
         }
         $tableSchema = $modelClass::getTableSchema();
-foreach ($tableSchema->foreignKeys as $foreignKey) {
-$methodName = 'get' . Inflector::classify($foreignKey[0]);
-$foreignKeyAttribute = array_keys($foreignKey)[1];
-if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-$columns[$foreignKeyAttribute]['type'] = 'listItem';
-$columns[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
-}
-}
+        foreach ($tableSchema->foreignKeys as $foreignKey) {
+            if (count($foreignKey) == 2) {
+                $methodName = 'get' . Inflector::classify($foreignKey[0]);
+                $foreignKeyAttribute = array_keys($foreignKey)[1];
+                if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
+                    $columns[$foreignKeyAttribute]['type'] = 'listItem';
+                    $columns[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
+                }
+            }
+        }
+        $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
-if (!array_key_exists('type', $options)) {
-$methodName = Inflector::variablize($attribute) . 'ListItems';
-if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-$options['type'] = 'listItem';
-$options['items'] = $modelClass::$methodName($model);
-}
-}
+            if (!array_key_exists('type', $options)) {
+                $methodName = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                    $options['type'] = 'listItem';
+                    $options['items'] = $modelClass::$methodName($model);
+                }
+            }
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey) {
@@ -110,7 +112,6 @@ $options['items'] = $modelClass::$methodName($model);
             }
             $columns[$attribute] = $options;
         }
-        $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
         }));
@@ -119,9 +120,8 @@ $options['items'] = $modelClass::$methodName($model);
     protected function prepareFields(BaseActiveRecord $model)
     {
         $modelClass = get_class($model);
-$fields = $this->fields ?: ModelHelper::formFields($model);
-$attributes = $model->attributes();
-$fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $attributes), $attributes);
+        $attributes = $model->attributes();
+        $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->fields ?: ModelHelper::formFields($model), $attributes), $attributes);
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
@@ -150,22 +150,24 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
             }
         }
         $tableSchema = $modelClass::getTableSchema();
-foreach ($tableSchema->foreignKeys as $foreignKey) {
-$methodName = 'get' . Inflector::classify($foreignKey[0]);
-$foreignKeyAttribute = array_keys($foreignKey)[1];
-if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-$fields[$foreignKeyAttribute]['type'] = 'dropDownList';
-$fields[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
-}
-}
+        foreach ($tableSchema->foreignKeys as $foreignKey) {
+            if (count($foreignKey) == 2) {
+                $methodName = 'get' . Inflector::classify($foreignKey[0]);
+                $foreignKeyAttribute = array_keys($foreignKey)[1];
+                if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
+                    $fields[$foreignKeyAttribute]['type'] = 'dropDownList';
+                    $fields[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
+                }
+            }
+        }
         foreach ($fields as $attribute => $options) {
-if (!array_key_exists('type', $options)) {
-$methodName = Inflector::variablize($attribute) . 'ListItems';
-if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-$options['type'] = 'dropDownList';
-$options['items'] = $modelClass::$methodName($model);
-}
-}
+            if (!array_key_exists('type', $options)) {
+                $methodName = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                    $options['type'] = 'dropDownList';
+                    $options['items'] = $modelClass::$methodName($model);
+                }
+            }
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
