@@ -56,22 +56,24 @@ class Action extends RestAction
         $tableSchema = $modelClass::getTableSchema();
         foreach ($tableSchema->foreignKeys as $foreignKey) {
             if (count($foreignKey) == 2) {
-                $methodName = 'get' . Inflector::classify($foreignKey[0]);
-                $foreignKeyAttribute = array_keys($foreignKey)[1];
-                if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-                    $columns[$foreignKeyAttribute]['type'] = 'listItem';
-                    $columns[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
+                $relatedQueryMethod = 'get' . Inflector::classify($foreignKey[0]);
+                if (method_exists($model, $relatedQueryMethod) && is_callable([$model, $relatedQueryMethod])) {
+                    $relatedAttribute = array_keys($foreignKey)[1];
+                    $columns[$relatedAttribute]['type'] = 'listItem';
+                    $columns[$relatedAttribute]['items'] = ModelHelper::listItems($model->$relatedQueryMethod());
                 }
             }
         }
-        $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
+        if (!array_key_exists('_action_', $columns)) {
+            $columns['_action_'] = ['type' => 'action'];
+        }
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
             if (!array_key_exists('type', $options)) {
-                $methodName = Inflector::variablize($attribute) . 'ListItems';
-                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                $listItemsMethod = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $listItemsMethod) && is_callable([$modelClass, $listItemsMethod])) {
                     $options['type'] = 'listItem';
-                    $options['items'] = $modelClass::$methodName($model);
+                    $options['items'] = $modelClass::$listItemsMethod($model);
                 }
             }
             $columnSchema = $tableSchema->getColumn($attribute);
@@ -112,6 +114,7 @@ class Action extends RestAction
             }
             $columns[$attribute] = $options;
         }
+        unset($columns['_action_']['attribute']);
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
         }));
@@ -152,20 +155,20 @@ class Action extends RestAction
         $tableSchema = $modelClass::getTableSchema();
         foreach ($tableSchema->foreignKeys as $foreignKey) {
             if (count($foreignKey) == 2) {
-                $methodName = 'get' . Inflector::classify($foreignKey[0]);
-                $foreignKeyAttribute = array_keys($foreignKey)[1];
-                if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-                    $fields[$foreignKeyAttribute]['type'] = 'dropDownList';
-                    $fields[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
+                $relatedQueryMethod = 'get' . Inflector::classify($foreignKey[0]);
+                if (method_exists($model, $relatedQueryMethod) && is_callable([$model, $relatedQueryMethod])) {
+                    $relatedAttribute = array_keys($foreignKey)[1];
+                    $fields[$relatedAttribute]['type'] = 'dropDownList';
+                    $fields[$relatedAttribute]['items'] = ModelHelper::listItems($model->$relatedQueryMethod());
                 }
             }
         }
         foreach ($fields as $attribute => $options) {
             if (!array_key_exists('type', $options)) {
-                $methodName = Inflector::variablize($attribute) . 'ListItems';
-                if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
+                $listItemsMethod = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $listItemsMethod) && is_callable([$modelClass, $listItemsMethod])) {
                     $options['type'] = 'dropDownList';
-                    $options['items'] = $modelClass::$methodName($model);
+                    $options['items'] = $modelClass::$listItemsMethod($model);
                 }
             }
             $columnSchema = $tableSchema->getColumn($attribute);

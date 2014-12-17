@@ -14,7 +14,7 @@ class ActionColumn extends YiiActionColumn
 
     public $headerOptions = ['class' => 'hidden-print'];
 
-    public $contentOptions = ['class' => 'gv-actions hidden-print'];
+    public $contentOptions = ['class' => 'action-column hidden-print'];
 
     public $footerOptions = ['class' => 'hidden-print'];
 
@@ -40,7 +40,7 @@ class ActionColumn extends YiiActionColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        $dropdownId = $this->grid->getId() . '-dropdown2-actions-' . $index;
+        $dropdownId = $this->grid->getId() . '-dropdown2-menu-' . $index;
         $this->template = implode(' ', array_keys(array_filter([
             '<li>{view}</li>' => ModelHelper::canRead($model),
             '<li>{update}</li>' => ModelHelper::canUpdate($model),
