@@ -104,7 +104,7 @@ class Action extends RestAction
                     if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                        $fieldClass = 'yii\mozayka\grid\\' . Inflector::id2camel($options['type']) . 'Column';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
                         }
@@ -203,7 +203,7 @@ class Action extends RestAction
                     if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                        $fieldClass = 'yii\mozayka\form\\' . Inflector::id2camel($options['type']) . 'Field';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
                         }
