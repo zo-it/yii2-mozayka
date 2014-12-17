@@ -1,5 +1,6 @@
 jQuery(document).on('contextmenu', '.grid-view tbody > tr > td', function (event) {
-    var dropdown = jQuery(this).dropdown2('hide').siblings('.gv-actions').find('.dropdown2');
+    jQuery(document).dropdown2('hide');
+    var dropdown = jQuery(this).siblings('.action-column').find('.dropdown2');
     if (dropdown) {
         event.preventDefault();
         event.stopPropagation();
