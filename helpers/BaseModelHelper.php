@@ -78,18 +78,18 @@ class BaseModelHelper
 
     public static function generateDisplayField(BaseActiveRecord $model)
     {
-        $attributes = static::displayField(get_class($model));
+        $args = static::displayField(get_class($model));
         $format = null;
-        if (array_key_exists('format', $attributes)) {
-            $format = $attributes['format'];
-            unset($attributes['format']);
+        if (array_key_exists('format', $args)) {
+            $format = $args['format'];
+            unset($args['format']);
         }
         $separator = ' ';
-        if (array_key_exists('separator', $attributes)) {
-            $separator = $attributes['separator'];
-            unset($attributes['separator']);
+        if (array_key_exists('separator', $args)) {
+            $separator = $args['separator'];
+            unset($args['separator']);
         }
-        $emptyDisplayField = array_flip($attributes);
+        $emptyDisplayField = array_flip($args);
         $displayField = array_merge($emptyDisplayField, array_intersect_key($model->getAttributes(), $emptyDisplayField));
         if ($format) {
             return vsprintf($format, array_values($displayField));
@@ -198,7 +198,6 @@ class BaseModelHelper
 
     public static function listItems(ActiveQuery $query)
     {
-        $listItems = [];
         $query->primaryModel = null;
         $query->link = null;
         $query->multiple = null;
@@ -207,18 +206,19 @@ class BaseModelHelper
             return [];
         }
         $emptyPrimaryKey = array_flip($modelClass::primaryKey());
-        $attributes = static::displayField($modelClass);
+        $args = static::displayField($modelClass);
         $format = null;
-        if (array_key_exists('format', $attributes)) {
-            $format = $attributes['format'];
-            unset($attributes['format']);
+        if (array_key_exists('format', $args)) {
+            $format = $args['format'];
+            unset($args['format']);
         }
         $separator = ' ';
-        if (array_key_exists('separator', $attributes)) {
-            $separator = $attributes['separator'];
-            unset($attributes['separator']);
+        if (array_key_exists('separator', $args)) {
+            $separator = $args['separator'];
+            unset($args['separator']);
         }
-        $emptyDisplayField = array_flip($attributes);
+        $emptyDisplayField = array_flip($args);
+        $listItems = [];
         foreach ($query->asArray()->all() as $modelAttributes) {
             $primaryKey = array_merge($emptyPrimaryKey, array_intersect_key($modelAttributes, $emptyPrimaryKey));
             $id = implode(',', array_values($primaryKey));
