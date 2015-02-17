@@ -1,6 +1,6 @@
 {
     "name": "ivan-chkv/yii2-mozayka",
-    "description": "The CRUD implementation for Yii 2.",
+    "description": "Yii 2 crud implementation.",
     "keywords": ["yii2", "mozayka"],
     "type": "yii2-extension",
     "license": "MIT",
@@ -10,6 +10,7 @@
             "email": "ivan.chkv@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
