@@ -23,7 +23,7 @@ class DateField extends ActiveField
     public function init()
     {
         $value = $this->model->{$this->attribute};
-        if (is_int($value) || is_float($value) || ($value && is_string($value))) {
+        if (is_int($value) || is_float($value) || (is_string($value) && strlen($value))) {
             $this->inputOptions['value'] = Text::date($this->dateFormat, $value);
             $this->hiddenInputOptions['value'] = Text::date($this->altDateFormat, $value);
         }

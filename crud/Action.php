@@ -4,12 +4,12 @@ namespace yii\mozayka\crud;
 
 use yii\rest\Action as RestAction,
     yii\mozayka\helpers\ModelHelper,
-    yii\db\BaseActiveRecord,
-    yii\helpers\Inflector,
     yii\kladovka\behaviors\DatetimeBehavior,
-    yii\kladovka\behaviors\TimestampBehavior,
-    yii\kladovka\behaviors\TimeDeleteBehavior,
     yii\kladovka\behaviors\SoftDeleteBehavior,
+    yii\kladovka\behaviors\TimeDeleteBehavior,
+    yii\helpers\Inflector,
+    yii\db\BaseActiveRecord,
+    yii\kladovka\behaviors\TimestampBehavior,
     Yii;
 
 
@@ -34,9 +34,8 @@ class Action extends RestAction
     protected function prepareColumns($modelClass)
     {
         $model = new $modelClass;
-$columns = $this->columns ?: ModelHelper::gridColumns($modelClass);
-$attributes = $model->attributes();
-$columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, $attributes), $attributes);
+        $validKeys = $model->attributes();
+        $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->columns ?: ModelHelper::gridColumns($modelClass), $validKeys), array_merge($validKeys, ['action-column']));
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
@@ -55,23 +54,28 @@ $columns = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($columns, 
             }
         }
         $tableSchema = $modelClass::getTableSchema();
-foreach ($tableSchema->foreignKeys as $foreignKey) {
-$methodName = 'get' . Inflector::classify($foreignKey[0]);
-$foreignKeyAttribute = array_keys($foreignKey)[1];
-if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-$columns[$foreignKeyAttribute]['type'] = 'listItem';
-$columns[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
-}
-}
+        foreach ($tableSchema->foreignKeys as $foreignKey) {
+            if (count($foreignKey) == 2) {
+                $relatedQueryMethod = 'get' . Inflector::classify($foreignKey[0]);
+                if (method_exists($model, $relatedQueryMethod) && is_callable([$model, $relatedQueryMethod])) {
+                    $relatedAttribute = array_keys($foreignKey)[1];
+                    $columns[$relatedAttribute]['type'] = 'listItem';
+                    $columns[$relatedAttribute]['items'] = ModelHelper::listItems($model->$relatedQueryMethod());
+                }
+            }
+        }
+        if (!array_key_exists('action-column', $columns)) {
+            $columns['action-column'] = ['type' => 'action'];
+        }
         foreach ($columns as $attribute => $options) {
             $options['attribute'] = $attribute;
-if (!array_key_exists('type', $options)) {
-$methodName = Inflector::variablize($attribute) . 'ListItems';
-if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-$options['type'] = 'listItem';
-$options['items'] = $modelClass::$methodName($model);
-}
-}
+            if (!array_key_exists('type', $options)) {
+                $listItemsMethod = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $listItemsMethod) && is_callable([$modelClass, $listItemsMethod])) {
+                    $options['type'] = 'listItem';
+                    $options['items'] = $modelClass::$listItemsMethod($model);
+                }
+            }
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey) {
@@ -100,7 +104,7 @@ $options['items'] = $modelClass::$methodName($model);
                     if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\grid\\' . ucfirst($options['type']) . 'Column';
+                        $fieldClass = 'yii\mozayka\grid\\' . Inflector::id2camel($options['type']) . 'Column';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
                         }
@@ -110,7 +114,7 @@ $options['items'] = $modelClass::$methodName($model);
             }
             $columns[$attribute] = $options;
         }
-        $columns[] = ['class' => 'yii\mozayka\grid\ActionColumn'];
+        unset($columns['action-column']['attribute']);
         return array_values(array_filter($columns, function ($options) {
             return !array_key_exists('visible', $options) || $options['visible'];
         }));
@@ -119,9 +123,8 @@ $options['items'] = $modelClass::$methodName($model);
     protected function prepareFields(BaseActiveRecord $model)
     {
         $modelClass = get_class($model);
-$fields = $this->fields ?: ModelHelper::formFields($model);
-$attributes = $model->attributes();
-$fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $attributes), $attributes);
+        $validKeys = $model->attributes();
+        $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($this->fields ?: ModelHelper::formFields($model), $validKeys), $validKeys);
         foreach ($model->getBehaviors() as $behavior) {
             if ($behavior instanceof DatetimeBehavior) {
                 foreach ($behavior->attributes as $datetimeAttribute) {
@@ -150,22 +153,24 @@ $fields = ModelHelper::normalizeBrackets(ModelHelper::expandBrackets($fields, $a
             }
         }
         $tableSchema = $modelClass::getTableSchema();
-foreach ($tableSchema->foreignKeys as $foreignKey) {
-$methodName = 'get' . Inflector::classify($foreignKey[0]);
-$foreignKeyAttribute = array_keys($foreignKey)[1];
-if (method_exists($model, $methodName) && is_callable([$model, $methodName])) {
-$fields[$foreignKeyAttribute]['type'] = 'dropDownList';
-$fields[$foreignKeyAttribute]['items'] = ModelHelper::listItems($model->$methodName());
-}
-}
+        foreach ($tableSchema->foreignKeys as $foreignKey) {
+            if (count($foreignKey) == 2) {
+                $relatedQueryMethod = 'get' . Inflector::classify($foreignKey[0]);
+                if (method_exists($model, $relatedQueryMethod) && is_callable([$model, $relatedQueryMethod])) {
+                    $relatedAttribute = array_keys($foreignKey)[1];
+                    $fields[$relatedAttribute]['type'] = 'dropDownList';
+                    $fields[$relatedAttribute]['items'] = ModelHelper::listItems($model->$relatedQueryMethod());
+                }
+            }
+        }
         foreach ($fields as $attribute => $options) {
-if (!array_key_exists('type', $options)) {
-$methodName = Inflector::variablize($attribute) . 'ListItems';
-if (method_exists($modelClass, $methodName) && is_callable([$modelClass, $methodName])) {
-$options['type'] = 'dropDownList';
-$options['items'] = $modelClass::$methodName($model);
-}
-}
+            if (!array_key_exists('type', $options)) {
+                $listItemsMethod = Inflector::variablize($attribute) . 'ListItems';
+                if (method_exists($modelClass, $listItemsMethod) && is_callable([$modelClass, $listItemsMethod])) {
+                    $options['type'] = 'dropDownList';
+                    $options['items'] = $modelClass::$listItemsMethod($model);
+                }
+            }
             $columnSchema = $tableSchema->getColumn($attribute);
             if ($columnSchema) {
                 if ($columnSchema->isPrimaryKey && !method_exists($model, 'search')) {
@@ -198,7 +203,7 @@ $options['items'] = $modelClass::$methodName($model);
                     if ($options['type'] == 'invisible') {
                         $options['visible'] = false;
                     } elseif (!array_key_exists('class', $options)) {
-                        $fieldClass = 'yii\mozayka\form\\' . ucfirst($options['type']) . 'Field';
+                        $fieldClass = 'yii\mozayka\form\\' . Inflector::id2camel($options['type']) . 'Field';
                         if (class_exists($fieldClass)) {
                             $options['class'] = $fieldClass;
                         }
