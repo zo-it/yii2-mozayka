@@ -37,7 +37,7 @@ class Module extends YiiModule implements BootstrapInterface
                     'route' => $this->id . '/crud/<action>'
                 ]
             ]);
-            $app->setHomeUrl(['default/index']);
+            //$app->setHomeUrl(['default/index']);
             $view = $app->getView();
             $view->params['navItems'] = $this->navItems;
             $view->params['breadcrumbs'] = [];
