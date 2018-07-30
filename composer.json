@@ -21,7 +21,7 @@
         "bower-asset/jquery.kinetic": "*",
         "bower-asset/jqueryui-timepicker-addon": "*",
         "bower-asset/tinymce": "4.*",
-        "ivan-chkv/yii2-kladovka": "dev-master"
+        "zo-it/yii2-kladovka": "dev-master"
     },
     "autoload": {
         "psr-4": {
